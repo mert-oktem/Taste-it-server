@@ -1,0 +1,19 @@
+{
+  "name": "taste-it-server",
+  "version": "1.0.0",
+  "description": "Taste It Server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mert-oktem/Taste-it-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mert-oktem/Taste-it-server/issues"
+  },
+  "homepage": "https://github.com/mert-oktem/Taste-it-server#readme"
+}
