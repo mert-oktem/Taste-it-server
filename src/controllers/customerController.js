@@ -18,27 +18,24 @@ exports.create = (req, res) => {
     // Add joi here!
 
     // Hash Password
-    bcrypt.hash('req.body.password', saltRounds, (err, hash) => {
-    try {
-        // Create a Customer
-        const customer = {
-        firstName: req.body.FirstName,
-        lastName: req.body.LastName,
-        email: req.body.email,
-        password: hash,
-        active: true
-        //email: req.body.published ? req.body.published : false
+    bcrypt.hash('req.body.password', saltRounds, (err, hash) => { if(err) { console.log(err) } })
+    .then( hash => {
+            // Create a Customer
+            const customer = {
+            firstName: req.body.FirstName,
+            lastName: req.body.LastName,
+            email: req.body.email,
+            password: hash,
+            active: true
+            //email: req.body.published ? req.body.published : false
+            }
+    
+            // Save Customer in the database
+            customerTable.create(customer)
+            .then(data => { res.send(data) } )
+            .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the customer."}) })
         }
-
-        // Save Customer in the database
-        customerTable.create(customer)
-        .then(data => { res.send(data) } )
-        .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the customer."}) })
-    }
-    catch {
-        console.log(err);
-    }
-  }) 
+    )
 }
 
 ////////////////////
@@ -66,9 +63,9 @@ exports.findOne = (req, res) => {
       .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) })
 }
 
-// Find all published Tutorials
-exports.findAllPublished = (req, res) => {
-    Tutorial.findAll({ where: { published: true } })
+// Find all Active Customers
+exports.findAllCustomers = (req, res) => {
+    customerTable.findAll({ where: { active: true } })
     .then(data => { res.send(data) })
     .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while retrieving customers." })
     })
@@ -78,7 +75,7 @@ exports.findAllPublished = (req, res) => {
 // PUT Methods //
 ////////////////////
 
-// Update a Tutorial by the id in the request
+// Update a Customer by the id in the request
 exports.update = (req, res) => {
     const id = req.params.id;
 
@@ -92,7 +89,7 @@ exports.update = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot update Customer with id=${id}. Maybe Tutorial was not found or req.body is empty!`
+            message: `Cannot update Customer with id=${id}. Maybe Customer was not found or req.body is empty!`
           });
         }
       })
@@ -107,11 +104,11 @@ exports.update = (req, res) => {
 // DELETE Methods //
 ////////////////////
 
-// Delete a Tutorial with the specified id in the request
+// Delete a Customer with the specified id in the request
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    Tutorial.update(req.body, {
+    customerTable.update(req.body, {
       where: { id: id }
     })
       .then(num => {
