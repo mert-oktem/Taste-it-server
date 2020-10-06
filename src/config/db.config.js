@@ -1,8 +1,8 @@
 module.exports = {
-    HOST: "https://lair.wmdd.ca",
-    USER: "lairdbadmin",
-    PASSWORD: "479ghsJO@",
-    DB: "lairdb",
+    HOST: "https://mert.wmdd.ca",
+    USER: "cerberus",
+    PASSWORD: "ag7hE67%",
+    DB: "taste-it-test",
     dialect: "mysql",
     pool: {
       max: 5,

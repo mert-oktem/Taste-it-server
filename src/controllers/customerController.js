@@ -9,7 +9,7 @@ const saltRounds = 10;
 
 
 ////////////////////
-// POST Methods //
+// POST Methods ////
 ////////////////////
 
 // Create and save a new Customer
@@ -18,24 +18,22 @@ exports.create = (req, res) => {
     // Add joi here!
 
     // Hash Password
-    bcrypt.hash('req.body.password', saltRounds, (err, hash) => { if(err) { console.log(err) } })
-    .then( hash => {
-            // Create a Customer
-            const customer = {
-            firstName: req.body.FirstName,
-            lastName: req.body.LastName,
-            email: req.body.email,
-            password: hash,
-            active: true
-            //email: req.body.published ? req.body.published : false
-            }
+    //let hashPassword = await hashPassword(req.body.password);
     
-            // Save Customer in the database
-            customerTable.create(customer)
-            .then(data => { res.send(data) } )
-            .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the customer."}) })
-        }
-    )
+    // Create a Customer
+    const customer = {
+    firstName: req.body.FirstName,
+    lastName: req.body.LastName,
+    email: req.body.email,
+    password: req.body.password,
+    active: true
+    //email: req.body.published ? req.body.published : false
+    }
+
+    // Save Customer in the database
+    customerTable.create(customer)
+    .then(data => { res.send(data) } )
+    .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the customer."}) })
 }
 
 ////////////////////
@@ -128,3 +126,16 @@ exports.delete = (req, res) => {
         });
       });
 };
+
+
+hashPassword = (password) => {
+  bcrypt.hash(password, saltRounds, (err, hash) => { 
+    try {
+      console.log(hash);
+      return hash;
+    }
+    catch(err) {
+      console.log(err);
+    }
+  })
+}
