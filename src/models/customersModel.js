@@ -1,58 +1,49 @@
-const { DataTypes } = require("sequelize");
+const Sequelize = require("sequelize");
 
-module.exports = (sequelize, Sequelize) => {
-  const customer = sequelize.define("customerTable", {
+module.exports = sequelize.define("customers", {
     customerID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: null,
+      type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       comment: null,
       field: "customerID"
     },
     firstName: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
-      defaultValue: "",
       comment: null,
       field: "firstName"
     },
     lastName: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
-      defaultValue: "",
       comment: null,
       field: "lastName"
     },
     email: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
-      defaultValue: "",
       comment: null,
       field: "email"
     },
     password: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
-      defaultValue: "",
       comment: null,
       field: "password"
     },
     phoneNumber: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: true,
-      defaultValue: null,
+      defaultValue: 0,
       comment: null,
       field: "phoneNumber"
     },
     active: {
-      type: DataTypes.BOOLEAN,
+      type: Sequelize.BOOLEAN,
       allowNull: false,
       defaultValue: true,
       comment: null,
       field: "is_active"
-    }
-  });
-  return customer;
-};
+    },
+});

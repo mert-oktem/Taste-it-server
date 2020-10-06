@@ -2,51 +2,54 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("customers", {
-      customerID: {
+    return queryInterface.createTable("menus", {
+      menuID: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         comment: null,
-        field: "customerID"
+        field: "menuID"
       },
-      firstName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        comment: null,
-        field: "firstName"
-      },
-      lastName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        comment: null,
-        field: "lastName"
-      },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        comment: null,
-        field: "email"
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        comment: null,
-        field: "password"
-      },
-      phoneNumber: {
+      restaurantID: {
         type: Sequelize.INTEGER,
-        allowNull: true,
-        defaultValue: 0,
+        allowNull: false,
         comment: null,
-        field: "phoneNumber"
+        field: "restaurantID",
+        references: {
+          model: 'restaurants',
+          key: 'restaurantID'
+       }
       },
-      active: {
+      menuName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        comment: null,
+        field: "menuName",
+      },
+      menuDescription: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        comment: null,
+        field: "menuDescription",
+      },
+      price: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        comment: null,
+        field: "price",
+      },
+      pictureURI: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        comment: null,
+        field: "pictureURI",
+      },
+      is_active: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: true,
         comment: null,
-        field: "is_active"
+        field: "is_active",
       },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE
@@ -54,6 +57,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("customers")
+        return queryInterface.dropTable("menus")
   }
 };

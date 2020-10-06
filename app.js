@@ -8,11 +8,11 @@ const bodyParser = require("body-parser");
 const cors = require('cors');
 const { stat } = require('fs');
 
-/******************** Local Modules ***********************/
-const db = require("./src/models/index");
-
-
 /******************** End of Modules ********************/
+
+
+/******************** DB Connection ***********************/
+require("./src/database/connection");
 
 
 /******************** App Setup ***********************/
@@ -22,18 +22,13 @@ const app = express();
 app.use(cors());
 
 // Request Parsing
-app.use(bodyParser.json()); // Parse requests of content-type - application/json
-app.use(bodyParser.urlencoded({ extended: true })); // Parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true })); 
 
 app.use(express.json());
 
-/******************** DB Setup ***********************/
-
-db.sequelize.sync().then(() => {
-    console.log("Sync db.");
-});
-
-require("./src/bootstrap")();
+// Bootstrap for creating DB tables and relations.
+require("./src/bootstrap")(); 
 
 app.get('/', (req, res) =>
     res.send(`Node and express server is running on port ${PORT}`)

@@ -1,49 +1,49 @@
-module.exports = async () => {
-    const customersTable = require("./models/customerModel")
+module.exports = async (db) => {
+    const customers = require("./models/customersModel")
     //const restaurantsTable = require()
 
-    const customerAddressLink = require("./models/customerAddressLink")
+    const customerAddressLinks = require("./models/customerAddressLinkModel")
     //const restaurantAdressLink = require()
 
-    const addressesTable = require("./models/addressesTable")
-    const countriesTable = require("./models/countriesTable")
-    const citiesTable = require("./models/citiesTable")
-    const provincesTable = require("./models/provincesTable")
+    const addresses = require("./models/addressesModel")
+    const countries = require("./models/countriesModel")
+    const cities = require("./models/citiesModel")
+    const provinces = require("./models/provincesModel")
 
-    //addressesTable.hasMany(countriesTable, { as: "countriesTable", foreignKey: 'countryID'})
-    //addressesTable.hasMany(citiesTable, { as: "citiesTable", foreignKey: 'cityID'})
-    //addressesTable.hasMany(provincesTable, { as: "provincesTable", foreignKey: 'provinceID'})
+    addresses.hasMany(countries, { as: "countriesModel", foreignKey: 'countryID'})
+    addresses.hasMany(cities, { as: "citiesModel", foreignKey: 'cityID'})
+    addresses.hasMany(provinces, { as: "provincesModel", foreignKey: 'provinceID'})
 
-    customerAddressLink.hasMany(customersTable, { as: "customersTable", foreignKey: 'customerID'})
-    customerAddressLink.hasMany(addressesTable, { as: "addressesTable", foreignKey: 'addressID'})
+    customerAddressLinks.hasMany(customers, { as: "customers", foreignKey: 'customerID'})
+    customerAddressLinks.hasMany(addresses, { as: "addresses", foreignKey: 'addressID'})
 
     const errHandler = (err) => {
         console.error("Error ", err)
     }
 
-    const country = await countriesTable.create({
+    const country = await countries.create({
         countryDescription: "Canada"
-    }.catch(errHandler))
+    }).catch(errHandler)
 
-    const province = await provincesTable.create({
-        provinceDescripton: "British Columbia"
-    }.catch(errHandler))
+    const province = await provinces.create({
+        provinceDescription: "British Columbia"
+    }).catch(errHandler)
 
-    const city = await citiesTable.create({
+    const city = await cities.create({
         cityDescription: "Vancouver"
-    }.catch(errHandler))
+    }).catch(errHandler)
 
-    const address = await addressesTable.create({
-        countryID: 0,
-        provinceID: 0,
-        cityID: 0,
+    const address = await addresses.create({
+        countryID: 1,
+        provinceID: 1,
+        cityID: 1,
         address: "1379 Park Drive",
         postcode: "V6P 2K4",
         instructions: "Leave at the door.",
         active: 1
-    }.catch(errHandler))
+    }).catch(errHandler)
 
-    const customer = await customersTable.create({
+    const customer = await customers.create({
         firstName: "Mert",
         lastName: "Oktem",
         username: "mertoktem",
@@ -51,16 +51,12 @@ module.exports = async () => {
         email: "mrtoktem@hotmail.com",
         phoneNumber: 6043629418,
         active: 1
-    }.catch(errHandler))
+    }).catch(errHandler)
 
-    const addressCustomerLink = await customerAddressLink.create({
+    const addressCustomerLink = await customerAddressLinks.create({
         customerID: customer.customerID,
         addressID: address.addressID
-    }.catch(errHandler))
-
-
-
-    
+    }).catch(errHandler)
 
 
     /*

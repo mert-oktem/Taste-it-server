@@ -2,23 +2,23 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("customers", {
-      customerID: {
+    return queryInterface.createTable("restaurants", {
+      restaurantID: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         comment: null,
-        field: "customerID"
+        field: "restaurantID"
       },
-      firstName: {
+      restaurantName: {
         type: Sequelize.STRING,
         allowNull: false,
         comment: null,
         field: "firstName"
       },
-      lastName: {
+      restaurantDescripton: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
         comment: null,
         field: "lastName"
       },
@@ -35,7 +35,7 @@ module.exports = {
         field: "password"
       },
       phoneNumber: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: true,
         defaultValue: 0,
         comment: null,
@@ -54,6 +54,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("customers")
+        return queryInterface.dropTable("restaurants")
   }
 };

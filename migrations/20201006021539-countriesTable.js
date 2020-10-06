@@ -1,30 +1,27 @@
 'use strict';
 
-const { DataTypes } = require("sequelize");
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("countriesTable", {
+    return queryInterface.createTable("countries", {
       countryID: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: null,
+        type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         comment: null,
         field: "countryID"
       },
       countryDescription: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: "",
         comment: null,
         field: "countryDescription"
-      }
+      },
+      createdAt: Sequelize.DATE,
+      updatedAt: Sequelize.DATE
     })
   },
 
   down: async (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("countriesTable")
+        return queryInterface.dropTable("countries")
   }
 };

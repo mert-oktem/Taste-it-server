@@ -1,72 +1,77 @@
 'use strict';
 
-const { DataTypes } = require("sequelize");
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("addressesTable", {
+    return queryInterface.createTable("addresses", {
       addressID: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: null,
+        type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         comment: null,
         field: "addressID"
       },
       countryID: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 0,
         comment: null,
-        field: "countryID"
+        field: "countryID",
+        references: {
+          model: 'countries',
+          key: 'countryID'
+       }
       },
       provinceID: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 0,
         comment: null,
-        field: "provinceID"
+        field: "provinceID",
+        references: {
+          model: 'provinces',
+          key: 'provinceID'
+       }
       },
       cityID: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 0,
         comment: null,
-        field: "cityID"
+        field: "cityID",
+        references: {
+          model: 'cities',
+          key: 'cityID'
+       }
       },
       address: {
-        type: DataTypes.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: "",
         comment: null,
         field: "address"
       },
       postcode: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: "",
         comment: null,
         field: "postcode"
       },
       instructions: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: true,
-        defaultValue: null,
+        defaultValue: "",
         comment: null,
         field: "instructions"
       },
       active: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: true,
         comment: null,
         field: "is_active"
-      }
+      },
+      createdAt: Sequelize.DATE,
+      updatedAt: Sequelize.DATE
     })
   },
 
   down: async (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("addressesTable")
+        return queryInterface.dropTable("addresses")
   }
 };
