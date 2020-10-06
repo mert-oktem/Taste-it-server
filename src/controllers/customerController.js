@@ -1,8 +1,7 @@
 const db = require("../models");
 const bcrypt = require('bcrypt');
 
-const customerTable = db.customersTable;
-const Op = db.Sequelize.Op;
+const customers = require('../models/customersModel');;
 
 // Salt Rounds for bcrypt (Password hashing)
 const saltRounds = 10;

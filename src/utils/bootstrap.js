@@ -1,14 +1,14 @@
 module.exports = async (db) => {
-    const customers = require("./models/customersModel")
+    const customers = require("../models/customersModel")
     //const restaurantsTable = require()
 
-    const customerAddressLinks = require("./models/customerAddressLinkModel")
+    const customerAddressLinks = require("../models/customerAddressLinkModel")
     //const restaurantAdressLink = require()
 
-    const addresses = require("./models/addressesModel")
-    const countries = require("./models/countriesModel")
-    const cities = require("./models/citiesModel")
-    const provinces = require("./models/provincesModel")
+    const addresses = require("../models/addressesModel")
+    const countries = require("../models/countriesModel")
+    const cities = require("../models/citiesModel")
+    const provinces = require("../models/provincesModel")
 
     addresses.hasMany(countries, { as: "countriesModel", foreignKey: 'countryID'})
     addresses.hasMany(cities, { as: "citiesModel", foreignKey: 'cityID'})

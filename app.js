@@ -28,10 +28,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Bootstrap for creating DB tables and relations.
-require("./src/bootstrap")(); 
+require("./src/utils/bootstrap")(); 
+
+const port = process.env.port || 3000;
+
 
 app.get('/', (req, res) =>
-    res.send(`Node and express server is running on port ${PORT}`)
+    res.send(`Node and express server is running on port ${port}`)
 );
 
 /******************** Routes ***********************/
@@ -39,8 +42,6 @@ app.get('/', (req, res) =>
 //require("./app/routes/restaurantRoutes")(app);
 //require("./app/routes/orderRoutes")(app);
 
-
-const port = process.env.port || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
 
