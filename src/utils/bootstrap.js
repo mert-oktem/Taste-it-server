@@ -11,26 +11,7 @@ module.exports = async (db) => {
     const choices = require("../models/choicesModel")
     const orderStatuses = require("../models/orderStatusesModel")
 
-    await choices.destroy({
-        truncate: true
-    })
-
-    await cities.destroy({
-        truncate: true
-    })
-
-    await provinces.destroy({
-        truncate: true
-    })
-
-    await countries.destroy({
-        truncate: true
-    })
-
-    await orderStatuses.destroy({
-        truncate: true
-    })
-
+    sequelize.sync({force: true});
 
     const errHandler = (err) => {
         console.error("Error ", err)

@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Bootstrap for creating DB tables and relations.
-//require("./src/utils/bootstrap")(); 
+require("./src/utils/bootstrap")(); 
 
 
 const port = process.env.port || 3000;
