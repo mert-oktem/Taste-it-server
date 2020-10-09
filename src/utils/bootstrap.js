@@ -11,8 +11,6 @@ module.exports = async (db) => {
     const choices = require("../models/choicesModel")
     const orderStatuses = require("../models/orderStatusesModel")
 
-    sequelize.sync({force: true});
-
     const errHandler = (err) => {
         console.error("Error ", err)
     }
