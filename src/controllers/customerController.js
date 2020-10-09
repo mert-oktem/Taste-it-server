@@ -41,7 +41,7 @@ exports.createCustomer = async function (req, res, next) {
     // Save Customer in the database
     customers.create(customer)
     .then(data => { res.send(data) } )
-    .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the customer."}) })
+    .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
 // Create Customer Address
@@ -51,15 +51,15 @@ exports.createAddress  = async function (req, res, next) {
 
   // Get countryID with countryName
   const country = await countries.findOne({ where: { countryDescription: req.body.countryName } })
-  .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while getting the Country."}) })
+  .catch(err => { res.status(500).send({ message: err.message }) })
 
   // Get provinceID with countryName
   const province = await provinces.findOne({ where: { provinceDescription: req.body.provinceName } })
-  .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while getting the Province."}) })
+  .catch(err => { res.status(500).send({ message: err.message }) })
 
   // Get cityID with countryName
   const city = await cities.findOne({ where: { cityDescription: req.body.cityName } })
-  .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while getting the City."}) })
+  .catch(err => { res.status(500).send({ message: err.message }) })
 
   // Create Address
   const address = {
@@ -74,7 +74,7 @@ exports.createAddress  = async function (req, res, next) {
 
   // Save Address in the database
   const createdAddress = await addresses.create(address)
-  .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the Address."}) })
+  .catch(err => { res.status(500).send({ message: err.message }) })
   
 
   // Create Customer Address Link
@@ -86,7 +86,7 @@ exports.createAddress  = async function (req, res, next) {
   // Save Customer Address Link
   const createdCustomerAddressLink = await customerAddressLink.create(addressCustomerLink)
   .then(data => { res.send(data) } )
-  .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the Customer Address Link."}) })
+  .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
 // Create customer choice
@@ -106,7 +106,7 @@ exports.createChoice = async function (req, res, next) {
   // Save Customer in the database
   customerChoices.create(customerChoiceLink)
   .then(data => { res.send(data) } )
-  .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the choice."}) })
+  .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
 ////////////////////
@@ -119,7 +119,7 @@ exports.login = async function (req, res, next) {
   // Add joi function to validate request!
 
   const customer = await customers.findOne( { where: { userName: req.body.userName } } )
-  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with username=" + req.body.userName }) })
+  .catch(err => { res.status(500).send({ message: err.message }) })
 
   const passwordResult = await bcrypt.compare(req.body.password, customer.password) 
   .catch(err => { res.status(500).send({ message: err.message }) })
@@ -139,7 +139,7 @@ exports.findCustomer = async function (req, res, next) {
 
   customers.findByPk(id)
     .then(data => { res.send(data) })
-    .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) })
+    .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
 // Find a single customer's choices
@@ -153,7 +153,7 @@ exports.findCustomerChoices = async function (req, res, next) {
   ON choices.choiceID = customerChoicesLinks.choiceID
   WHERE customerID = ${id} and isActive=true`, { type: QueryTypes.SELECT })
   .then(data => { res.send(data) })
-  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) })
+  .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
 // Find a single customer's address
@@ -173,7 +173,7 @@ exports.findCustomerAddress = async function (req, res, next) {
   ON cities.cityID = addresses.cityID
   WHERE customerID = ${id} AND addresses.isActive=true`, { type: QueryTypes.SELECT })
   .then(data => { res.send(data) })
-  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) })
+  .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
 
@@ -186,7 +186,7 @@ exports.updateCustomer = async function (req, res, next) {
     const id = req.params.id;
 
     const customer = await customers.findByPk(id)
-    .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id } )})
+    .catch(err => { res.status(500).send({ message: err.message } )})
 
     const firstName = req.body.firstName ? req.body.firstName : customer.firstName
     const lastName = req.body.lastName ? req.body.lastName : customer.lastName
@@ -200,7 +200,7 @@ exports.updateCustomer = async function (req, res, next) {
       phoneNumber: phoneNumber
     })
     .then(data => { res.send(data) })
-    .catch(err => { res.status(500).send({ message: err.message || "Error updating Customer with id=" + id } )})
+    .catch(err => { res.status(500).send({ message: err.message } )})
 }
 
 // Update a Customer's Address by the id in the request
@@ -208,9 +208,9 @@ exports.updateCustomerAddress = async function (req, res, next) {
   const id = req.params.id;
 
   const link = await customerAddressLink.findByPk(id)
-  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving customer-addres-link with id=" + id } )})
+  .catch(err => { res.status(500).send({ message: err.message } )})
   const custAddress = await addresses.findOne({ where: {addressID: link.addressID} })
-  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving customer address with id=" + id } )})
+  .catch(err => { res.status(500).send({ message: err.message } )})
 
   const countryID = req.body.countryID ? await countries.findByPk(req.body.countryDescription).countryID : custAddress.countryID
   const provinceID = req.body.provinceID ? await provinces.findByPk(req.body.provinceDescription).provinceID : custAddress.provinceID
@@ -229,7 +229,7 @@ exports.updateCustomerAddress = async function (req, res, next) {
     instructions: instructions
   })
   .then(data => { res.send(data) })
-  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id } )})
+  .catch(err => { res.status(500).send({ message: err.message } )})
 };
 
 
@@ -243,8 +243,8 @@ exports.deactivateCustomerChoice = async function (req, res, next) {
     LEFT JOIN choices
     ON choices.choiceID = customerChoicesLinks.choiceID
     SET customerChoicesLinks.isActive = false
-    WHERE customerChoicesLinks.customerID = ${id} AND customerChoicesLinks.isActive = true AND choices.category = ${req.body.category}`, { type: QueryTypes.PUT })
+    WHERE customerChoicesLinks.customerID = ${id} AND customerChoicesLinks.isActive = true AND choices.category = "${req.body.category}"`, { type: QueryTypes.PUT })
     .then(data => { res.send(data) })
-    .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) 
+    .catch(err => { res.status(500).send({ message: err.message }) 
   })
 }
