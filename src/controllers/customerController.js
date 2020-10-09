@@ -44,7 +44,7 @@ exports.createCustomer = async function (req, res, next) {
     .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the customer."}) })
 }
 
-// Create customer address
+// Create Customer Address
 exports.createAddress  = async function (req, res, next) {
   // This method needs: customerID, countryName, provinceName, cityName, postCode, Address, Instructions
   // Add joi function to validate request!
@@ -61,7 +61,7 @@ exports.createAddress  = async function (req, res, next) {
   const city = await cities.findOne({ where: { cityDescription: req.body.cityName } })
   .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while getting the City."}) })
 
-  // Create address
+  // Create Address
   const address = {
     countryID: country.countryID,
     provinceID: province.provinceID,
@@ -115,15 +115,16 @@ exports.createChoice = async function (req, res, next) {
 
 // Login
 exports.login = async function (req, res, next) {
-  const id = req.params.id;
+  // This method needs: userName, password
+  // Add joi function to validate request!
 
-  const customer = await customers.findByPk(id)
-  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) })
+  const customer = await customers.findOne( { where: { userName: req.body.userName } } )
+  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with username=" + req.body.userName }) })
 
-  const result = await bcrypt.compare(req.body.password, customer.password) 
+  const passwordResult = await bcrypt.compare(req.body.password, customer.password) 
   .catch(err => { res.status(500).send({ message: err.message }) })
 
-  if (customer.userName == req.body.userName && result) {
+  if (passwordResult) {
     res.send('Login Sucessfull!')
   }
   else {
@@ -150,7 +151,7 @@ exports.findCustomerChoices = async function (req, res, next) {
   FROM choices
   LEFT JOIN customerChoicesLinks
   ON choices.choiceID = customerChoicesLinks.choiceID
-  WHERE customerID = ${id}`, { type: QueryTypes.SELECT })
+  WHERE customerID = ${id} and isActive=true`, { type: QueryTypes.SELECT })
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) })
 }
@@ -170,7 +171,7 @@ exports.findCustomerAddress = async function (req, res, next) {
   ON provinces.provinceID = addresses.provinceID
   LEFT JOIN cities
   ON cities.cityID = addresses.cityID
-  WHERE customerID = ${id} AND addresses.is_active=true`, { type: QueryTypes.SELECT })
+  WHERE customerID = ${id} AND addresses.isActive=true`, { type: QueryTypes.SELECT })
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) })
 }
@@ -181,55 +182,69 @@ exports.findCustomerAddress = async function (req, res, next) {
 ////////////////////
 
 // Update a Customer by the id in the request
-exports.update = (req, res) => {
+exports.updateCustomer = async function (req, res, next) {
     const id = req.params.id;
 
-    customerTable.update(req.body, {
-      where: { id: id }
+    const customer = await customers.findByPk(id)
+    .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id } )})
+
+    const firstName = req.body.firstName ? req.body.firstName : customer.firstName
+    const lastName = req.body.lastName ? req.body.lastName : customer.lastName
+    const password= req.body.password ? await bcrypt.hash(req.body.password, saltRounds) : customer.password
+    const phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : customer.phoneNumber
+
+    await customer.update({
+      firstName: firstName,
+      lastName: lastName,
+      password: password,
+      phoneNumber: phoneNumber
     })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Customer was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update Customer with id=${id}. Maybe Customer was not found or req.body is empty!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating Customer with id=" + id
-        });
-      });
+    .then(data => { res.send(data) })
+    .catch(err => { res.status(500).send({ message: err.message || "Error updating Customer with id=" + id } )})
+}
+
+// Update a Customer's Address by the id in the request
+exports.updateCustomerAddress = async function (req, res, next) {
+  const id = req.params.id;
+
+  const link = await customerAddressLink.findByPk(id)
+  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving customer-addres-link with id=" + id } )})
+  const custAddress = await addresses.findOne({ where: {addressID: link.addressID} })
+  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving customer address with id=" + id } )})
+
+  const countryID = req.body.countryID ? await countries.findByPk(req.body.countryDescription).countryID : custAddress.countryID
+  const provinceID = req.body.provinceID ? await provinces.findByPk(req.body.provinceDescription).provinceID : custAddress.provinceID
+  const cityID = req.body.cityID ? await cities.findByPk(req.body.cityDescription).cityID : custAddress.cityID
+
+  const address = req.body.address ? req.body.address : custAddress.address
+  const postcode = req.body.postcode ? req.body.postcode : custAddress.postcode
+  const instructions = req.body.instructions ? req.body.instructions : custAddress.instructions
+
+  custAddress.update({
+    countryID: countryID,
+    provinceID: provinceID,
+    cityID: cityID,
+    address: address,
+    postcode: postcode,
+    instructions: instructions
+  })
+  .then(data => { res.send(data) })
+  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id } )})
 };
 
-////////////////////
-// DELETE Methods //
-////////////////////
 
-// Delete a Customer with the specified id in the request
-exports.delete = (req, res) => {
-    const id = req.params.id;
+// Deactive a customer's choices by the id and choiceCategory in the request
+exports.deactivateCustomerChoice = async function (req, res, next) {
+  // This method needs: customerID, choiceCategory
+  const id = req.params.id
 
-    customerTable.update(req.body, {
-      where: { id: id }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Customer was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update Customer with id=${id}. Maybe Customer was not found or req.body is empty!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating Customer with id=" + id
-        });
-      });
-};
+  const choices = await sequelize.query(  
+    `UPDATE customerChoicesLinks
+    LEFT JOIN choices
+    ON choices.choiceID = customerChoicesLinks.choiceID
+    SET customerChoicesLinks.isActive = false
+    WHERE customerChoicesLinks.customerID = ${id} AND customerChoicesLinks.isActive = true AND choices.category = ${req.body.category}`, { type: QueryTypes.PUT })
+    .then(data => { res.send(data) })
+    .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) 
+  })
+}

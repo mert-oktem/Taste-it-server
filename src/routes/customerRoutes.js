@@ -12,20 +12,23 @@ module.exports = app => {
     // Create a new choice for Customer
     router.post("/choice", customer.createChoice);
   
-    // Retrieve a single Customer with id
+    // Retrieve a customer with id
     router.get("/:id", customer.findCustomer);
 
-    // Retrieve a single customers choices with id
+    // Retrieve a customers choices with id
     router.get("/choices/:id", customer.findCustomerChoices);
 
-    // Retrieve all active customers
+    // Retrieve a customer's address with id
     router.get("/address/:id", customer.findCustomerAddress);
   
-    // Update a Customer with id
-    router.put("/:id", customer.update);
-  
-    // Delete a Customer with id
-    router.delete("/:id", customer.delete);
+    // Update a customer with id
+    router.put("/:id", customer.updateCustomer);
+
+    // Update a customer's address with id
+    router.put("/address/:id", customer.updateCustomerAddress);
+
+    // Update a customer's choices with id
+    router.put("/deactivechoices/:id", customer.deactivateCustomerChoice);
   
     app.use('/api/customers', router);
 };

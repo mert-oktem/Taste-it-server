@@ -9,6 +9,27 @@ module.exports = async (db) => {
     const cities = require("../models/citiesModel")
     const provinces = require("../models/provincesModel")
     const choices = require("../models/choicesModel")
+    const orderStatuses = require("../models/orderStatusesModel")
+
+    await choices.destroy({
+        truncate: true
+    })
+
+    await cities.destroy({
+        truncate: true
+    })
+
+    await provinces.destroy({
+        truncate: true
+    })
+
+    await countries.destroy({
+        truncate: true
+    })
+
+    await orderStatuses.destroy({
+        truncate: true
+    })
 
 
     const errHandler = (err) => {
@@ -17,10 +38,6 @@ module.exports = async (db) => {
 
     const country = await countries.create({
         countryDescription: "Canada"
-    }).catch(errHandler)
-
-    const country = await countries.create({
-        countryDescription: "United States"
     }).catch(errHandler)
 
     const province = await provinces.create({
@@ -56,27 +73,207 @@ module.exports = async (db) => {
         addressID: address.addressID
     }).catch(errHandler)
 
-    const choice = await choices.create({
-        category: "Spice",
-        choiceDescription: "Very Spicy",
-        pictureURI: "https://www.google.com"
-    }).catch(errHandler)
+    const allChoices = await choices.bulkCreate([
+        {
+            category: "Spiciness",
+            choiceDescription: "Very High",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Spiciness",
+            choiceDescription: "High",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Spiciness",
+            choiceDescription: "Moderate",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Spiciness",
+            choiceDescription: "Not Spicy",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Chinese",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "German",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Greek",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Indian",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Japanese",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Mediterranean",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Italian",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Persian",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Russian",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Thai",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Ukrainian",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Vietnamese",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Diet Types",
+            choiceDescription: "Halal",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Diet Types",
+            choiceDescription: "Kosher",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Diet Types",
+            choiceDescription: "Vietnamese",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Diet Types",
+            choiceDescription: "Diabetic",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Diet Types",
+            choiceDescription: "Vegetarian",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Diet Types",
+            choiceDescription: "Vegan",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Diet Types",
+            choiceDescription: "Organic",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Diet Types",
+            choiceDescription: "Gluten-Free",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Allergens",
+            choiceDescription: "Milk",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Allergens",
+            choiceDescription: "Eggs",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Allergens",
+            choiceDescription: "Fish (e.g., bass, flounder, cod)",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Allergens",
+            choiceDescription: "Crustacean shellfish (e.g., crab, lobster, shrimp)",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Allergens",
+            choiceDescription: "Tree nuts (e.g., almonds, walnuts, pecans)",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Allergens",
+            choiceDescription: "Wheat",
+            pictureURI: "https://www.google.com"
+        },
+        {   
+            category: "Allergens",
+            choiceDescription: "Peanuts",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Allergens",
+            choiceDescription: "Soybeans",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Allergens",
+            choiceDescription: "Soybeans",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Budget",
+            choiceDescription: "$6-$10",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Budget",
+            choiceDescription: "$10-$15",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Budget",
+            choiceDescription: "$15-$20",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Budget",
+            choiceDescription: "+$20",
+            pictureURI: "https://www.google.com"
+        }
+    ]).catch(errHandler)
 
-    const choice2 = await choices.create({
-        category: "Spice",
-        choiceDescription: "Mild Spicy",
-        pictureURI: "https://www.google.com"
-    }).catch(errHandler)
-
-    const choice3 = await choices.create({
-        category: "Spice",
-        choiceDescription: "Spicy Options",
-        pictureURI: "https://www.google.com"
-    }).catch(errHandler)
-
-    const choice4 = await choices.create({
-        category: "Cuisines",
-        choiceDescription: "Italian",
-        pictureURI: "https://www.google.com"
-    }).catch(errHandler)
+    const allOrderStatuses = await orderStatuses.bulkCreate([
+        {
+            orderStatusDescription: "Being prepared"
+        },
+        {
+            orderStatusDescription: "Being delivered"
+        },
+        {
+            orderStatusDescription: "Delivered"
+        },
+        {
+            orderStatusDescription: "Reviewed"
+        }
+    ]).catch(errHandler)
 }
+
