@@ -1,72 +1,180 @@
-const db = require("../models");
+const { QueryTypes } = require('sequelize');
+
+// Password hashing
 const bcrypt = require('bcrypt');
+const saltRounds = 10; // Salt Rounds for bcrypt (Password hashing)
 
-const customers = require('../models/customersModel');;
+// Importing necessary tables
+const customers = require("../models/customersModel")
 
-// Salt Rounds for bcrypt (Password hashing)
-const saltRounds = 10;
+const addresses = require("../models/addressesModel")
+const countries = require('../models/countriesModel');
+const provinces = require("../models/provincesModel")
+const cities = require("../models/citiesModel")
+const customerAddressLink = require("../models/customerAddressLinkModel")
 
+const choices = require("../models/choicesModel")
+const customerChoices = require("../models/customerChoicesModel");
 
 ////////////////////
 // POST Methods ////
 ////////////////////
 
 // Create and save a new Customer
-exports.create = (req, res) => {
-    // Validate request
-    // Add joi here!
+exports.createCustomer = async function (req, res, next) {
+    // This method needs: firstName, lastName, email, password, phoneNumber
+    // Add joi function to validate request!
 
     // Hash Password
-    //let hashPassword = await hashPassword(req.body.password);
+    const hash = await bcrypt.hash(req.body.password, saltRounds)
     
     // Create a Customer
     const customer = {
-    firstName: req.body.FirstName,
-    lastName: req.body.LastName,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
     email: req.body.email,
-    password: req.body.password,
+    password: hash,
+    phoneNumber: req.body.phoneNumber,
     active: true
-    //email: req.body.published ? req.body.published : false
     }
 
     // Save Customer in the database
-    customerTable.create(customer)
+    customers.create(customer)
     .then(data => { res.send(data) } )
     .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the customer."}) })
+}
+
+// Create customer address
+exports.createAddress  = async function (req, res, next) {
+  // This method needs: customerID, countryName, provinceName, cityName, postCode, Address, Instructions
+  // Add joi function to validate request!
+
+  // Get countryID with countryName
+  const country = await countries.findOne({ where: { countryDescription: req.body.countryName } })
+  .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while getting the Country."}) })
+
+  // Get provinceID with countryName
+  const province = await provinces.findOne({ where: { provinceDescription: req.body.provinceName } })
+  .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while getting the Province."}) })
+
+  // Get cityID with countryName
+  const city = await cities.findOne({ where: { cityDescription: req.body.cityName } })
+  .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while getting the City."}) })
+
+  // Create address
+  const address = {
+    countryID: country.countryID,
+    provinceID: province.provinceID,
+    cityID: city.cityID,
+    address: req.body.address,
+    postcode: req.body.postcode,
+    instructions: req.body.instructions,
+    active: true
+  }
+
+  // Save Address in the database
+  const createdAddress = await addresses.create(address)
+  .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the Address."}) })
+  
+
+  // Create Customer Address Link
+  const addressCustomerLink = {
+    addressID: createdAddress.addressID,
+    customerID: req.body.customerID,
+  }
+
+  // Save Customer Address Link
+  const createdCustomerAddressLink = await customerAddressLink.create(addressCustomerLink)
+  .then(data => { res.send(data) } )
+  .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the Customer Address Link."}) })
+}
+
+// Create customer choice
+exports.createChoice = async function (req, res, next) {
+  // This method needs: customerID, choiceName
+  // Add joi function to validate request!
+
+  // Get choiceID with choiceDescription
+  const choice = await choices.findOne({ where: { choiceDescription: req.body.choiceName } })
+
+  // Create choice customer Link
+  const customerChoiceLink = {
+    choiceID: choice.choiceID,
+    customerID: req.body.customerID,
+  }
+
+  // Save Customer in the database
+  customerChoices.create(customerChoiceLink)
+  .then(data => { res.send(data) } )
+  .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while creating the choice."}) })
 }
 
 ////////////////////
 // GET Methods /////
 ////////////////////
 
+// Login
+exports.login = async function (req, res, next) {
+  const id = req.params.id;
 
-// Retrieve all Customers from the database.
-exports.findAll = (req, res) => {
-    const title = req.query.title
-    var condition = customerID ? { customerID: { [Op.like]: `%${customerID}%` } } : null
-  
-    customerTable.findAll({ where: condition })
-      .then(data => { res.send(data) })
-      .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while retrieving customers." })
-    })
+  const customer = await customers.findByPk(id)
+  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) })
+
+  const result = await bcrypt.compare(req.body.password, customer.password) 
+  .catch(err => { res.status(500).send({ message: err.message }) })
+
+  if (customer.userName == req.body.userName && result) {
+    res.send('Login Sucessfull!')
+  }
+  else {
+    res.send("Password or Username Incorrect")
+  }
 }
+
 
 // Find a single Customer with an id
-exports.findOne = (req, res) => {
-    const id = req.params.id;
+exports.findCustomer = async function (req, res, next) {
+  const id = req.params.id;
 
-    customerTable.findByPk(id)
-      .then(data => { res.send(data) })
-      .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) })
-}
-
-// Find all Active Customers
-exports.findAllCustomers = (req, res) => {
-    customerTable.findAll({ where: { active: true } })
+  customers.findByPk(id)
     .then(data => { res.send(data) })
-    .catch(err => { res.status(500).send({ message: err.message || "Some error occurred while retrieving customers." })
-    })
+    .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) })
 }
+
+// Find a single customer's choices
+exports.findCustomerChoices = async function (req, res, next) {
+  const id = req.params.id;
+
+  const choices = await sequelize.query(  
+  `SELECT choiceDescription, category 
+  FROM choices
+  LEFT JOIN customerChoicesLinks
+  ON choices.choiceID = customerChoicesLinks.choiceID
+  WHERE customerID = ${id}`, { type: QueryTypes.SELECT })
+  .then(data => { res.send(data) })
+  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) })
+}
+
+// Find a single customer's address
+exports.findCustomerAddress = async function (req, res, next) {
+  const id = req.params.id;
+
+  const choices = await sequelize.query(  
+  `SELECT countryDescription, provinceDescription, cityDescription, address, postcode, instructions 
+  FROM addresses
+  LEFT JOIN customerAddressLinks
+  ON customerAddressLinks.addressID = addresses.addressID
+  LEFT JOIN countries
+  ON countries.countryID = addresses.countryID
+  LEFT JOIN provinces
+  ON provinces.provinceID = addresses.provinceID
+  LEFT JOIN cities
+  ON cities.cityID = addresses.cityID
+  WHERE customerID = ${id} AND addresses.is_active=true`, { type: QueryTypes.SELECT })
+  .then(data => { res.send(data) })
+  .catch(err => { res.status(500).send({ message: err.message || "Error retrieving Customer with id=" + id }) })
+}
+
 
 ////////////////////
 // PUT Methods //
@@ -125,16 +233,3 @@ exports.delete = (req, res) => {
         });
       });
 };
-
-
-hashPassword = (password) => {
-  bcrypt.hash(password, saltRounds, (err, hash) => { 
-    try {
-      console.log(hash);
-      return hash;
-    }
-    catch(err) {
-      console.log(err);
-    }
-  })
-}

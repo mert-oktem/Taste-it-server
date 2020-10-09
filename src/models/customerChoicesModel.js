@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
-module.exports = sequelize.define("customerChoicesModel", {
+module.exports = sequelize.define("customerChoicesLinks", {
       customerChoiceLinkID: {
         type: Sequelize.INTEGER,
         primaryKey: true,
