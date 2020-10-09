@@ -30,6 +30,13 @@ module.exports = {
           key: 'customerID'
        }
       },
+      isActive: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: true,
+        comment: null,
+        field: "isActive"
+      },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE
     })

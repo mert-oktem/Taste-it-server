@@ -44,12 +44,12 @@ module.exports = {
         comment: null,
         field: "pictureURI",
       },
-      is_active: {
+      isActive: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: true,
         comment: null,
-        field: "is_active",
+        field: "isActive",
       },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE

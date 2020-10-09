@@ -10,7 +10,7 @@ module.exports = sequelize.define("restaurants", {
     },
     restaurantName: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
       comment: null,
       field: "firstName"
     },
@@ -39,11 +39,11 @@ module.exports = sequelize.define("restaurants", {
       comment: null,
       field: "phoneNumber"
     },
-    active: {
+    isActive: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
       defaultValue: true,
       comment: null,
-      field: "is_active"
+      field: "isActive"
     },
 });

@@ -38,11 +38,11 @@ module.exports = sequelize.define("menus", {
       comment: null,
       field: "pictureURI"
     },
-    active: {
+    isActive: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
       defaultValue: true,
       comment: null,
-      field: "is_active"
+      field: "isActive"
     },
 });
