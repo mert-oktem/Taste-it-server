@@ -39,6 +39,7 @@ module.exports = {
       forHowManyPeople: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        defaultValue: 1,
         comment: null,
         field: "forHowManyPeople",
       },

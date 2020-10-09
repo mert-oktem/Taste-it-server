@@ -60,7 +60,7 @@ module.exports = {
         field: "instructions"
       },
       isActive: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: true,
         comment: null,
