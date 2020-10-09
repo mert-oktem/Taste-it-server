@@ -1,8 +1,8 @@
 module.exports = {
-    HOST: "https://mert.wmdd.ca",
-    USER: "cerberus",
-    PASSWORD: "ag7hE67%",
-    DB: "taste-it-test",
+    HOST: "3.86.81.185",
+    USER: "root",
+    PASSWORD: "Tasteit123%",
+    DB: "tasteItDB",
     dialect: "mysql",
     pool: {
       max: 5,
