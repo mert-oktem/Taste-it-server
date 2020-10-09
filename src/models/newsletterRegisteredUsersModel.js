@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
-module.exports = sequelize.define("newsRegisteredUsers", {
+module.exports = sequelize.define("newsletterRegisteredUsers", {
       newsRegisteredUserID: {
         type: Sequelize.INTEGER,
         primaryKey: true,

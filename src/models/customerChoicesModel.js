@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
-module.exports = sequelize.define("customerChoicesModel", {
+module.exports = sequelize.define("customerChoicesLinks", {
       customerChoiceLinkID: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -19,5 +19,12 @@ module.exports = sequelize.define("customerChoicesModel", {
         allowNull: false,
         comment: null,
         field: "customerID"
+      },
+      isActive: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: true,
+        comment: null,
+        field: "isActive"
       }
 });

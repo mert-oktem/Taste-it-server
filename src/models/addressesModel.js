@@ -27,7 +27,7 @@ module.exports = sequelize.define("addresses", {
         field: "cityID"
       },
       address: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
         comment: null,
         field: "address"
@@ -45,11 +45,11 @@ module.exports = sequelize.define("addresses", {
         comment: null,
         field: "instructions"
       },
-      active: {
+      isActive: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: true,
         comment: null,
-        field: "is_active"
+        field: "isActive"
       }
 });
