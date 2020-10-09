@@ -28,7 +28,8 @@ module.exports = sequelize.define("orders", {
     },
     forHowManyPeople: {
       type: Sequelize.INTEGER,
-      allowNull: true,
+      allowNull: false,
+      defaultValue: 1,
       comment: null,
       field: "forHowManyPeople"
     },

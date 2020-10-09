@@ -22,7 +22,7 @@ module.exports = sequelize.define("inquiries", {
     },
     body: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
       comment: null,
       field: "body"
     },
