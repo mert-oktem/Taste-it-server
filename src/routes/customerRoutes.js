@@ -1,34 +1,49 @@
 module.exports = app => {
     const customer = require("../controllers/customerController.js");
-  
+    const auth = require("../middleware/auth.js")
     var router = require("express").Router();
+
+    ////////////////////
+    // POST Methods ////
+    ////////////////////
   
     // Create a new Customer
     router.post("/", customer.createCustomer);
 
     // Create a new address for Customer
-    router.post("/address", customer.createAddress);
+    router.post("/address", auth.verifyToken, customer.createAddress);
 
     // Create a new choice for Customer
-    router.post("/choice", customer.createChoice);
+    router.post("/choice", auth.verifyToken, customer.createChoice);
+
+    ////////////////////
+    // Get Methods /////
+    ////////////////////
+
+    // Login a customer
+    router.get("/login", auth.customerLogin);
   
-    // Retrieve a customer with id
-    router.get("/:id", customer.findCustomer);
+    // Retrieve a customer
+    router.get("/", auth.verifyToken, customer.findCustomer);
 
     // Retrieve a customers choices with id
-    router.get("/choices/:id", customer.findCustomerChoices);
+    router.get("/choices/", auth.verifyToken, customer.findCustomerChoices);
 
     // Retrieve a customer's address with id
-    router.get("/address/:id", customer.findCustomerAddress);
+    router.get("/address/", auth.verifyToken, customer.findCustomerAddress);
+
+    ////////////////////
+    // Put Methods /////
+    ////////////////////
   
     // Update a customer with id
-    router.put("/:id", customer.updateCustomer);
+    router.put("/", auth.verifyToken, customer.updateCustomer);
 
     // Update a customer's address with id
-    router.put("/address/:id", customer.updateCustomerAddress);
+    router.put("/address/", auth.verifyToken, customer.updateCustomerAddress);
 
     // Update a customer's choices with id
-    router.put("/deactivechoices/:id", customer.deactivateCustomerChoice);
+    router.put("/deactivechoices/", auth.verifyToken, customer.deactivateCustomerChoice);
   
     app.use('/api/customers', router);
 };
