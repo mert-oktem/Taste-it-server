@@ -112,7 +112,7 @@ exports.createChoice = async function (req, res, next) {
   // Create choice customer-choice-Link
   const customerChoiceLink = {
     choiceID: choice.choiceID,
-    customerID: req.body.customerID,
+    customerID: customerID,
   }
 
   // Save customer-choice-link in the database
@@ -150,7 +150,7 @@ exports.findCustomerChoices = async function (req, res, next) {
   FROM choices
   LEFT JOIN customerChoicesLinks
   ON choices.choiceID = customerChoicesLinks.choiceID
-  WHERE customerID = ${id} and isActive=true`, { type: QueryTypes.SELECT })
+  WHERE customerID = ${customerID} and isActive=true`, { type: QueryTypes.SELECT })
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
@@ -173,7 +173,7 @@ exports.findCustomerAddress = async function (req, res, next) {
   ON provinces.provinceID = addresses.provinceID
   LEFT JOIN cities
   ON cities.cityID = addresses.cityID
-  WHERE customerID = ${id} AND addresses.isActive=true`, { type: QueryTypes.SELECT })
+  WHERE customerID = ${customerID} AND addresses.isActive=true`, { type: QueryTypes.SELECT })
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
@@ -190,7 +190,7 @@ exports.updateCustomer = async function (req, res, next) {
   const customerID = decodedJwt.payload.customer.customerID
 
   // Find customer using customerID
-  const customer = await customers.findByPk(id)
+  const customer = await customers.findByPk(customerID)
   .catch(err => { res.status(500).send({ message: err.message } )})
 
   // Check if the req.body contains options, if not use the same record in the db
@@ -218,7 +218,7 @@ exports.updateCustomerAddress = async function (req, res, next) {
   const customerID = decodedJwt.payload.customer.customerID
 
   // Get customer-address-link using customerID
-  const link = await customerAddressLink.findByPk(id)
+  const link = await customerAddressLink.findByPk(customerID)
   .catch(err => { res.status(500).send({ message: err.message } )})
   // Get customer's addressID using customer-address-link
   const custAddress = await addresses.findOne({ where: {addressID: link.addressID} })
@@ -257,7 +257,7 @@ exports.deactivateCustomerChoice = async function (req, res, next) {
     LEFT JOIN choices
     ON choices.choiceID = customerChoicesLinks.choiceID
     SET customerChoicesLinks.isActive = false
-    WHERE customerChoicesLinks.customerID = ${id} AND customerChoicesLinks.isActive = true AND choices.category = "${req.body.category}"`, { type: QueryTypes.PUT })
+    WHERE customerChoicesLinks.customerID = ${customerID} AND customerChoicesLinks.isActive = true AND choices.category = "${req.body.category}"`, { type: QueryTypes.PUT })
     .then(data => { res.send(data) })
     .catch(err => { res.status(500).send({ message: err.message }) 
   })

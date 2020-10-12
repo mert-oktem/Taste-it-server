@@ -39,7 +39,7 @@ app.get('/', (req, res) =>
 
 /******************** Routes ***********************/
 require("./src/routes/customerRoutes")(app);
-require("./src/routes/orderRoutes")(app);
+//require("./src/routes/orderRoutes")(app);
 //require("./src/routes/menuRoutes")(app);
 //require("./src/routes/restaurantRoutes")(app);
 

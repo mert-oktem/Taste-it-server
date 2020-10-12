@@ -23,7 +23,7 @@ module.exports = app => {
     // Login a customer
     router.get("/login", auth.customerLogin);
   
-    // Retrieve a customer
+    // Retrieve a customer's details
     router.get("/", auth.verifyToken, customer.findCustomer);
 
     // Retrieve a customers choices with id
