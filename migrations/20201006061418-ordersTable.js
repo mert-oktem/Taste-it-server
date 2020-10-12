@@ -43,6 +43,18 @@ module.exports = {
         comment: null,
         field: "forHowManyPeople",
       },
+      review: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        comment: null,
+        field: "review"
+      },
+      rate: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        comment: null,
+        field: "rate"
+      },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE
     })

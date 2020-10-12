@@ -4,6 +4,9 @@ const { QueryTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 const saltRounds = 10; // Salt Rounds for bcrypt (Password hashing)
 
+// JWT
+const jwt = require('jsonwebtoken');
+
 // Importing necessary tables
 const customers = require("../models/customersModel")
 
@@ -24,6 +27,8 @@ const customerChoices = require("../models/customerChoicesModel");
 exports.createCustomer = async function (req, res, next) {
     // This method needs: firstName, lastName, email, password, phoneNumber
     // Add joi function to validate request!
+    const emailcheck = await customers.findOne({where: {email: req.body.email}})
+    if (emailcheck != undefined) { return res.send("Email already registered.")}
 
     // Hash Password
     const hash = await bcrypt.hash(req.body.password, saltRounds)
@@ -49,15 +54,15 @@ exports.createAddress  = async function (req, res, next) {
   // This method needs: customerID, countryName, provinceName, cityName, postCode, Address, Instructions
   // Add joi function to validate request!
 
-  // Get countryID with countryName
+  // Get countryID using countryName
   const country = await countries.findOne({ where: { countryDescription: req.body.countryName } })
   .catch(err => { res.status(500).send({ message: err.message }) })
 
-  // Get provinceID with countryName
+  // Get provinceID using countryName
   const province = await provinces.findOne({ where: { provinceDescription: req.body.provinceName } })
   .catch(err => { res.status(500).send({ message: err.message }) })
 
-  // Get cityID with countryName
+  // Get cityID using countryName
   const city = await cities.findOne({ where: { cityDescription: req.body.cityName } })
   .catch(err => { res.status(500).send({ message: err.message }) })
 
@@ -76,11 +81,14 @@ exports.createAddress  = async function (req, res, next) {
   const createdAddress = await addresses.create(address)
   .catch(err => { res.status(500).send({ message: err.message }) })
   
+  // Find customer ID with token
+  const decodedJwt = await jwt.decode(req.token, { complete: true });
+  const customerID = decodedJwt.payload.customer.customerID
 
   // Create Customer Address Link
   const addressCustomerLink = {
     addressID: createdAddress.addressID,
-    customerID: req.body.customerID,
+    customerID: customerID,
   }
 
   // Save Customer Address Link
@@ -91,19 +99,23 @@ exports.createAddress  = async function (req, res, next) {
 
 // Create customer choice
 exports.createChoice = async function (req, res, next) {
-  // This method needs: customerID, choiceName
+  // This method needs: token, choiceName
   // Add joi function to validate request!
 
-  // Get choiceID with choiceDescription
+  // Find customer ID with token
+  const decodedJwt = await jwt.decode(req.token, { complete: true });
+  const customerID = decodedJwt.payload.customer.customerID
+
+  // Get choiceID using choiceDescription
   const choice = await choices.findOne({ where: { choiceDescription: req.body.choiceName } })
 
-  // Create choice customer Link
+  // Create choice customer-choice-Link
   const customerChoiceLink = {
     choiceID: choice.choiceID,
-    customerID: req.body.customerID,
+    customerID: customerID,
   }
 
-  // Save Customer in the database
+  // Save customer-choice-link in the database
   customerChoices.create(customerChoiceLink)
   .then(data => { res.send(data) } )
   .catch(err => { res.status(500).send({ message: err.message }) })
@@ -113,52 +125,42 @@ exports.createChoice = async function (req, res, next) {
 // GET Methods /////
 ////////////////////
 
-// Login
-exports.login = async function (req, res, next) {
-  // This method needs: userName, password
-  // Add joi function to validate request!
-
-  const customer = await customers.findOne( { where: { userName: req.body.userName } } )
-  .catch(err => { res.status(500).send({ message: err.message }) })
-
-  const passwordResult = await bcrypt.compare(req.body.password, customer.password) 
-  .catch(err => { res.status(500).send({ message: err.message }) })
-
-  if (passwordResult) {
-    res.send('Login Sucessfull!')
-  }
-  else {
-    res.send("Password or Username Incorrect")
-  }
-}
-
-
 // Find a single Customer with an id
 exports.findCustomer = async function (req, res, next) {
-  const id = req.params.id;
+  // This method needs: token
+  // Find customer ID with token
+  const decodedJwt = await jwt.decode(req.token, { complete: true });
+  const customerID = decodedJwt.payload.customer.customerID
+  
 
-  customers.findByPk(id)
+  customers.findByPk(customerID)
     .then(data => { res.send(data) })
     .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
 // Find a single customer's choices
 exports.findCustomerChoices = async function (req, res, next) {
-  const id = req.params.id;
+  // This method needs: token
+  // Find customer ID with token
+  const decodedJwt = await jwt.decode(req.token, { complete: true });
+  const customerID = decodedJwt.payload.customer.customerID
 
   const choices = await sequelize.query(  
   `SELECT choiceDescription, category 
   FROM choices
   LEFT JOIN customerChoicesLinks
   ON choices.choiceID = customerChoicesLinks.choiceID
-  WHERE customerID = ${id} and isActive=true`, { type: QueryTypes.SELECT })
+  WHERE customerID = ${customerID} and isActive=true`, { type: QueryTypes.SELECT })
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
 // Find a single customer's address
 exports.findCustomerAddress = async function (req, res, next) {
-  const id = req.params.id;
+  // This method needs: token
+  // Find customer ID with token
+  const decodedJwt = await jwt.decode(req.token, { complete: true });
+  const customerID = decodedJwt.payload.customer.customerID
 
   const choices = await sequelize.query(  
   `SELECT countryDescription, provinceDescription, cityDescription, address, postcode, instructions 
@@ -171,7 +173,7 @@ exports.findCustomerAddress = async function (req, res, next) {
   ON provinces.provinceID = addresses.provinceID
   LEFT JOIN cities
   ON cities.cityID = addresses.cityID
-  WHERE customerID = ${id} AND addresses.isActive=true`, { type: QueryTypes.SELECT })
+  WHERE customerID = ${customerID} AND addresses.isActive=true`, { type: QueryTypes.SELECT })
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
@@ -183,39 +185,49 @@ exports.findCustomerAddress = async function (req, res, next) {
 
 // Update a Customer by the id in the request
 exports.updateCustomer = async function (req, res, next) {
-    const id = req.params.id;
+  // Find customer ID with token
+  const decodedJwt = await jwt.decode(req.token, { complete: true });
+  const customerID = decodedJwt.payload.customer.customerID
 
-    const customer = await customers.findByPk(id)
-    .catch(err => { res.status(500).send({ message: err.message } )})
+  // Find customer using customerID
+  const customer = await customers.findByPk(customerID)
+  .catch(err => { res.status(500).send({ message: err.message } )})
 
-    const firstName = req.body.firstName ? req.body.firstName : customer.firstName
-    const lastName = req.body.lastName ? req.body.lastName : customer.lastName
-    const password= req.body.password ? await bcrypt.hash(req.body.password, saltRounds) : customer.password
-    const phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : customer.phoneNumber
+  // Check if the req.body contains options, if not use the same record in the db
+  const firstName = req.body.firstName ? req.body.firstName : customer.firstName
+  const lastName = req.body.lastName ? req.body.lastName : customer.lastName
+  const password= req.body.password ? await bcrypt.hash(req.body.password, saltRounds) : customer.password
+  const phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : customer.phoneNumber
 
-    await customer.update({
-      firstName: firstName,
-      lastName: lastName,
-      password: password,
-      phoneNumber: phoneNumber
-    })
-    .then(data => { res.send(data) })
-    .catch(err => { res.status(500).send({ message: err.message } )})
+  await customer.update({
+    firstName: firstName,
+    lastName: lastName,
+    password: password,
+    phoneNumber: phoneNumber
+  })
+  .then(data => { res.send(data) })
+  .catch(err => { res.status(500).send({ message: err.message } )})
 }
 
 // Update a Customer's Address by the id in the request
 exports.updateCustomerAddress = async function (req, res, next) {
-  const id = req.params.id;
+  // This method needs: token, countryDescription, provinceDescription, cityDescription, address, postcode, instructions
+  // If you don't send any of the options above it keeps the old record for that column!
+  // Find customer ID with token
+  const decodedJwt = await jwt.decode(req.token, { complete: true });
+  const customerID = decodedJwt.payload.customer.customerID
 
-  const link = await customerAddressLink.findByPk(id)
+  // Get customer-address-link using customerID
+  const link = await customerAddressLink.findByPk(customerID)
   .catch(err => { res.status(500).send({ message: err.message } )})
+  // Get customer's addressID using customer-address-link
   const custAddress = await addresses.findOne({ where: {addressID: link.addressID} })
   .catch(err => { res.status(500).send({ message: err.message } )})
 
+  // Check if the req.body contains options, if not use the same record in the db
   const countryID = req.body.countryID ? await countries.findByPk(req.body.countryDescription).countryID : custAddress.countryID
   const provinceID = req.body.provinceID ? await provinces.findByPk(req.body.provinceDescription).provinceID : custAddress.provinceID
   const cityID = req.body.cityID ? await cities.findByPk(req.body.cityDescription).cityID : custAddress.cityID
-
   const address = req.body.address ? req.body.address : custAddress.address
   const postcode = req.body.postcode ? req.body.postcode : custAddress.postcode
   const instructions = req.body.instructions ? req.body.instructions : custAddress.instructions
@@ -235,15 +247,17 @@ exports.updateCustomerAddress = async function (req, res, next) {
 
 // Deactive a customer's choices by the id and choiceCategory in the request
 exports.deactivateCustomerChoice = async function (req, res, next) {
-  // This method needs: customerID, choiceCategory
-  const id = req.params.id
+  // This method needs: token, choiceCategory
+  // Find customer ID with token
+  const decodedJwt = await jwt.decode(req.token, { complete: true });
+  const customerID = decodedJwt.payload.customer.customerID
 
   const choices = await sequelize.query(  
     `UPDATE customerChoicesLinks
     LEFT JOIN choices
     ON choices.choiceID = customerChoicesLinks.choiceID
     SET customerChoicesLinks.isActive = false
-    WHERE customerChoicesLinks.customerID = ${id} AND customerChoicesLinks.isActive = true AND choices.category = "${req.body.category}"`, { type: QueryTypes.PUT })
+    WHERE customerChoicesLinks.customerID = ${customerID} AND customerChoicesLinks.isActive = true AND choices.category = "${req.body.category}"`, { type: QueryTypes.PUT })
     .then(data => { res.send(data) })
     .catch(err => { res.status(500).send({ message: err.message }) 
   })
