@@ -41,7 +41,7 @@ app.get('/', (req, res) =>
 require("./src/routes/customerRoutes")(app);
 //require("./src/routes/orderRoutes")(app);
 //require("./src/routes/menuRoutes")(app);
-//require("./src/routes/restaurantRoutes")(app);
+require("./src/routes/restaurantRoutes")(app);
 
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 

@@ -14,13 +14,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
         comment: null,
-        field: "firstName"
+        field: "restaurantName"
       },
       restaurantDescripton: {
         type: Sequelize.STRING,
         allowNull: true,
         comment: null,
-        field: "lastName"
+        field: "restaurantDescripton"
       },
       email: {
         type: Sequelize.STRING,
