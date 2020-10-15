@@ -8,6 +8,7 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
         comment: null,
+        // Not inquiries => inquiryID
         field: "inquiries"
       },
       customerID: {

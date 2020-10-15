@@ -6,13 +6,13 @@ module.exports = sequelize.define("inquiries", {
       primaryKey: true,
       autoIncrement: true,
       comment: null,
-      field: "inquiryID"
+      field: "inquiries"
     },
     customerID: {
       type: Sequelize.INTEGER,
       allowNull: false,
       comment: null,
-      field: "orderID"
+      field: "customerID"
     },
     subject: {
       type: Sequelize.STRING,
