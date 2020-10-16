@@ -1,0 +1,15 @@
+module.exports = app => {
+  const choices = require("../controllers/choiceController.js");
+  var router = require("express").Router();
+
+  // Create a new choice
+
+
+  // Retrieve choices from a choice category
+  router.get("/:category", choices.findChoices);
+
+  // Update a choice
+
+
+  app.use('/api/choices', router);
+};

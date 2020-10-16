@@ -30,13 +30,13 @@ exports.createNewsletterRegisteredUser = async function (req, res, next) {
 // GET Methods /////
 ////////////////////
 
-// Find a single newsletterRegisteredUser with an id
+// Find a single newsletterRegisteredUser
 exports.findNewsletterRegisteredUser = async function (req, res, next) {
   // This method needs: email
   const emailcheck = await newsletterRegisteredUsers.findOne({where: {email: req.body.email}})
   if (emailcheck == undefined) { return res.send("Email is not found.")}
   
-  newsletterRegisteredUsers.findByPk(email)
+  newsletterRegisteredUsers.findOne({where: {email: req.body.email}})
     .then(data => { res.send(data) })
     .catch(err => { res.status(500).send({ message: err.message }) })
 }

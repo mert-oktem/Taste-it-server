@@ -3,7 +3,7 @@ const { QueryTypes } = require('sequelize');
 // Importing necessary tables
 const choices = require("../models/choicesModel")
 const menus = require("../models/menusModel")
-const menuChoices = require("../models/menuChoicesLinkModel")
+const menuChoiceLinks = require("../models/menuChoicesLinkModel")
 
 
 
@@ -11,7 +11,7 @@ const menuChoices = require("../models/menuChoicesLinkModel")
 // POST Methods ////
 ////////////////////
 
-// Create and save a new Customer
+// Create and save a new Menu
 exports.createMenu = async function (req, res, next) {
     // This method needs: restaurantID, menuName, menuDesc, price, pictureURI
     // Add joi function to validate request.
@@ -20,9 +20,9 @@ exports.createMenu = async function (req, res, next) {
     const menu = {
     restaurantID: req.body.restaurantID,
     menuName: req.body.menuName,
-    menuDesc: req.body.menuDesc,
-    price: price,
-    pictureURI: req.body.phoneNumber,
+    menuDescription: req.body.menuDesc,
+    price: req.body.price,
+    pictureURI: req.body.pictureURI,
     active: true
     }
 
@@ -38,16 +38,19 @@ exports.addMenuChoice = async function (req, res, next) {
     // Add joi function to validate request.
 
     // Get choiceID using choiceDescription
-    const choice = choices.findOne({where: {choiceDescription: req.body.choiceDescription}})
+    const choice = await choices.findOne({where: {choiceDescription: req.body.choiceDescription}})
+    if (choice === null) {
+        console.log('Not found!');
+    }
     
     // Create link
     const menuChoiceLink = {
-        restaurantID: req.body.restaurantID,
+        menuID: req.body.menuID,
         choiceID: choice.choiceID
     }
 
     // Save link in the database
-    menuChoiceLink.create(menuChoiceLink)
+    menuChoiceLinks.create(menuChoiceLink)
     .then(data => { res.send(data) } )
     .catch(err => { res.status(500).send({ message: err.message }) })
 }
@@ -56,14 +59,14 @@ exports.addMenuChoice = async function (req, res, next) {
 // GET Methods /////
 ////////////////////
 
-// Find Menu
+// Find a Menu
 exports.findMenu = async function (req, res, next) {
   // This method needs: menuID
   // Add joi function to validate request!
 
-  const id = req.params.id
+  const id = req.params.menuID
 
-  const choices = await sequelize.query(  
+  await sequelize.query(  
     `SELECT *
     FROM menus
     LEFT JOIN menuChoicesLinks
@@ -75,7 +78,7 @@ exports.findMenu = async function (req, res, next) {
     .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
-// Find Menu
+// Find All Menus from a restaurant
 exports.findAllMenus = async function (req, res, next) {
     // This method needs: restaurantID
     // Add joi function to validate request!
