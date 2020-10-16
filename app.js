@@ -40,8 +40,12 @@ app.get('/', (req, res) =>
 /******************** Routes ***********************/
 require("./src/routes/customerRoutes")(app);
 //require("./src/routes/orderRoutes")(app);
-//require("./src/routes/menuRoutes")(app);
-//require("./src/routes/restaurantRoutes")(app);
+require("./src/routes/menuRoutes")(app);
+require("./src/routes/restaurantRoutes")(app);
+require("./src/routes/inquiryRoutes")(app);
+require("./src/routes/newsletterRegisteredUserRoutes")(app);
+require("./src/routes/choiceRoutes")(app);
+
 
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 

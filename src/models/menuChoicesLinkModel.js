@@ -6,7 +6,7 @@ module.exports = sequelize.define("menuChoicesLinks", {
         primaryKey: true,
         autoIncrement: true,
         comment: null,
-        field: "menuChoicesLinkID"
+        field: "menuChoiceLinkID"
       },
       choiceID: {
         type: Sequelize.INTEGER,
@@ -18,6 +18,6 @@ module.exports = sequelize.define("menuChoicesLinks", {
         type: Sequelize.INTEGER,
         allowNull: false,
         comment: null,
-        field: "menuID"
+        field: "restaurantID"
       }
 });

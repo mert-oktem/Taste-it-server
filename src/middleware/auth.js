@@ -44,3 +44,28 @@ exports.customerLogin = async function (req, res, next) {
         res.send("Password incorrect!")
     }
 }
+
+exports.restaurantLogin = async function (req, res, next) {
+    // Get restaurant using username
+    const restaurant = await restaurants.findOne( { where: { email: req.body.email } } )
+    .catch(err => { res.status(500).send({ message: err.message }) })
+
+    if (restaurant == null) {return res.status(500).send ({ message: "Cannot find restaurant"})}
+
+
+    // Get restaurant password hash comparison
+    const passwordResult = await bcrypt.compare(req.body.password, restaurant.password) 
+    .catch(err => { res.status(500).send({ message: err.message }) })
+
+
+    // Return token
+    if (passwordResult) {
+        jwt.sign( {restaurant}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
+            res.json( { token } ) 
+        })
+        .catch(err => { res.status(500).send({ message: err.message }) })
+    }
+    else {
+        res.send("Password incorrect!")
+    }
+}
