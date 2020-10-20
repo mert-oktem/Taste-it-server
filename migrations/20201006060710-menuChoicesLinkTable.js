@@ -20,14 +20,14 @@ module.exports = {
           key: 'choiceID'
        }
       },
-      restaurantID: {
+      menuID: {
         type: Sequelize.INTEGER,
         allowNull: false,
         comment: null,
-        field: "restaurantID",
+        field: "menuID",
         references: {
-          model: 'restaurants',
-          key: 'restaurantID'
+          model: 'menus',
+          key: 'menuID'
        }
       },
       createdAt: Sequelize.DATE,

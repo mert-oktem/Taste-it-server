@@ -12,11 +12,14 @@ module.exports = app => {
     // Retrieve a menu active
     router.get("/:menuID", menus.findMenu);
 
-    // // Retrieve a restaurant's all menus
-    // router.get("/:restaurantID", menus.findAllMenus);
+    // Retrieve a restaurant's all menus
+    router.get("/allMenu/:restaurantID", menus.findAllMenus);
   
-    // // Update a menu with id
-    // router.put("/:menuID", menus.updateMenu);
+    // Update a menu with id
+    router.put("/:menuID", menus.updateMenu);
   
+    // Update choices with id
+    // router.put("/deactivechoices/:menuID", menus.updateChoices);
+
     app.use('/api/menus', router);
 };

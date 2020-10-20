@@ -8,18 +8,25 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
         comment: null,
-        // Not inquiries => inquiryID
-        field: "inquiries"
+        field: "inquiryID"
       },
-      customerID: {
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        comment: null,
+        field: "name"
+      },
+      phoneNumber: {
         type: Sequelize.INTEGER,
         allowNull: false,
         comment: null,
-        field: "customerID",
-        references: {
-          model: 'customers',
-          key: 'customerID'
-       }
+        field: "phoneNumber"
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        comment: null,
+        field: "email"
       },
       subject: {
         type: Sequelize.STRING,
