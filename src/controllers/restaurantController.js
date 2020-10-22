@@ -90,7 +90,7 @@ exports.createAddress  = async function (req, res, next) {
   }
 
   // Save Restaurant Address Link
-  const createdRestaurantAddressLink = await restaurantAddressLink.create(addressRestaurantLink)
+  await restaurantAddressLink.create(addressRestaurantLink)
   .then(data => { res.send(data) } )
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
@@ -121,7 +121,7 @@ exports.findRestaurantAddress = async function (req, res, next) {
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const restaurantID = decodedJwt.payload.restaurant.restaurantID
 
-  const choices = await sequelize.query(  
+  await sequelize.query(  
   `SELECT countryDescription, provinceDescription, cityDescription, address, postcode, instructions 
   FROM addresses
   LEFT JOIN restaurantAddressLinks

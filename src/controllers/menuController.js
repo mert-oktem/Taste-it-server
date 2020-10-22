@@ -1,4 +1,8 @@
 const { QueryTypes } = require('sequelize');
+const fs = require("fs");
+const path = require("path");
+
+
 
 // Importing necessary tables
 const choices = require("../models/choicesModel")
@@ -15,14 +19,16 @@ const menuChoiceLinks = require("../models/menuChoicesLinkModel")
 exports.createMenu = async function (req, res, next) {
     // This method needs: restaurantID, menuName, menuDesc, price, pictureURI
     // Add joi function to validate request.
+
+    const pictureURI = req.file ? req.file.path : null
     
     // Create menu
     const menu = {
     restaurantID: req.body.restaurantID,
     menuName: req.body.menuName,
-    menuDescription: req.body.menuDesc,
+    menuDescription: req.body.menuDescription,
     price: req.body.price,
-    pictureURI: req.body.pictureURI,
+    pictureURI: pictureURI,
     active: true
     }
 
@@ -61,37 +67,70 @@ exports.addMenuChoice = async function (req, res, next) {
 
 // Find a Menu
 exports.findMenu = async function (req, res, next) {
+    // This method needs: menuID
+    // Add joi function to validate request!
+  
+    const id = req.params.menuID
+  
+    await sequelize.query(
+      `SELECT *
+      FROM menus 
+      WHERE menuID = ${id}`, { type: QueryTypes.SELECT })
+      .then(data => { res.send(data) })
+      .catch(err => { res.status(500).send({ message: err.message }) })
+}
+
+// Find a Menu's Image
+exports.findMenuImage = async function (req, res, next) {
   // This method needs: menuID
   // Add joi function to validate request!
 
   const id = req.params.menuID
 
-  await sequelize.query(  
-    `SELECT *
-    FROM menus
-    LEFT JOIN menuChoicesLinks
-    ON menus.menuID = menuChoicesLinks.menuID
-    LEFT JOIN choices
-    ON choices.choiceID = menuChoicesLinks.choiceID
-    WHERE menuID = ${id}`, { type: QueryTypes.SELECT })
-    .then(data => { res.send(data) })
+  await sequelize.query(
+    `SELECT m.pictureURI
+    FROM menus AS m
+    LEFT JOIN menuChoicesLinks as mcl
+    ON m.menuID = mcl.menuID
+    WHERE m.menuID = ${id}`, { type: QueryTypes.SELECT })
+    .then(data => { 
+        let image = data[0].pictureURI
+        res.sendFile(path.join(`${__basedir}/${image}`))
+        })
     .catch(err => { res.status(500).send({ message: err.message }) })
+}
+
+// Find a Menu's Image
+exports.findMenuChoices = async function (req, res, next) {
+    // This method needs: menuID
+    // Add joi function to validate request!
+  
+    const id = req.params.menuID
+  
+    await sequelize.query(
+      `SELECT *
+      FROM choices
+      LEFT JOIN menuChoicesLinks
+      ON menuChoicesLinks.choiceID = choices.choiceID
+      WHERE menuID = ${id}`, { type: QueryTypes.SELECT })
+      .then(data => { res.send(data) })
+      .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
 // Find All Menus from a restaurant
 exports.findAllMenus = async function (req, res, next) {
     // This method needs: restaurantID
     // Add joi function to validate request!
-    const id = req.params.id
+    const id = req.params.restaurantID
   
-    const choices = await sequelize.query(  
+    await sequelize.query(  
         `SELECT *
         FROM menus
         LEFT JOIN menuChoicesLinks
         ON menus.menuID = menuChoicesLinks.menuID
         LEFT JOIN choices
-        ON choices.choiceID = menuChoicesLinks.choiceID
-        WHERE restaurantID = ${id}`, { type: QueryTypes.SELECT })
+        ON menuChoicesLinks.choiceID = choices.choiceID
+        WHERE menus.restaurantID = ${id}`, { type: QueryTypes.SELECT })
         .then(data => { res.send(data) })
         .catch(err => { res.status(500).send({ message: err.message }) })
   }
@@ -100,26 +139,49 @@ exports.findAllMenus = async function (req, res, next) {
 // PUT Methods //
 ////////////////////
 
-// Update a Customer by the id in the request
+// Update a menu's basic info by the id in the request
 exports.updateMenu = async function (req, res, next) {
     // This method needs: menuID
     // Add joi function to validate request!
-    const id = req.params.id;
+    const id = req.params.menuID;
 
     const menu = await menus.findByPk(id)
     .catch(err => { res.status(500).send({ message: err.message } )})
 
     const menuName = req.body.menuName ? req.body.menuName : menu.menuName
-    const menuDesc = req.body.menuDesc ? req.body.menuDesc : menu.menuDesc
+    const menuDescription = req.body.menuDescription ? req.body.menuDescription : menu.menuDescription
     const price= req.body.price ? req.body.price : menu.price
-    const pictureURI = req.body.pictureURI ? req.body.pictureURI : customer.pictureURI
+    const pictureURI = req.file ? req.file.path : menu.pictureURI
+    const isActive = req.body.isActive ? req.body.isActive : menu.isActive
 
     await menu.update({
       menuName: menuName,
-      menuDesc: menuDesc,
+      menuDescription: menuDescription,
       price: price,
-      pictureURI: pictureURI
+      pictureURI: pictureURI,
+      isActive: isActive,
     })
     .then(data => { res.send(data) })
     .catch(err => { res.status(500).send({ message: err.message } )})
 }
+
+// // Update a menu's choice info by the id in the request
+// exports.updateChoices = async function (req, res, next) {
+//     // This method needs: menuID
+//     // Add joi function to validate request!
+//     const id = req.params.menuID;
+
+//     const menu = await menus.findByPk(id)
+//     .catch(err => { res.status(500).send({ message: err.message } )})
+
+//     await sequelize.query(  
+//         `DELETE menuChoicesLinks
+//         LEFT JOIN choices
+//         ON choices.choiceID = menuChoicesLinks.choiceID
+//         WHERE menuChoicesLinks.menuID = ${id} AND choices.category = "${req.body.category}"`, { type: QueryTypes.DELETE })
+//         .then(data => { res.send(data) })
+//         .catch(err => { res.status(500).send({ message: err.message }) 
+//       })
+// }
+
+

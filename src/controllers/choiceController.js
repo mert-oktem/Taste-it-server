@@ -1,4 +1,5 @@
 const { QueryTypes } = require('sequelize');
+const Sequelize = require('sequelize');
 
 // Importing necessary tables
 const choices = require("../models/choicesModel")
@@ -16,7 +17,6 @@ const choices = require("../models/choicesModel")
 exports.findChoices = async function (req, res, next) {
   // This method needs: category
   const category = req.params.category
-  console.log(category)
 
   choices.findAll({
     where: {
@@ -27,7 +27,14 @@ exports.findChoices = async function (req, res, next) {
     .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
+exports.findCategories = async function (req, res, next) {
+  choices.findAll({
+    attributes: [Sequelize.literal('DISTINCT `category`'), 'category']
+  })
+    .then(data => { res.send(data) })
+    .catch(err => { res.status(500).send({ message: err.message }) })
+}
 
 // ////////////////////
-// PUT Methods //
+// PUT Methods       //
 // ////////////////////

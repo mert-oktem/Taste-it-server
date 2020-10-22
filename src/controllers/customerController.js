@@ -132,7 +132,6 @@ exports.findCustomer = async function (req, res, next) {
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const customerID = decodedJwt.payload.customer.customerID
   
-
   customers.findByPk(customerID)
     .then(data => { res.send(data) })
     .catch(err => { res.status(500).send({ message: err.message }) })
@@ -145,7 +144,7 @@ exports.findCustomerChoices = async function (req, res, next) {
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const customerID = decodedJwt.payload.customer.customerID
 
-  const choices = await sequelize.query(  
+  await sequelize.query(  
   `SELECT choiceDescription, category 
   FROM choices
   LEFT JOIN customerChoicesLinks
@@ -161,8 +160,8 @@ exports.findCustomerAddress = async function (req, res, next) {
   // Find customer ID with token
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const customerID = decodedJwt.payload.customer.customerID
-
-  const choices = await sequelize.query(  
+  console.log(customerID)
+  await sequelize.query(  
   `SELECT countryDescription, provinceDescription, cityDescription, address, postcode, instructions 
   FROM addresses
   LEFT JOIN customerAddressLinks
@@ -198,12 +197,16 @@ exports.updateCustomer = async function (req, res, next) {
   const lastName = req.body.lastName ? req.body.lastName : customer.lastName
   const password= req.body.password ? await bcrypt.hash(req.body.password, saltRounds) : customer.password
   const phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : customer.phoneNumber
+  const email = req.body.email ? req.body.email : customer.email
+  const active = req.body.active ? req.body.active : customer.active
 
   await customer.update({
     firstName: firstName,
     lastName: lastName,
     password: password,
-    phoneNumber: phoneNumber
+    phoneNumber: phoneNumber,
+    email: email,
+    active: active
   })
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message } )})
@@ -216,18 +219,20 @@ exports.updateCustomerAddress = async function (req, res, next) {
   // Find customer ID with token
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const customerID = decodedJwt.payload.customer.customerID
-
+  
   // Get customer-address-link using customerID
-  const link = await customerAddressLink.findByPk(customerID)
+  const link = await customerAddressLink.findOne({ where: {customerID: customerID} })
   .catch(err => { res.status(500).send({ message: err.message } )})
   // Get customer's addressID using customer-address-link
   const custAddress = await addresses.findOne({ where: {addressID: link.addressID} })
   .catch(err => { res.status(500).send({ message: err.message } )})
 
   // Check if the req.body contains options, if not use the same record in the db
-  const countryID = req.body.countryID ? await countries.findByPk(req.body.countryDescription).countryID : custAddress.countryID
-  const provinceID = req.body.provinceID ? await provinces.findByPk(req.body.provinceDescription).provinceID : custAddress.provinceID
-  const cityID = req.body.cityID ? await cities.findByPk(req.body.cityDescription).cityID : custAddress.cityID
+  //////////// Error //////////////////
+  const countryID = req.body.countryName ? await countries.findOne(req.body.countryName).countryID : custAddress.countryID
+  const provinceID = req.body.provinceName ? await provinces.findOne(req.body.provinceName).provinceID : custAddress.provinceID
+  const cityID = req.body.cityName ? await cities.findOne(req.body.cityName).cityID : custAddress.cityID
+  ////////////////////////////////////////
   const address = req.body.address ? req.body.address : custAddress.address
   const postcode = req.body.postcode ? req.body.postcode : custAddress.postcode
   const instructions = req.body.instructions ? req.body.instructions : custAddress.instructions
@@ -252,7 +257,7 @@ exports.deactivateCustomerChoice = async function (req, res, next) {
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const customerID = decodedJwt.payload.customer.customerID
 
-  const choices = await sequelize.query(  
+  await sequelize.query(  
     `UPDATE customerChoicesLinks
     LEFT JOIN choices
     ON choices.choiceID = customerChoicesLinks.choiceID

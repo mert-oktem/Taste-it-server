@@ -8,11 +8,23 @@ module.exports = sequelize.define("inquiries", {
       comment: null,
       field: "inquiries"
     },
-    customerID: {
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      comment: null,
+      field: "name"
+    },
+    phoneNumber: {
       type: Sequelize.INTEGER,
       allowNull: false,
       comment: null,
-      field: "customerID"
+      field: "phoneNumber"
+    },
+    email: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      comment: null,
+      field: "email"
     },
     subject: {
       type: Sequelize.STRING,
