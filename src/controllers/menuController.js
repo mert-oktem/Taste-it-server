@@ -19,6 +19,8 @@ const menuChoiceLinks = require("../models/menuChoicesLinkModel")
 exports.createMenu = async function (req, res, next) {
     // This method needs: restaurantID, menuName, menuDesc, price, pictureURI
     // Add joi function to validate request.
+
+    const pictureURI = req.file ? req.file.path : null
     
     // Create menu
     const menu = {
@@ -26,7 +28,7 @@ exports.createMenu = async function (req, res, next) {
     menuName: req.body.menuName,
     menuDescription: req.body.menuDescription,
     price: req.body.price,
-    pictureURI: req.file.path,
+    pictureURI: pictureURI,
     active: true
     }
 
@@ -147,14 +149,14 @@ exports.updateMenu = async function (req, res, next) {
     .catch(err => { res.status(500).send({ message: err.message } )})
 
     const menuName = req.body.menuName ? req.body.menuName : menu.menuName
-    const menuDesc = req.body.menuDesc ? req.body.menuDesc : menu.menuDesc
+    const menuDescription = req.body.menuDescription ? req.body.menuDescription : menu.menuDescription
     const price= req.body.price ? req.body.price : menu.price
-    const pictureURI = req.body.pictureURI ? req.body.pictureURI : menu.pictureURI
+    const pictureURI = req.file ? req.file.path : menu.pictureURI
     const isActive = req.body.isActive ? req.body.isActive : menu.isActive
 
     await menu.update({
       menuName: menuName,
-      menuDesc: menuDesc,
+      menuDescription: menuDescription,
       price: price,
       pictureURI: pictureURI,
       isActive: isActive,

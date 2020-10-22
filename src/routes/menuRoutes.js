@@ -1,24 +1,12 @@
-var multer = require('multer');
-
-var storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-	  cb(null, 'uploadedImages/menuImages/')
-	},
-	filename: function (req, file, cb) {
-	  cb(null, Date.now() + file.originalname)
-	}
-})  
-
-var upload = multer({ storage: storage })
-
-
 module.exports = app => {
     const menus = require("../controllers/menuController.js");
+    const imageUploader = require('../middleware/imageUploader.js')
+
   
     var router = require("express").Router();
   
     // Create a new menu
-    router.post("/", upload.single('image'), menus.createMenu);
+    router.post("/", imageUploader.single('image'), menus.createMenu);
 
     // Add a new choice for a menu
     router.post("/choice", menus.addMenuChoice);
@@ -36,7 +24,7 @@ module.exports = app => {
     router.get("/allMenu/:restaurantID", menus.findAllMenus);
   
     // Update a menu with id
-    router.put("/:menuID", menus.updateMenu);
+    router.put("/:menuID", imageUploader.single('image'), menus.updateMenu);
   
     // Update choices with id
     // router.put("/deactivechoices/:menuID", menus.updateChoices);
