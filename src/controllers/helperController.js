@@ -5,6 +5,7 @@ const countries = require('../models/countriesModel')
 const provinces = require("../models/provincesModel")
 const cities = require("../models/citiesModel")
 const choices = require("../models/choicesModel")
+const orderStatuses = require("../models/orderStatusesModel")
 
 ////////////////////
 // POST Methods ////
@@ -87,6 +88,13 @@ exports.findBudgets = async function (req, res, next) {
       category: 'Budget'
     }
   })
+  .then(data => { res.send(data) })
+  .catch(err => { res.status(500).send({ message: err.message }) })
+}
+
+// Retrieve a list of order status options
+exports.findOrderStatus = async function (req, res, next) {
+  orderStatuses.findAll()
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }

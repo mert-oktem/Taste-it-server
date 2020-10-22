@@ -135,9 +135,20 @@ exports.createOrder = async function (req, res, next) {
 // // GET Methods /////
 // ////////////////////
 
-// // Find active Orders with customer ID
-// exports.findActiveOrdersCustomers = async function (req, res, next) {
-// }
+// Find active Orders with customer ID
+exports.findActiveOrdersCustomers = async function (req, res, next) {
+  // Find customer ID with token
+  const decodedJwt = await jwt.decode(req.token, { complete: true });
+  const customerID = decodedJwt.payload.customer.customerID;
+
+  orders.findAll({
+    where: {
+      category: 'Spiciness'
+    }
+  })
+  .then(data => { res.send(data) })
+  .catch(err => { res.status(500).send({ message: err.message }) })
+}
 
 // // Find active Orders with restaurant ID
 // exports.findActiveOrdersRestaurant = async function (req, res, next) {
