@@ -1,4 +1,8 @@
 const { QueryTypes } = require('sequelize');
+const fs = require("fs");
+const path = require("path");
+
+
 
 // Importing necessary tables
 const choices = require("../models/choicesModel")
@@ -20,9 +24,9 @@ exports.createMenu = async function (req, res, next) {
     const menu = {
     restaurantID: req.body.restaurantID,
     menuName: req.body.menuName,
-    menuDescription: req.body.menuDesc,
+    menuDescription: req.body.menuDescription,
     price: req.body.price,
-    pictureURI: req.body.pictureURI,
+    pictureURI: req.file.path,
     active: true
     }
 
@@ -61,21 +65,54 @@ exports.addMenuChoice = async function (req, res, next) {
 
 // Find a Menu
 exports.findMenu = async function (req, res, next) {
+    // This method needs: menuID
+    // Add joi function to validate request!
+  
+    const id = req.params.menuID
+  
+    await sequelize.query(
+      `SELECT *
+      FROM menus 
+      WHERE menuID = ${id}`, { type: QueryTypes.SELECT })
+      .then(data => { res.send(data) })
+      .catch(err => { res.status(500).send({ message: err.message }) })
+}
+
+// Find a Menu's Image
+exports.findMenuImage = async function (req, res, next) {
   // This method needs: menuID
   // Add joi function to validate request!
 
   const id = req.params.menuID
 
-  await sequelize.query(  
-    `SELECT *
-    FROM menus
-    LEFT JOIN menuChoicesLinks
-    ON menus.menuID = menuChoicesLinks.restaurantID
-    LEFT JOIN choices
-    ON choices.choiceID = menuChoicesLinks.choiceID
-    WHERE menuID = ${id}`, { type: QueryTypes.SELECT })
-    .then(data => { res.send(data) })
+  await sequelize.query(
+    `SELECT m.pictureURI
+    FROM menus AS m
+    LEFT JOIN menuChoicesLinks as mcl
+    ON m.menuID = mcl.menuID
+    WHERE m.menuID = ${id}`, { type: QueryTypes.SELECT })
+    .then(data => { 
+        let image = data[0].pictureURI
+        res.sendFile(path.join(`${__basedir}/${image}`))
+        })
     .catch(err => { res.status(500).send({ message: err.message }) })
+}
+
+// Find a Menu's Image
+exports.findMenuChoices = async function (req, res, next) {
+    // This method needs: menuID
+    // Add joi function to validate request!
+  
+    const id = req.params.menuID
+  
+    await sequelize.query(
+      `SELECT *
+      FROM choices
+      LEFT JOIN menuChoicesLinks
+      ON menuChoicesLinks.choiceID = choices.choiceID
+      WHERE menuID = ${id}`, { type: QueryTypes.SELECT })
+      .then(data => { res.send(data) })
+      .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
 // Find All Menus from a restaurant
@@ -144,3 +181,5 @@ exports.updateMenu = async function (req, res, next) {
 //         .catch(err => { res.status(500).send({ message: err.message }) 
 //       })
 // }
+
+

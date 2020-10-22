@@ -16,6 +16,7 @@ require("./src/database/connection");
 
 
 /******************** App Setup ***********************/
+global.__basedir = __dirname;
 
 const app = express();
 
