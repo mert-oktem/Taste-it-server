@@ -7,6 +7,7 @@ module.exports = app => {
 
   // Retrieve choices from a choice category
   router.get("/:category", choices.findChoices);
+  router.get("/list/categories", choices.findCategories);
 
   // Update a choice
 

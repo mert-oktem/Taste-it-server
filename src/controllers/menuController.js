@@ -88,7 +88,7 @@ exports.findAllMenus = async function (req, res, next) {
         `SELECT *
         FROM menus
         LEFT JOIN menuChoicesLinks
-        ON menus.menuID = menuChoicesLinks.restaurantID
+        ON menus.menuID = menuChoicesLinks.menuID
         LEFT JOIN choices
         ON menuChoicesLinks.choiceID = choices.choiceID
         WHERE menus.restaurantID = ${id}`, { type: QueryTypes.SELECT })
