@@ -45,7 +45,9 @@ exports.createCustomer = async function (req, res, next) {
 
     // Save Customer in the database
     customers.create(customer)
-    .then(data => { res.send(data) } )
+    .then(data => { jwt.sign( {customer}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
+      res.json( { token } ) 
+    }) } )
     .catch(err => { res.status(500).send({ message: err.message }) })
 }
 

@@ -43,7 +43,11 @@ exports.createRestaurant = async function (req, res, next) {
 
     // Save Restaurant in the database
     restaurants.create(restaurant)
-    .then(data => { res.send(data) } )
+    .then(data => { 
+      jwt.sign( {restaurant}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
+        res.json( { token } ) 
+      })
+     })
     .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
@@ -108,8 +112,11 @@ exports.findRestaurant = async function (req, res, next) {
   const restaurantID = decodedJwt.payload.restaurant.restaurantID
   
 
+  const restaurantInfo = []
   restaurants.findByPk(restaurantID)
-    .then(data => { res.send(data) })
+    .then(data => { 
+      restaurantInfo.push(data)
+      res.send(restaurantInfo) })
     .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
