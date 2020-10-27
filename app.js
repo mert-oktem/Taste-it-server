@@ -32,7 +32,7 @@ app.use(express.json());
 //require("./src/utils/bootstrap")(); 
 
 
-const port = process.env.port || 3000;
+const port = process.env.port || 5000;
 
 app.get('/', (req, res) =>
     res.send(`Node and express server is running on port ${port}`)
