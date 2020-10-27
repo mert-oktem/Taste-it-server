@@ -33,11 +33,8 @@ exports.createRestaurant = async function (req, res, next) {
     
     // Create a Restaurant
     const restaurant = {
-    restaurantName: req.body.restaurantName,
-    restaurantDescription: req.body.restaurantDescription,
     email: req.body.email,
     password: hash,
-    phoneNumber: req.body.phoneNumber,
     active: true
     }
 
@@ -160,7 +157,7 @@ exports.updateRestaurant = async function (req, res, next) {
   .catch(err => { res.status(500).send({ message: err.message } )})
 
   // Check if the req.body contains options, if not use the same record in the db
-  const restaurantName = req.body.restaurantName ? req.body.restaurantName : res.restaurantName
+  const restaurantName = req.body.restaurantName ? req.body.restaurantName : restaurant.restaurantName
   const restaurantDescription = req.body.restaurantDescription ? req.body.restaurantDescription : restaurant.restaurantDescription
   const password= req.body.password ? await bcrypt.hash(req.body.password, saltRounds) : restaurant.password
   const phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : restaurant.phoneNumber
