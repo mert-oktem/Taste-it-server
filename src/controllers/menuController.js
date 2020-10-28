@@ -32,7 +32,7 @@ exports.createMenu = async function (req, res, next) {
     menuDescription: req.body.menuDescription,
     price: req.body.price,
     pictureURI: pictureURI,
-    active: true
+    isActive: true
     }
 
     // Save menu in the database
@@ -55,7 +55,8 @@ exports.addMenuChoice = async function (req, res, next) {
     // Create link
     const menuChoiceLink = {
         menuID: req.body.menuID,
-        choiceID: choice.choiceID
+        choiceID: choice.choiceID,
+        isActive: true
     }
 
     // Save link in the database
@@ -114,7 +115,7 @@ exports.findMenuChoices = async function (req, res, next) {
       FROM choices
       LEFT JOIN menuChoicesLinks
       ON menuChoicesLinks.choiceID = choices.choiceID
-      WHERE menuID = ${id}`, { type: QueryTypes.SELECT })
+      WHERE menuID = ${id} and menuChoicesLinks.isActive = true`, { type: QueryTypes.SELECT })
       .then(data => {res.send(data) })
       .catch(err => { res.status(500).send({ message: err.message }) })
 }
