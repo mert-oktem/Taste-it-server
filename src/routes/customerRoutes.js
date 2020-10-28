@@ -21,7 +21,7 @@ module.exports = app => {
     ////////////////////
 
     // Login a customer
-    router.get("/login", auth.customerLogin);
+    router.post("/login", auth.customerLogin);
   
     // Retrieve a customer's details
     router.get("/", auth.verifyToken, customer.findCustomer);

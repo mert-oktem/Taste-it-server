@@ -20,7 +20,7 @@ module.exports = app => {
   ////////////////////
 
   // Login a restaurant
-  router.get("/login", auth.restaurantLogin);
+  router.post("/login", auth.restaurantLogin);
 
   // Retrieve a restaurant's details
   router.get("/", auth.verifyToken, restaurant.findRestaurant);

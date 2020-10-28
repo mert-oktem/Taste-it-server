@@ -16,7 +16,7 @@ exports.verifyToken = async function (req, res, next) {
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if(err) { res.status(403).send({ message: err.message }) }
         else { next() }
-    });
+    });    
 }
 
 // Give Token
