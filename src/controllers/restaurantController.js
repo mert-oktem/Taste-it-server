@@ -40,7 +40,7 @@ exports.createRestaurant = async function (req, res, next) {
 
     // Save Restaurant in the database
     restaurants.create(restaurant)
-    .then(data => { 
+    .then(restaurant => { 
       jwt.sign( {restaurant}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
         res.json( { token } ) 
       })
@@ -53,10 +53,6 @@ exports.createAddress  = async function (req, res, next) {
   // This method needs: restaurantID, countryName, provinceName, cityName, postCode, Address
   // Add joi function to validate request!
 
-  // Get countryID using countryName
-  const country = await countries.findOne({ where: { countryDescription: req.body.countryName } })
-  .catch(err => { res.status(500).send({ message: err.message }) })
-
   // Get provinceID using countryName
   const province = await provinces.findOne({ where: { provinceDescription: req.body.provinceName } })
   .catch(err => { res.status(500).send({ message: err.message }) })
@@ -67,7 +63,6 @@ exports.createAddress  = async function (req, res, next) {
 
   // Create Address
   const address = {
-    countryID: country.countryID,
     provinceID: province.provinceID,
     cityID: city.cityID,
     address: req.body.address,
@@ -188,14 +183,12 @@ exports.updateRestaurantAddress = async function (req, res, next) {
   .catch(err => { res.status(500).send({ message: err.message } )})
 
   // Check if the req.body contains options, if not use the same record in the db
-  const countryID = req.body.countryID ? await countries.findByPk(req.body.countryDescription).countryID : restaurantAddress.countryID
   const provinceID = req.body.provinceID ? await provinces.findByPk(req.body.provinceDescription).provinceID : restaurantAddress.provinceID
   const cityID = req.body.cityID ? await cities.findByPk(req.body.cityDescription).cityID : restaurantAddress.cityID
   const address = req.body.address ? req.body.address : restaurantAddress.address
   const postcode = req.body.postcode ? req.body.postcode : restaurantAddress.postcode
 
   restaurantAddress.update({
-    countryID: countryID,
     provinceID: provinceID,
     cityID: cityID,
     address: address,

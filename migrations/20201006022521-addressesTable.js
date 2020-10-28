@@ -12,7 +12,8 @@ module.exports = {
       },
       countryID: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: 1,
         comment: null,
         field: "countryID",
         references: {

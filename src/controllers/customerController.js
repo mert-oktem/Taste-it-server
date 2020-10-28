@@ -56,10 +56,6 @@ exports.createAddress  = async function (req, res, next) {
   // This method needs: customerID, countryName, provinceName, cityName, postCode, Address, Instructions
   // Add joi function to validate request!
 
-  // Get countryID using countryName
-  const country = await countries.findOne({ where: { countryDescription: req.body.countryName } })
-  .catch(err => { res.status(500).send({ message: err.message }) })
-
   // Get provinceID using countryName
   const province = await provinces.findOne({ where: { provinceDescription: req.body.provinceName } })
   .catch(err => { res.status(500).send({ message: err.message }) })
@@ -70,7 +66,6 @@ exports.createAddress  = async function (req, res, next) {
 
   // Create Address
   const address = {
-    countryID: country.countryID,
     provinceID: province.provinceID,
     cityID: city.cityID,
     address: req.body.address,
@@ -231,7 +226,6 @@ exports.updateCustomerAddress = async function (req, res, next) {
 
   // Check if the req.body contains options, if not use the same record in the db
   //////////// Error //////////////////
-  const countryID = req.body.countryName ? await countries.findOne(req.body.countryName).countryID : custAddress.countryID
   const provinceID = req.body.provinceName ? await provinces.findOne(req.body.provinceName).provinceID : custAddress.provinceID
   const cityID = req.body.cityName ? await cities.findOne(req.body.cityName).cityID : custAddress.cityID
   ////////////////////////////////////////
@@ -240,7 +234,6 @@ exports.updateCustomerAddress = async function (req, res, next) {
   const instructions = req.body.instructions ? req.body.instructions : custAddress.instructions
 
   custAddress.update({
-    countryID: countryID,
     provinceID: provinceID,
     cityID: cityID,
     address: address,

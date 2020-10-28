@@ -49,10 +49,10 @@ module.exports = async (db) => {
         active: 1
     }).catch(errHandler)
 
-    const addressCustomerLink = await customerAddressLinks.create({
-        customerID: customer.customerID,
-        addressID: address.addressID
-    }).catch(errHandler)
+    // const addressCustomerLink = await customerAddressLinks.create({
+    //     customerID: customer.customerID,
+    //     addressID: address.addressID
+    // }).catch(errHandler)
 
     const allChoices = await choices.bulkCreate([
         {
@@ -137,6 +137,11 @@ module.exports = async (db) => {
         },
         {
             category: "Diet Types",
+            choiceDescription: "Anything",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Diet Types",
             choiceDescription: "Halal",
             pictureURI: "https://www.google.com"
         },
@@ -168,6 +173,11 @@ module.exports = async (db) => {
         {
             category: "Diet Types",
             choiceDescription: "Gluten-Free",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Allergens",
+            choiceDescription: "No Allergy",
             pictureURI: "https://www.google.com"
         },
         {
@@ -255,218 +265,218 @@ module.exports = async (db) => {
     const fakeRestaurants = await restaurants.bulkCreate([
         {
             restaurantName: "ChongQing Restaurant",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             email: "chongqingrestaurant@email.com",
             password: "1234",
             phoneNumber: "1234",
         },
         {
             restaurantName: "Le Crocodile",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             email: "lecrocodile@email.com",
             password: "1234",
             phoneNumber: "1234",
         },
         {
             restaurantName: "Stepho's Souvlaki Greek Taverna",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             email: "stephossouvlakisreektaverna@email.com",
             password: "1234",
             phoneNumber: "1234",
         },
         {
             restaurantName: "Indian Delicacy",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             email: "indiandelicacy@email.com",
             password: "1234",
             phoneNumber: "1234",
         },
         {
             restaurantName: "Zefferelli's Restaurant",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             email: "zefferellisrestaurant@email.com",
             password: "1234",
             phoneNumber: "1234",
         }
-    ])
+    ]).catch(errHandler)
 
     const fakeMenus = await menus.bulkCreate([
         {
             restaurantID: 1,
             menuName: "Hot & Sour Soup With Chicken & Shrimp",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 9.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 1,
             menuName: "Lettuce Wrap",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 16.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 1,
             menuName: "Dai Ching Chicken (With Bone)",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 15.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 1,
             menuName: "General Tso's Chicken",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 16.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 1,
             menuName: "Ginger Beef (Hot & Sweet)",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 15.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 2,
             menuName: "Black Truffle Omelette served with Butter Letter and Pommes Frites",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 24.00,
             pictureURI: "1234"
         },
         {
             restaurantID: 2,
             menuName: "Seared Scallops with Black Linguine & Basil Beurre Blanc",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 26.00,
             pictureURI: "1234"
         },
         {
             restaurantID: 2,
             menuName: "Pan-Fried Dover Sole with Beurre Noisette & Capers",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 48.00,
             pictureURI: "1234"
         },
         {
             restaurantID: 2,
             menuName: "Grilled Beef Tenderloin with Béarnaise",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 42.00,
             pictureURI: "1234"
         },
         {
             restaurantID: 2,
             menuName: "Veal Medallions with Morel Mushroom Sauce",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 42.00,
             pictureURI: "1234"
         },
         {
             restaurantID: 3,
             menuName: "Chicken Souvlaki",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 15.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 3,
             menuName: "Kalamari Dinner",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 16.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 3,
             menuName: "Spanakopita",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 9.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 3,
             menuName: "Roast Lamb",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 18.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 3,
             menuName: "Saganaki Dinner",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 9.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 4,
             menuName: "Butter Chicken",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 13.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 4,
             menuName: "Paneer Spinach Curry",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 13.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 4,
             menuName: "Chicken Tikka Masala",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 14.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 4,
             menuName: "Chicken Dum Biryani",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 13.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 4,
             menuName: "Lamb Tikka",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 15.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 5,
             menuName: "Spaghetti Ragu",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 19.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 5,
             menuName: "Bruschetta",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 8.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 5,
             menuName: "Pizza Margherita",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 15.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 5,
             menuName: "Chicken Parmigiana",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 23.95,
             pictureURI: "1234"
         },
         {
             restaurantID: 5,
             menuName: "Osso Buco",
-            menuDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 32.95,
             pictureURI: "1234"
         },
-    ])
+    ]).catch(errHandler)
 
 
 
@@ -481,15 +491,15 @@ module.exports = async (db) => {
             menuID: 1
         },
         {
+            choiceID: 29,
+            menuID: 1
+        },
+        {
             choiceID: 27,
             menuID: 1
         },
         {
-            choiceID: 25,
-            menuID: 1
-        },
-        {
-            choiceID: 31,
+            choiceID: 33,
             menuID: 1
         },
         //Lettuce Wrap
@@ -502,11 +512,11 @@ module.exports = async (db) => {
             menuID: 2
         },
         {
-            choiceID: 20,
+            choiceID: 21,
             menuID: 2
         },
         {
-            choiceID: 30,
+            choiceID: 32,
             menuID: 2
         },
         //Dai Ching Chicken (With Bone)
@@ -547,7 +557,7 @@ module.exports = async (db) => {
             menuID: 6
         },
         {
-            choiceID: 25,
+            choiceID: 27,
             menuID: 6
         },
         //Seared Scallops with Black Linguine & Basil Beurre Blanc
@@ -560,7 +570,7 @@ module.exports = async (db) => {
             menuID: 7
         },
         {
-            choiceID: 26,
+            choiceID: 28,
             menuID: 7
         },
         //Pan-Fried Dover Sole with Beurre Noisette & Capers
@@ -573,7 +583,7 @@ module.exports = async (db) => {
             menuID: 8
         },
         {
-            choiceID: 20,
+            choiceID: 21,
             menuID: 8
         },
         //Grilled Beef Tenderloin with Béarnaise
@@ -595,7 +605,7 @@ module.exports = async (db) => {
             menuID: 10
         },
         {
-            choiceID: 20,
+            choiceID: 21,
             menuID: 10
         },
 
@@ -627,7 +637,7 @@ module.exports = async (db) => {
             menuID: 13
         },
         {
-            choiceID: 26,
+            choiceID: 28,
             menuID: 13
         },
         //Roast Lamb
@@ -659,11 +669,11 @@ module.exports = async (db) => {
             menuID: 16
         },
         {
-            choiceID: 24,
+            choiceID: 26,
             menuID: 16
         },
         {
-            choiceID: 31,
+            choiceID: 33,
             menuID: 16
         },
         //Paneer Spinach Curry
@@ -676,7 +686,7 @@ module.exports = async (db) => {
             menuID: 17
         },
         {
-            choiceID: 20,
+            choiceID: 21,
             menuID: 17
         },
         //Chicken Tikka Masala
@@ -735,7 +745,7 @@ module.exports = async (db) => {
             menuID: 23
         },
         {
-            choiceID: 20,
+            choiceID: 21,
             menuID: 23
         },
         //Chicken Parmigiana
@@ -748,7 +758,7 @@ module.exports = async (db) => {
             menuID: 24
         },
         {
-            choiceID: 24,
+            choiceID: 26,
             menuID: 24
         },
         //Osso Buco
@@ -761,6 +771,6 @@ module.exports = async (db) => {
             menuID: 25
         },
 
-    ])
+    ]).catch(errHandler)
 }
 

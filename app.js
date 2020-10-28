@@ -28,8 +28,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.json());
 
-// Bootstrap for creating DB tables and relations.
-//require("./src/utils/bootstrap")(); 
+// // Bootstrap for creating DB tables and relations.
+// require("./src/utils/bootstrap")(); 
 
 
 const port = process.env.port || 5000;
@@ -40,7 +40,7 @@ app.get('/', (req, res) =>
 
 /******************** Routes ***********************/
 require("./src/routes/customerRoutes")(app);
-// require("./src/routes/orderRoutes")(app);
+require("./src/routes/orderRoutes")(app);
 require("./src/routes/menuRoutes")(app);
 require("./src/routes/restaurantRoutes")(app);
 require("./src/routes/inquiryRoutes")(app);
