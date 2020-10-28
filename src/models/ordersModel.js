@@ -44,5 +44,11 @@ module.exports = sequelize.define("orders", {
       allowNull: true,
       comment: null,
       field: "rate"
-    }
+    },
+    isOrderAgain: {
+      type: Sequelize.BOOLEAN,
+      allowNull: true,
+      comment: null,
+      field: "isOrderAgain"
+    },
 });

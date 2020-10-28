@@ -55,6 +55,12 @@ module.exports = {
         comment: null,
         field: "rate"
       },
+      isOrderAgain: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        comment: null,
+        field: "isOrderAgain"
+      },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE
     })

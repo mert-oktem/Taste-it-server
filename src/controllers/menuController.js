@@ -165,23 +165,23 @@ exports.updateMenu = async function (req, res, next) {
     .catch(err => { res.status(500).send({ message: err.message } )})
 }
 
-// // Update a menu's choice info by the id in the request
-// exports.updateChoices = async function (req, res, next) {
-//     // This method needs: menuID
-//     // Add joi function to validate request!
-//     const id = req.params.menuID;
+// Update a menu's choice info by the id in the request
+exports.updateChoices = async function (req, res, next) {
+    // This method needs: menuID
+    // Add joi function to validate request!
+    const id = req.params.menuID;
 
-//     const menu = await menus.findByPk(id)
-//     .catch(err => { res.status(500).send({ message: err.message } )})
+    const menu = await menus.findByPk(id)
+    .catch(err => { res.status(500).send({ message: err.message } )})
 
-//     await sequelize.query(  
-//         `DELETE menuChoicesLinks
-//         LEFT JOIN choices
-//         ON choices.choiceID = menuChoicesLinks.choiceID
-//         WHERE menuChoicesLinks.menuID = ${id} AND choices.category = "${req.body.category}"`, { type: QueryTypes.DELETE })
-//         .then(data => { res.send(data) })
-//         .catch(err => { res.status(500).send({ message: err.message }) 
-//       })
-// }
+    await sequelize.query(  
+        `DELETE menuChoicesLinks
+        LEFT JOIN choices
+        ON choices.choiceID = menuChoicesLinks.choiceID
+        WHERE menuChoicesLinks.menuID = ${id} AND choices.category = "${req.body.category}"`, { type: QueryTypes.DELETE })
+        .then(data => { res.send(data) })
+        .catch(err => { res.status(500).send({ message: err.message }) 
+      })
+}
 
 

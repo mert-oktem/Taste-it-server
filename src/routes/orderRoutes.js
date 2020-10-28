@@ -7,18 +7,17 @@ module.exports = app => {
     router.post("/", auth.verifyToken, orders.createOrder);
   
 
-    // // Retrieve a customer's active order
-    // router.get("/:customerID", auth.verifyToken, orders.findActiveOrdersCustomers);
+    // Retrieve a customer's active order
+    router.get("/activeOrders/customer", auth.verifyToken, orders.findActiveOrdersCustomers);
 
     // // Retrieve orders for a restaurant
-    // router.get("/:restaurantID", auth.verifyToken, orders.findActiveOrdersRestaurant);
+    // router.get("/activeOrders/restaurant", auth.verifyToken, orders.findActiveOrdersRestaurant);
 
     // // Retrieve a customer's previous orders
-    // router.get("/orderhistory/:customerID", auth.verifyToken, orders.findOrderHistoryCustomers);
+    // router.get("/pastOrders/customer", auth.verifyToken, orders.findOrderHistoryCustomers);
   
     // // Retrieve previous orders for a restaurant
-    // router.get("/orderhistory/:restaurantID", auth.verifyToken, orders.findOrderHistoryRestaurant);
-
+    // router.get("/orderhistory/restaurant", auth.verifyToken, orders.findOrderHistoryRestaurant);
 
     // // Update an order with order ID
     // router.put("/:orderID", orders.updateOrder);

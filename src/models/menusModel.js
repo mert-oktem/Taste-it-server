@@ -35,6 +35,7 @@ module.exports = sequelize.define("menus", {
     pictureURI: {
       type: Sequelize.STRING,
       allowNull: true,
+      defaultValue: '',
       comment: null,
       field: "pictureURI"
     },

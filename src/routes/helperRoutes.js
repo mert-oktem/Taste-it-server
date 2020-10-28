@@ -26,5 +26,8 @@ module.exports = app => {
   // Retrieve a list of budgets options
   router.get("/budgets", helpers.findBudgets);
 
+  // Retrieve a list of orderStatus options
+  router.get("/orderStatus", helpers.findOrderStatus);
+
   app.use('/api/helpers', router);
 };
