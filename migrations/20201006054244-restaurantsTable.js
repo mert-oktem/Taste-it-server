@@ -16,11 +16,11 @@ module.exports = {
         comment: null,
         field: "restaurantName"
       },
-      restaurantDescripton: {
+      restaurantDescription: {
         type: Sequelize.STRING,
         allowNull: true,
         comment: null,
-        field: "restaurantDescripton"
+        field: "restaurantDescription"
       },
       email: {
         type: Sequelize.STRING,

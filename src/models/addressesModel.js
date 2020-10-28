@@ -11,7 +11,7 @@ module.exports = sequelize.define("addresses", {
       countryID: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        defaultValue: 'Canada',
+        defaultValue: 1,
         comment: null,
         field: "countryID"
       },
