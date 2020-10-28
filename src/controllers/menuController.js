@@ -134,7 +134,7 @@ exports.findAllMenus = async function (req, res, next) {
         ON menus.menuID = menuChoicesLinks.menuID
         LEFT JOIN choices
         ON menuChoicesLinks.choiceID = choices.choiceID
-        WHERE menus.restaurantID = ${restaurantID}`, { type: QueryTypes.SELECT })
+        WHERE menus.restaurantID = ${restaurantID} and menuChoicesLinks.isActive = true`, { type: QueryTypes.SELECT })
         .then(data => { res.send(data) })
         .catch(err => { res.status(500).send({ message: err.message }) })
   }
