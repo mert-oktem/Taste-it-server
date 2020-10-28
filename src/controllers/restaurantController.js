@@ -132,7 +132,8 @@ exports.findRestaurantAddress = async function (req, res, next) {
   LEFT JOIN cities
   ON cities.cityID = addresses.cityID
   WHERE restaurantID = ${restaurantID} AND addresses.isActive=true`, { type: QueryTypes.SELECT })
-  .then(data => { res.send(data) })
+  .then(data => {
+    res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
