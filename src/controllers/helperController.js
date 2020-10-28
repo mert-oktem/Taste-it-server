@@ -19,7 +19,7 @@ const orderStatuses = require("../models/orderStatusesModel")
 // Retrieve a list of countries options
 exports.findCountries = async function (req, res, next) {
   countries.findAll()
-  .then(data => { res.send(data) })
+  .then(data => {res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
 

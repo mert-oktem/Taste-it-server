@@ -71,12 +71,13 @@ exports.findMenu = async function (req, res, next) {
     // Add joi function to validate request!
   
     const id = req.params.menuID
-  
+
     await sequelize.query(
       `SELECT *
       FROM menus 
       WHERE menuID = ${id}`, { type: QueryTypes.SELECT })
-      .then(data => { res.send(data) })
+      .then(data => { 
+        res.send(data) })
       .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
@@ -113,7 +114,7 @@ exports.findMenuChoices = async function (req, res, next) {
       LEFT JOIN menuChoicesLinks
       ON menuChoicesLinks.choiceID = choices.choiceID
       WHERE menuID = ${id}`, { type: QueryTypes.SELECT })
-      .then(data => { res.send(data) })
+      .then(data => {res.send(data) })
       .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
