@@ -43,7 +43,7 @@ exports.createRestaurant = async function (req, res, next) {
 
     // Save Restaurant in the database
     restaurants.create(restaurant)
-    .then(data => { 
+    .then(restaurant => { 
       jwt.sign( {restaurant}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
         res.json( { token } ) 
       })
@@ -135,7 +135,8 @@ exports.findRestaurantAddress = async function (req, res, next) {
   LEFT JOIN cities
   ON cities.cityID = addresses.cityID
   WHERE restaurantID = ${restaurantID} AND addresses.isActive=true`, { type: QueryTypes.SELECT })
-  .then(data => { res.send(data) })
+  .then(data => {
+    res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
