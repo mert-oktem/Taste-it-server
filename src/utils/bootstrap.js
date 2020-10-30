@@ -3,15 +3,20 @@ module.exports = async (db) => {
     // Importing required tables
     const customers = require("../models/customersModel")
     const restaurants = require("../models/restaurantsModel")
+    const restaurantAddressLinks = require("../models/restaurantAddressLinkModel")
     const menus = require("../models/menusModel")
     const menuChoicesLinks = require("../models/menuChoicesLinkModel")
     const customerAddressLinks = require("../models/customerAddressLinkModel")
+    const customerChoicesLinks = require("../models/customerChoicesModel")
     const addresses = require("../models/addressesModel")
     const countries = require("../models/countriesModel")
     const cities = require("../models/citiesModel")
     const provinces = require("../models/provincesModel")
     const choices = require("../models/choicesModel")
     const orderStatuses = require("../models/orderStatusesModel")
+    const orders = require("../models/ordersModel")
+    const orderMenuLinks = require("../models/orderMenuLinkModel")
+
 
     const errHandler = (err) => {
         console.error("Error ", err)
@@ -25,35 +30,73 @@ module.exports = async (db) => {
         provinceDescription: "British Columbia"
     }).catch(errHandler)
 
-    const city = await cities.create({
-        cityDescription: "Vancouver"
-    }).catch(errHandler)
+    const city = await cities.bulkCreate([
+        {cityDescription: "Vancouver"},
+        {cityDescription: "Richmond"},
+        {cityDescription: "Burnaby"},
+        {cityDescription: "North Vancouver"},
+    ]).catch(errHandler)
 
-    const address = await addresses.create({
-        countryID: 1,
-        provinceID: 1,
-        cityID: 1,
-        address: "Test Address",
-        postcode: "Test Post Code",
-        instructions: "Leave at the door.",
-        active: 1
-    }).catch(errHandler)
+    const address = await addresses.bulkCreate([
+        {
+            countryID: 1,
+            provinceID: 1,
+            cityID: 1,
+            address: "100 W 49th Ave",
+            postcode: "V5Y 2Z6",
+            instructions: "Leave at the door.",
+            active: 1
+        },
+        {
+            countryID: 1,
+            provinceID: 1,
+            cityID: 1,
+            address: "1130 W Pender St Unit 105",
+            postcode: "V6E 4A4",
+            active: 1
+        },
+        {
+            countryID: 1,
+            provinceID: 1,
+            cityID: 1,
+            address: "551 Howe St",
+            postcode: "V6C 2C2",
+            active: 1
+        },
+        {
+            countryID: 1,
+            provinceID: 1,
+            cityID: 1,
+            address: "1773 Robson St",
+            postcode: "V6G 1C9",
+            active: 1
+        },
+        {
+            countryID: 1,
+            provinceID: 1,
+            cityID: 1,
+            address: "909 Burrard St #100",
+            postcode: "V6Z 2N2",
+            active: 1
+        },
+    ]).catch(errHandler)
 
     const customer = await customers.create({
-        firstName: "Test",
-        lastName: "User",
+        firstName: "John",
+        lastName: "Doe",
         username: "testusername",
-        password: "testpassword",
+        password: "$2b$10$hLoxlq7y6Pn4nPdKm/nYK.7Aydpf2Rplg0ZHp0GCjknWJtepiovii",
         email: "test@hotmail.com",
         phoneNumber: "12345678",
         active: 1
     }).catch(errHandler)
 
-    // const addressCustomerLink = await customerAddressLinks.create({
-    //     customerID: customer.customerID,
-    //     addressID: address.addressID
-    // }).catch(errHandler)
+    const addressCustomerLink = await customerAddressLinks.create({
+        customerID: 1,
+        addressID: 1
+    }).catch(errHandler)
 
+    
     const allChoices = await choices.bulkCreate([
         {
             category: "Spiciness",
@@ -75,24 +118,15 @@ module.exports = async (db) => {
             choiceDescription: "Not Spicy",
             pictureURI: "https://www.google.com"
         },
-        {
-            category: "Cuisines",
-            choiceDescription: "Chinese",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Cuisines",
-            choiceDescription: "French",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Cuisines",
-            choiceDescription: "Greek",
-            pictureURI: "https://www.google.com"
-        },
+        // 5
         {
             category: "Cuisines",
             choiceDescription: "Indian",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Vietnamese",
             pictureURI: "https://www.google.com"
         },
         {
@@ -102,57 +136,53 @@ module.exports = async (db) => {
         },
         {
             category: "Cuisines",
-            choiceDescription: "Mediterranean",
+            choiceDescription: "French",
             pictureURI: "https://www.google.com"
         },
-        {
-            category: "Cuisines",
-            choiceDescription: "Italian",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Cuisines",
-            choiceDescription: "Persian",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Cuisines",
-            choiceDescription: "Russian",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Cuisines",
-            choiceDescription: "Thai",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Cuisines",
-            choiceDescription: "Ukrainian",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Cuisines",
-            choiceDescription: "Vietnamese",
-            pictureURI: "https://www.google.com"
-        },
+        // {
+        //     category: "Cuisines",
+        //     choiceDescription: "Chinese",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Cuisines",
+        //     choiceDescription: "Greek",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Cuisines",
+        //     choiceDescription: "Mediterranean",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Cuisines",
+        //     choiceDescription: "Italian",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Cuisines",
+        //     choiceDescription: "Persian",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Cuisines",
+        //     choiceDescription: "Russian",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Cuisines",
+        //     choiceDescription: "Thai",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Cuisines",
+        //     choiceDescription: "Ukrainian",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // 9
         {
             category: "Diet Types",
             choiceDescription: "Anything",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Diet Types",
-            choiceDescription: "Halal",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Diet Types",
-            choiceDescription: "Kosher",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Diet Types",
-            choiceDescription: "Diabetic",
             pictureURI: "https://www.google.com"
         },
         {
@@ -162,19 +192,35 @@ module.exports = async (db) => {
         },
         {
             category: "Diet Types",
-            choiceDescription: "Vegan",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Diet Types",
-            choiceDescription: "Organic",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Diet Types",
             choiceDescription: "Gluten-Free",
             pictureURI: "https://www.google.com"
         },
+        // {
+        //     category: "Diet Types",
+        //     choiceDescription: "Halal",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Diet Types",
+        //     choiceDescription: "Kosher",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Diet Types",
+        //     choiceDescription: "Diabetic",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Diet Types",
+        //     choiceDescription: "Vegan",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Diet Types",
+        //     choiceDescription: "Organic",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // 12
         {
             category: "Allergens",
             choiceDescription: "No Allergy",
@@ -182,17 +228,12 @@ module.exports = async (db) => {
         },
         {
             category: "Allergens",
+            choiceDescription: "No Allergens",
+            pictureURI: "https://www.google.com"
+        },
+        {
+            category: "Allergens",
             choiceDescription: "Milk",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Allergens",
-            choiceDescription: "Eggs",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Allergens",
-            choiceDescription: "Fish",
             pictureURI: "https://www.google.com"
         },
         {
@@ -207,24 +248,29 @@ module.exports = async (db) => {
         },
         {
             category: "Allergens",
-            choiceDescription: "Wheat",
+            choiceDescription: "Fish",
             pictureURI: "https://www.google.com"
         },
-        {   
-            category: "Allergens",
-            choiceDescription: "Peanuts",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Allergens",
-            choiceDescription: "Soybeans",
-            pictureURI: "https://www.google.com"
-        },
-        {
-            category: "Allergens",
-            choiceDescription: "Soybeans",
-            pictureURI: "https://www.google.com"
-        },
+        // {
+        //     category: "Allergens",
+        //     choiceDescription: "Eggs",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Allergens",
+        //     choiceDescription: "Wheat",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {   
+        //     category: "Allergens",
+        //     choiceDescription: "Peanuts",
+        //     pictureURI: "https://www.google.com"
+        // },
+        // {
+        //     category: "Allergens",
+        //     choiceDescription: "Soybeans",
+        //     pictureURI: "https://www.google.com"
+        // },
         {
             category: "Budget",
             choiceDescription: "$6-$10",
@@ -249,6 +295,9 @@ module.exports = async (db) => {
 
     const allOrderStatuses = await orderStatuses.bulkCreate([
         {
+            orderStatusDescription: "Confirming Order with the restaurant"
+        },
+        {
             orderStatusDescription: "Being prepared"
         },
         {
@@ -264,216 +313,193 @@ module.exports = async (db) => {
 
     const fakeRestaurants = await restaurants.bulkCreate([
         {
-            restaurantName: "ChongQing Restaurant",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            email: "chongqingrestaurant@email.com",
-            password: "1234",
+            restaurantName: "Indian Delicacy",
+            restaurantDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            email: "indian@email.com",
+            password: "$2b$10$hLoxlq7y6Pn4nPdKm/nYK.7Aydpf2Rplg0ZHp0GCjknWJtepiovii",
+            phoneNumber: "1234",
+        },
+        {
+            restaurantName: "Joyeaux Café & Restaurant",
+            restaurantDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            email: "vietnamese@email.com",
+            password: "$2b$10$hLoxlq7y6Pn4nPdKm/nYK.7Aydpf2Rplg0ZHp0GCjknWJtepiovii",
+            phoneNumber: "1234",
+        },
+        {
+            restaurantName: "Saku",
+            restaurantDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            email: "japanese@email.com",
+            password: "$2b$10$hLoxlq7y6Pn4nPdKm/nYK.7Aydpf2Rplg0ZHp0GCjknWJtepiovii",
             phoneNumber: "1234",
         },
         {
             restaurantName: "Le Crocodile",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            email: "lecrocodile@email.com",
-            password: "1234",
+            restaurantDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            email: "french@email.com",
+            password: "$2b$10$hLoxlq7y6Pn4nPdKm/nYK.7Aydpf2Rplg0ZHp0GCjknWJtepiovii",
             phoneNumber: "1234",
+        }
+    ]).catch(errHandler)
+
+    const restaurantAddressLink = await restaurantAddressLinks.bulkCreate([
+        {
+            restaurantID: 1,
+            addressID: 2,
         },
         {
-            restaurantName: "Stepho's Souvlaki Greek Taverna",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            email: "stephossouvlakisreektaverna@email.com",
-            password: "1234",
-            phoneNumber: "1234",
+            restaurantID: 2,
+            addressID: 3,
         },
         {
-            restaurantName: "Indian Delicacy",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            email: "indiandelicacy@email.com",
-            password: "1234",
-            phoneNumber: "1234",
+            restaurantID: 3,
+            addressID: 4,
         },
         {
-            restaurantName: "Zefferelli's Restaurant",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            email: "zefferellisrestaurant@email.com",
-            password: "1234",
-            phoneNumber: "1234",
+            restaurantID: 4,
+            addressID: 5,
         }
     ]).catch(errHandler)
 
     const fakeMenus = await menus.bulkCreate([
         {
             restaurantID: 1,
-            menuName: "Hot & Sour Soup With Chicken & Shrimp",
+            menuName: "Butter Chicken",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 9.95,
+            price: 16.00,
             pictureURI: "1234"
         },
         {
             restaurantID: 1,
-            menuName: "Lettuce Wrap",
+            menuName: "Paneer Spinach Curry",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 16.95,
+            price: 16.00,
             pictureURI: "1234"
         },
         {
             restaurantID: 1,
-            menuName: "Dai Ching Chicken (With Bone)",
+            menuName: "Chicken Tikka Masala",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 15.95,
+            price: 17.50,
             pictureURI: "1234"
         },
         {
             restaurantID: 1,
-            menuName: "General Tso's Chicken",
+            menuName: "Chicken Dum Biryani",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 16.95,
+            price: 17.50,
             pictureURI: "1234"
         },
         {
             restaurantID: 1,
-            menuName: "Ginger Beef (Hot & Sweet)",
+            menuName: "Lamb Tikka",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 15.95,
+            price: 18,
             pictureURI: "1234"
         },
         {
             restaurantID: 2,
-            menuName: "Black Truffle Omelette served with Butter Letter and Pommes Frites",
+            menuName: "Lemongrass Chicken",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 24.00,
+            price: 11.75,
             pictureURI: "1234"
         },
         {
             restaurantID: 2,
-            menuName: "Seared Scallops with Black Linguine & Basil Beurre Blanc",
+            menuName: "Meat & Shrimp Spring Rolls",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 26.00,
+            price: 6.75,
             pictureURI: "1234"
         },
         {
             restaurantID: 2,
-            menuName: "Pan-Fried Dover Sole with Beurre Noisette & Capers",
+            menuName: "Shredded Crabmeat Shrimp Noodle Soup",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 48.00,
+            price: 10.75,
             pictureURI: "1234"
         },
         {
             restaurantID: 2,
-            menuName: "Grilled Beef Tenderloin with Béarnaise",
+            menuName: "Vegetable Spring Rolls",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 42.00,
+            price: 6.75,
             pictureURI: "1234"
         },
         {
             restaurantID: 2,
+            menuName: "Vietnamese Dumplings",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            price: 7.50,
+            pictureURI: "1234"
+        },
+        {
+            restaurantID: 3,
+            menuName: "Rosu Katsu",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            price: 18.50,
+            pictureURI: "1234"
+        },
+        {
+            restaurantID: 3,
+            menuName: "Gyudon",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            price: 19,
+            pictureURI: "1234"
+        },
+        {
+            restaurantID: 3,
+            menuName: "Chicken Karrage",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            price: 14,
+            pictureURI: "1234"
+        },
+        {
+            restaurantID: 3,
+            menuName: "Takoyaki",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            price: 13.50,
+            pictureURI: "1234"
+        },
+        {
+            restaurantID: 3,
+            menuName: "Ebi Chiri",
+            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            price: 13.50,
+            pictureURI: "1234"
+        },
+        {
+            restaurantID: 4,
             menuName: "Veal Medallions with Morel Mushroom Sauce",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 42.00,
             pictureURI: "1234"
         },
         {
-            restaurantID: 3,
-            menuName: "Chicken Souvlaki",
+            restaurantID: 4,
+            menuName: "Grilled Beef Tenderloin with Béarnaise",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 15.95,
-            pictureURI: "1234"
-        },
-        {
-            restaurantID: 3,
-            menuName: "Kalamari Dinner",
-            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 16.95,
-            pictureURI: "1234"
-        },
-        {
-            restaurantID: 3,
-            menuName: "Spanakopita",
-            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 9.95,
-            pictureURI: "1234"
-        },
-        {
-            restaurantID: 3,
-            menuName: "Roast Lamb",
-            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 18.95,
-            pictureURI: "1234"
-        },
-        {
-            restaurantID: 3,
-            menuName: "Saganaki Dinner",
-            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 9.95,
+            price: 48.00,
             pictureURI: "1234"
         },
         {
             restaurantID: 4,
-            menuName: "Butter Chicken",
+            menuName: "Pan-Fried Dover Sole with Beurre Noisette & Capers",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 13.95,
+            price: 48.00,
             pictureURI: "1234"
         },
         {
             restaurantID: 4,
-            menuName: "Paneer Spinach Curry",
+            menuName: "Seared Scallops with Black Linguine & Basil Beurre Blanc",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 13.95,
+            price: 26.00,
             pictureURI: "1234"
         },
         {
             restaurantID: 4,
-            menuName: "Chicken Tikka Masala",
+            menuName: "Black Truffle Omelette served with Butter Letter and Pommes Frites",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 14.95,
-            pictureURI: "1234"
-        },
-        {
-            restaurantID: 4,
-            menuName: "Chicken Dum Biryani",
-            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 13.95,
-            pictureURI: "1234"
-        },
-        {
-            restaurantID: 4,
-            menuName: "Lamb Tikka",
-            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 15.95,
-            pictureURI: "1234"
-        },
-        {
-            restaurantID: 5,
-            menuName: "Spaghetti Ragu",
-            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 19.95,
-            pictureURI: "1234"
-        },
-        {
-            restaurantID: 5,
-            menuName: "Bruschetta",
-            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 8.95,
-            pictureURI: "1234"
-        },
-        {
-            restaurantID: 5,
-            menuName: "Pizza Margherita",
-            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 15.95,
-            pictureURI: "1234"
-        },
-        {
-            restaurantID: 5,
-            menuName: "Chicken Parmigiana",
-            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 23.95,
-            pictureURI: "1234"
-        },
-        {
-            restaurantID: 5,
-            menuName: "Osso Buco",
-            menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            price: 32.95,
+            price: 24.00,
             pictureURI: "1234"
         },
     ]).catch(errHandler)
@@ -481,296 +507,432 @@ module.exports = async (db) => {
 
 
     const fakeMenusChoicesLinks = await menuChoicesLinks.bulkCreate([
-        //Hot & Sour Soup With Chicken & Shrimp
+        // Butter Chicken... Not Spicy, Indian, Gluten Free, No Allergens
         {
-            choiceID: 2,
-            menuID: 1
+            menuID: 1,
+            choiceID: 4
         },
         {
-            choiceID: 5,
-            menuID: 1
+            menuID: 1,
+            choiceID: 5
         },
         {
-            choiceID: 29,
-            menuID: 1
+            menuID: 1,
+            choiceID: 11
         },
         {
-            choiceID: 27,
-            menuID: 1
+            menuID: 1,
+            choiceID: 13
         },
+        // Paneer Spinach Curry... High, Indian, Vegetarian, No Allergens
         {
-            choiceID: 33,
-            menuID: 1
+            menuID: 2,
+            choiceID: 2
         },
-        //Lettuce Wrap
         {
-            choiceID: 4,
-            menuID: 2
+            menuID: 2,
+            choiceID: 5
         },
         {
-            choiceID: 5,
-            menuID: 2
+            menuID: 2,
+            choiceID: 10
         },
         {
-            choiceID: 21,
-            menuID: 2
+            menuID: 2,
+            choiceID: 13
         },
+        // Chicken Tikka Masala... Moderate, Indian, Anything, No Allergens
         {
-            choiceID: 32,
-            menuID: 2
+            menuID: 3,
+            choiceID: 3
         },
-        //Dai Ching Chicken (With Bone)
         {
-            choiceID: 1,
-            menuID: 3
+            menuID: 3,
+            choiceID: 5
         },
         {
-            choiceID: 5,
-            menuID: 3
+            menuID: 3,
+            choiceID: 9
         },
-        //General Tso's Chicken
         {
-            choiceID: 2,
-            menuID: 4
+            menuID: 3,
+            choiceID: 13
         },
+        // Chicken Dum Biryani... Moderate, Indian, Gluten-Free, No Allergens
         {
-            choiceID: 5,
-            menuID: 4
+            menuID: 4,
+            choiceID: 3
         },
-        //Ginger Beef (Hot & Sweet)
         {
-            choiceID: 1,
-            menuID: 5
+            menuID: 4,
+            choiceID: 5
         },
         {
-            choiceID: 5,
-            menuID: 5
+            menuID: 4,
+            choiceID: 10
         },
-
-        //Black Truffle Omelette served with Butter Letter and Pommes Frites
         {
-            choiceID: 4,
-            menuID: 6
+            menuID: 4,
+            choiceID: 13
         },
+        // Lamb Tikka... Not Spicy, Indian, Anything, No Allergens
         {
-            choiceID: 6,
-            menuID: 6
+            menuID: 5,
+            choiceID: 4
         },
         {
-            choiceID: 27,
-            menuID: 6
+            menuID: 5,
+            choiceID: 5
         },
-        //Seared Scallops with Black Linguine & Basil Beurre Blanc
         {
-            choiceID: 4,
-            menuID: 7
+            menuID: 5,
+            choiceID: 9
         },
         {
-            choiceID: 6,
-            menuID: 7
+            menuID: 5,
+            choiceID: 13
         },
+        // Lemongrass Chicken... Not Spicy, Vietnamese, Anything, Tree Nuts
         {
-            choiceID: 28,
-            menuID: 7
+            menuID: 6,
+            choiceID: 4
         },
-        //Pan-Fried Dover Sole with Beurre Noisette & Capers
         {
-            choiceID: 4,
-            menuID: 8
+            menuID: 6,
+            choiceID: 6
         },
         {
-            choiceID: 6,
-            menuID: 8
+            menuID: 6,
+            choiceID: 9
         },
         {
-            choiceID: 21,
-            menuID: 8
+            menuID: 6,
+            choiceID: 16
         },
-        //Grilled Beef Tenderloin with Béarnaise
+        // Meat & Shrimp Spring Rolls... High, Vietnamese, Anything, Crustacean Shellfish
         {
-            choiceID: 4,
-            menuID: 9
+            menuID: 7,
+            choiceID: 2
         },
         {
-            choiceID: 6,
-            menuID: 9
+            menuID: 7,
+            choiceID: 6
         },
-        //Veal Medallions with Morel Mushroom Sauce
         {
-            choiceID: 4,
-            menuID: 10
+            menuID: 7,
+            choiceID: 9
         },
         {
-            choiceID: 6,
-            menuID: 10
+            menuID: 7,
+            choiceID: 15
         },
+        // Shredded Crabmeat Shrimp Noodle Soup... Not Spicy, Vietnamese, Anything, No Allergens
         {
-            choiceID: 21,
-            menuID: 10
+            menuID: 8,
+            choiceID: 4
         },
-
-        //Chicken Souvlaki
         {
-            choiceID: 4,
-            menuID: 11
+            menuID: 8,
+            choiceID: 6
         },
         {
-            choiceID: 7,
-            menuID: 11
+            menuID: 8,
+            choiceID: 9
         },
-        //Kalamari Dinner
         {
-            choiceID: 4,
-            menuID: 12
+            menuID: 8,
+            choiceID: 13
         },
+        // Vegetable Spring Rolls... Very High, Vietnamese, Vegetarian, Tree Nuts
         {
-            choiceID: 7,
-            menuID: 12
+            menuID: 9,
+            choiceID: 1
         },
-        //Spanakopita
         {
-            choiceID: 4,
-            menuID: 13
+            menuID: 9,
+            choiceID: 6
         },
         {
-            choiceID: 7,
-            menuID: 13
+            menuID: 9,
+            choiceID: 10
         },
         {
-            choiceID: 28,
-            menuID: 13
+            menuID: 9,
+            choiceID: 16
         },
-        //Roast Lamb
+        // Vietnamese Dumplings... Not Spicy, Vietnamese, Vegetarian, No Allergens
         {
-            choiceID: 4,
-            menuID: 14
+            menuID: 10,
+            choiceID: 4
         },
         {
-            choiceID: 7,
-            menuID: 14
+            menuID: 10,
+            choiceID: 6
         },
-        //Saganaki Dinner
         {
-            choiceID: 4,
-            menuID: 15
+            menuID: 10,
+            choiceID: 10
         },
         {
-            choiceID: 7,
-            menuID: 15
+            menuID: 10,
+            choiceID: 13
         },
-
-        //Butter Chicken
+        // Rosu Katsu... Not Spicy, Japanese, Anything, No Allergens
         {
-            choiceID: 4,
-            menuID: 16
+            menuID: 11,
+            choiceID: 4
         },
         {
-            choiceID: 8,
-            menuID: 16
+            menuID: 11,
+            choiceID: 7
         },
         {
-            choiceID: 26,
-            menuID: 16
+            menuID: 11,
+            choiceID: 9
         },
         {
-            choiceID: 33,
-            menuID: 16
+            menuID: 11,
+            choiceID: 13
         },
-        //Paneer Spinach Curry
+        // Gyudon... Not Spicy, Japanese, Anything, No Allergens
         {
-            choiceID: 3,
-            menuID: 17
+            menuID: 12,
+            choiceID: 4
         },
         {
-            choiceID: 8,
-            menuID: 17
+            menuID: 12,
+            choiceID: 7
         },
         {
-            choiceID: 21,
-            menuID: 17
+            menuID: 12,
+            choiceID: 9
         },
-        //Chicken Tikka Masala
         {
-            choiceID: 4,
-            menuID: 18
+            menuID: 12,
+            choiceID: 13
         },
+        // Chicken Karrage... Moderate, Japanese, Anything, No Allergens
         {
-            choiceID: 8,
-            menuID: 18
+            menuID: 13,
+            choiceID: 3
         },
-        //Chicken Dum Biryani
         {
-            choiceID: 4,
-            menuID: 19
+            menuID: 13,
+            choiceID: 7
         },
         {
-            choiceID: 8,
-            menuID: 19
+            menuID: 13,
+            choiceID: 9
         },
-        //Lamb Tikka
         {
-            choiceID: 4,
-            menuID: 20
+            menuID: 13,
+            choiceID: 13
         },
+        // Takoyaki... Not Spicy, Japanese, Anything, No Allergens
         {
-            choiceID: 8,
-            menuID: 20
+            menuID: 14,
+            choiceID: 4
         },
-
-        //Spaghetti Ragu
         {
-            choiceID: 4,
-            menuID: 21
+            menuID: 14,
+            choiceID: 7
         },
         {
-            choiceID: 11,
-            menuID: 21
+            menuID: 14,
+            choiceID: 9
         },
-        //Bruschetta
         {
-            choiceID: 4,
-            menuID: 22
+            menuID: 14,
+            choiceID: 13
         },
+        // Ebi Chiri... High, Japanese, Anything, Crustacean Shellfish
         {
-            choiceID: 11,
-            menuID: 22
+            menuID: 15,
+            choiceID: 1
         },
-        //Pizza Margherita
         {
-            choiceID: 4,
-            menuID: 23
+            menuID: 15,
+            choiceID: 7
         },
         {
-            choiceID: 11,
-            menuID: 23
+            menuID: 15,
+            choiceID: 9
         },
         {
-            choiceID: 21,
-            menuID: 23
+            menuID: 15,
+            choiceID: 15
         },
-        //Chicken Parmigiana
+        // Veal Medallions with Morel Mushroom Sauce... Not Spicy, French, Anything, Milk
         {
-            choiceID: 4,
-            menuID: 24
+            menuID: 16,
+            choiceID: 4
         },
         {
-            choiceID: 11,
-            menuID: 24
+            menuID: 16,
+            choiceID: 8
         },
         {
-            choiceID: 26,
-            menuID: 24
+            menuID: 16,
+            choiceID: 9
         },
-        //Osso Buco
         {
-            choiceID: 4,
-            menuID: 25
+            menuID: 16,
+            choiceID: 14
         },
+        // Grilled Beef Tenderloin with Béarnaise... Not Spicy, French, Gluten Free, Milk
         {
-            choiceID: 11,
-            menuID: 25
+            menuID: 17,
+            choiceID: 4
         },
-
+        {
+            menuID: 17,
+            choiceID: 8
+        },
+        {
+            menuID: 17,
+            choiceID: 11
+        },
+        {
+            menuID: 17,
+            choiceID: 14
+        },
+        // Pan-Fried Dover Sole with Beurre Noisette & Capers... Not Spicy, French, Anything, Fish
+        {
+            menuID: 18,
+            choiceID: 4
+        },
+        {
+            menuID: 18,
+            choiceID: 8
+        },
+        {
+            menuID: 18,
+            choiceID: 9
+        },
+        {
+            menuID: 18,
+            choiceID: 17
+        },
+        // Seared Scallops with Black Linguine & Basil Beurre Blanc ... Not Spicy, French, Gluten Free, Crustacean Shellfish
+        {
+            menuID: 19,
+            choiceID: 4
+        },
+        {
+            menuID: 19,
+            choiceID: 8
+        },
+        {
+            menuID: 19,
+            choiceID: 11
+        },
+        {
+            menuID: 19,
+            choiceID: 15
+        },
+        // Black Truffle Omelette served with Butter Letter and Pommes Frites ... Not Spicy, French, Anything, Milk
+        {
+            menuID: 20,
+            choiceID: 4
+        },
+        {
+            menuID: 20,
+            choiceID: 8
+        },
+        {
+            menuID: 20,
+            choiceID: 9
+        },
+        {
+            menuID: 20,
+            choiceID: 14
+        },
     ]).catch(errHandler)
-}
 
+const fakeOrders = await orders.bulkCreate([
+    {
+        customerID: 1,
+        orderStatusID: 1,
+        forHowManyPeople: 1,
+    },
+    {
+        customerID: 1,
+        orderStatusID: 2,
+        forHowManyPeople: 1,
+        estimatedDeliveryTime: 20,
+    },
+    {
+        customerID: 1,
+        orderStatusID: 3,
+        forHowManyPeople: 2,
+        estimatedDeliveryTime: 30,
+    },
+    {
+        customerID: 1,
+        orderStatusID: 4,
+        forHowManyPeople: 2,
+        estimatedDeliveryTime: 40,
+    },
+    {
+        customerID: 1,
+        orderStatusID: 5,
+        forHowManyPeople: 2,
+        estimatedDeliveryTime: 40,
+        review: "It was tasty and wanna order again!",
+        rate: 5,
+        isOrderAgain: true
+    },
+]).catch(errHandler)
+
+const customerChoicesLink = await customerChoicesLinks.bulkCreate([
+    // John Doe ... Not Spicy, Japanese, Indian, French, Anything, Crustacean Shellfish
+    {
+        customerID: 1,
+        choiceID: 4
+    },
+    {
+        customerID: 1,
+        choiceID: 5
+    },
+    {
+        customerID: 1,
+        choiceID: 7
+    },
+    {
+        customerID: 1,
+        choiceID: 8
+    },
+    {
+        customerID: 1,
+        choiceID: 9
+    },
+    {
+        customerID: 1,
+        choiceID: 15
+    },
+]).catch(errHandler)
+
+const orderMenuLink = await orderMenuLinks.bulkCreate([
+    {
+        orderID: 1,
+        menuID: 1
+    },
+    {
+        orderID: 2,
+        menuID: 2
+    },
+    {
+        orderID: 3,
+        menuID: 3
+    },
+    {
+        orderID: 4,
+        menuID: 4
+    },
+    {
+        orderID: 5,
+        menuID: 5
+    },
+]).catch(errHandler)
+
+}
