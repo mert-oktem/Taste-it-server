@@ -96,34 +96,7 @@ module.exports = async (db) => {
         addressID: 1
     }).catch(errHandler)
 
-    const customerChoicesLink = await customerChoicesLinks.bulkCreate([
-        // John Doe ... Not Spicy, Japanese, Indian, French, Anything, Crustacean Shellfish
-        {
-            customerID: 1,
-            choiceID: 4
-        },
-        {
-            customerID: 1,
-            choiceID: 5
-        },
-        {
-            customerID: 1,
-            choiceID: 7
-        },
-        {
-            customerID: 1,
-            choiceID: 8
-        },
-        {
-            customerID: 1,
-            choiceID: 9
-        },
-        {
-            customerID: 1,
-            choiceID: 15
-        },
-    ]).catch(errHandler)
-
+    
     const allChoices = await choices.bulkCreate([
         {
             category: "Spiciness",
@@ -859,19 +832,19 @@ module.exports = async (db) => {
         },
         // Black Truffle Omelette served with Butter Letter and Pommes Frites ... Not Spicy, French, Anything, Milk
         {
-            menuID: 19,
+            menuID: 20,
             choiceID: 4
         },
         {
-            menuID: 19,
+            menuID: 20,
             choiceID: 8
         },
         {
-            menuID: 19,
+            menuID: 20,
             choiceID: 9
         },
         {
-            menuID: 19,
+            menuID: 20,
             choiceID: 14
         },
     ]).catch(errHandler)
@@ -911,6 +884,34 @@ const fakeOrders = await orders.bulkCreate([
     },
 ]).catch(errHandler)
 
+const customerChoicesLink = await customerChoicesLinks.bulkCreate([
+    // John Doe ... Not Spicy, Japanese, Indian, French, Anything, Crustacean Shellfish
+    {
+        customerID: 1,
+        choiceID: 4
+    },
+    {
+        customerID: 1,
+        choiceID: 5
+    },
+    {
+        customerID: 1,
+        choiceID: 7
+    },
+    {
+        customerID: 1,
+        choiceID: 8
+    },
+    {
+        customerID: 1,
+        choiceID: 9
+    },
+    {
+        customerID: 1,
+        choiceID: 15
+    },
+]).catch(errHandler)
+
 const orderMenuLink = await orderMenuLinks.bulkCreate([
     {
         orderID: 1,
@@ -918,23 +919,19 @@ const orderMenuLink = await orderMenuLinks.bulkCreate([
     },
     {
         orderID: 2,
-        menuID: 6
+        menuID: 2
     },
     {
         orderID: 3,
-        menuID: 11
+        menuID: 3
     },
     {
         orderID: 4,
-        menuID: 16
-    },
-    {
-        orderID: 1,
-        menuID: 21
+        menuID: 4
     },
     {
         orderID: 5,
-        menuID: 2
+        menuID: 5
     },
 ]).catch(errHandler)
 

@@ -100,7 +100,7 @@ exports.pickMenu = async function (req, res, next) {
     )
     INNER JOIN choices
     ON menuChoicesLinks.choiceID = choices.choiceID AND choices.category = "Allergens"
-    WHERE menus.menuID != (SELECT menus.menuID FROM menus
+    WHERE menus.menuID NOT IN (SELECT menus.menuID FROM menus
     INNER JOIN menuChoicesLinks
     ON menus.menuID = menuChoicesLinks.menuID AND menus.menuID IN (
       -- 3. Diet Type filter
