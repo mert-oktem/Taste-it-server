@@ -2,7 +2,8 @@ const { QueryTypes } = require('sequelize');
 const fs = require("fs");
 const path = require("path");
 
-
+// JWT
+const jwt = require('jsonwebtoken');
 
 // Importing necessary tables
 const choices = require("../models/choicesModel")
@@ -17,7 +18,7 @@ const menuChoiceLinks = require("../models/menuChoicesLinkModel")
 
 // Create and save a new Menu
 exports.createMenu = async function (req, res, next) {
-    // This method needs: restaurantID, menuName, menuDesc, price, pictureURI
+    // This method needs: token, menuName, menuDesc, price, pictureURI
     // Add joi function to validate request.
 
     // Find restaurant ID with token
@@ -73,7 +74,6 @@ exports.addMenuChoice = async function (req, res, next) {
 exports.findMenu = async function (req, res, next) {
     // This method needs: menuID
     // Add joi function to validate request!
-  
     const id = req.params.menuID
 
     await sequelize.query(
@@ -89,7 +89,6 @@ exports.findMenu = async function (req, res, next) {
 exports.findMenuImage = async function (req, res, next) {
   // This method needs: menuID
   // Add joi function to validate request!
-
   const id = req.params.menuID
 
   await sequelize.query(
@@ -124,10 +123,11 @@ exports.findMenuChoices = async function (req, res, next) {
 
 // Find All Menus from a restaurant
 exports.findAllMenus = async function (req, res, next) {
-    // This method needs: restaurantID
+    // This method needs: token
     // Add joi function to validate request!
-    const id = req.params.restaurantID
-  
+    const decodedJwt = await jwt.decode(req.token, { complete: true });
+    const restaurantID = decodedJwt.payload.restaurant.restaurantID;
+    console.log(restaurantID)
     await sequelize.query(  
         `SELECT *
         FROM menus
@@ -135,7 +135,7 @@ exports.findAllMenus = async function (req, res, next) {
         ON menus.menuID = menuChoicesLinks.menuID
         LEFT JOIN choices
         ON menuChoicesLinks.choiceID = choices.choiceID
-        WHERE menus.restaurantID = ${id}`, { type: QueryTypes.SELECT })
+        WHERE menus.restaurantID = ${restaurantID}`, { type: QueryTypes.SELECT })
         .then(data => { res.send(data) })
         .catch(err => { res.status(500).send({ message: err.message }) })
   }
@@ -171,7 +171,7 @@ exports.updateMenu = async function (req, res, next) {
 }
 
 // Update a menu's choice info by the id in the request
-exports.updateChoices = async function (req, res, next) {
+exports.deActivateChoices = async function (req, res, next) {
     // This method needs: menuID
     // Add joi function to validate request!
     const id = req.params.menuID;
@@ -180,9 +180,10 @@ exports.updateChoices = async function (req, res, next) {
     .catch(err => { res.status(500).send({ message: err.message } )})
 
     await sequelize.query(  
-        `DELETE menuChoicesLinks
+        `UPDATE menuChoicesLinks
         LEFT JOIN choices
         ON choices.choiceID = menuChoicesLinks.choiceID
+        SET menuChoicesLinks.isActive = false
         WHERE menuChoicesLinks.menuID = ${id} AND choices.category = "${req.body.category}"`, { type: QueryTypes.DELETE })
         .then(data => { res.send(data) })
         .catch(err => { res.status(500).send({ message: err.message }) 

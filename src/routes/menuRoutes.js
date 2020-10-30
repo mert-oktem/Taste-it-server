@@ -10,25 +10,25 @@ module.exports = app => {
     router.post("/", auth.verifyToken, imageUploader.single('image'), menus.createMenu);
 
     // Add a new choice for a menu
-    router.post("/choice", menus.addMenuChoice);
+    router.post("/choice", auth.verifyToken, menus.addMenuChoice);
 
     // Retrieve a menu active
-    router.get("/:menuID", menus.findMenu);
+    router.get("/:menuID", auth.verifyToken, menus.findMenu);
 
     // Retrieve a menu's image
-    router.get("/image/:menuID", menus.findMenuImage);
+    router.get("/image/:menuID", auth.verifyToken, menus.findMenuImage);
 
     // Retrieve a menu's choices
-    router.get("/choices/:menuID", menus.findMenuChoices);
+    router.get("/choices/:menuID", auth.verifyToken, menus.findMenuChoices);
 
     // Retrieve a restaurant's all menus
-    router.get("/allMenu/:restaurantID", menus.findAllMenus);
+    router.get("/allMenus", auth.verifyToken, menus.findAllMenus);
   
     // Update a menu with id
-    router.put("/:menuID", imageUploader.single('image'), menus.updateMenu);
+    router.put("/:menuID", auth.verifyToken, imageUploader.single('image'), menus.updateMenu);
   
     // Update choices with id
-    // router.put("/deactivechoices/:menuID", menus.updateChoices);
+    router.put("/deactivechoices/:menuID", menus.deActivateChoices);
 
     app.use('/api/menus', router);
 };
