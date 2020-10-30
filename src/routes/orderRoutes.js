@@ -9,8 +9,8 @@ module.exports = app => {
     // Pick a menu based on the customer's choices
     router.get("/", auth.verifyToken, orders.pickMenu);
 
-    // // Get a Delivery Time
-    // router.get("/", auth.verifyToken, orders.estimateDeliveryTime);
+    // Get a Delivery Time
+    router.get("/deliveryTime", auth.verifyToken, orders.estimateDeliveryTime);
 
     // Retrieve a customer's active order
     router.get("/customer", auth.verifyToken, orders.findOrdersCustomers);

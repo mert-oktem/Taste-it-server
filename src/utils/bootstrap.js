@@ -314,28 +314,28 @@ module.exports = async (db) => {
     const fakeRestaurants = await restaurants.bulkCreate([
         {
             restaurantName: "Indian Delicacy",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            restaurantDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             email: "indian@email.com",
             password: "$2b$10$hLoxlq7y6Pn4nPdKm/nYK.7Aydpf2Rplg0ZHp0GCjknWJtepiovii",
             phoneNumber: "1234",
         },
         {
             restaurantName: "Joyeaux Café & Restaurant",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            restaurantDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             email: "vietnamese@email.com",
             password: "$2b$10$hLoxlq7y6Pn4nPdKm/nYK.7Aydpf2Rplg0ZHp0GCjknWJtepiovii",
             phoneNumber: "1234",
         },
         {
             restaurantName: "Saku",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            restaurantDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             email: "japanese@email.com",
             password: "$2b$10$hLoxlq7y6Pn4nPdKm/nYK.7Aydpf2Rplg0ZHp0GCjknWJtepiovii",
             phoneNumber: "1234",
         },
         {
             restaurantName: "Le Crocodile",
-            restaurantDescripton: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            restaurantDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             email: "french@email.com",
             password: "$2b$10$hLoxlq7y6Pn4nPdKm/nYK.7Aydpf2Rplg0ZHp0GCjknWJtepiovii",
             phoneNumber: "1234",

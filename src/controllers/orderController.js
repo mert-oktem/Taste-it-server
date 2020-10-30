@@ -1,6 +1,9 @@
 const { QueryTypes } = require('sequelize');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const request = require('request');
+const reqp  = require('request-promise-native');
+
 // JWT
 const jwt = require('jsonwebtoken');
 
@@ -12,6 +15,7 @@ const countries = require('../models/countriesModel')
 const provinces = require("../models/provincesModel")
 const cities = require("../models/citiesModel")
 const customerAddressLink = require("../models/customerAddressLinkModel")
+const restaurantAddressLink = require("../models/restaurantAddressLinkModel")
 
 const choices = require("../models/choicesModel")
 const customerChoices = require("../models/customerChoicesModel");
@@ -25,20 +29,21 @@ const orderMenuLinks = require("../models/orderMenuLinkModel")
 // POST Methods ////
 ////////////////////
 
-// Confirm an order
+// Confirm an order (Send an order)
 exports.confirmOrder = async function (req, res, next) {
+  // This method needs: customerID, forHowManyPeople, menuID 
   // Find customer ID with token
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const customerID = decodedJwt.payload.customer.customerID;
 
-  // Create a Customer
+  // Create a new order
   const newOrder = {
     customerID: customerID,
+    forHowManyPeople: req.body.forHowManyPeople,
     orderStatusID: 1,
-    estimatedDeliveryTime: 30,
-    forHowManyPeople: 1,
   }
   orders.create(newOrder)
+  // Link the order with the selected menu
   .then(data => {orderMenuLinks.create({
     menuID: req.body.menuID,
     orderID: data.orderID
@@ -51,25 +56,23 @@ exports.confirmOrder = async function (req, res, next) {
 // GET Methods /////
 ////////////////////
 
-// Create and save a new order from a customer
+// Pick a menu based on the customer's choices
 exports.pickMenu = async function (req, res, next) {
-  // This method needs: customerID, orderStatusID(Default), estimatedDeliveryTime,numberOfPeople
+  // This method needs: customerID, budget
   // Add joi function to validate request!
 
-  // Customer ID
+  // Find customer ID with token
   const decodedJwt = jwt.decode(req.token, { complete: true });
   const customerID = decodedJwt.payload.customer.customerID;
 
   // Budget
   const budget = req.body.budget;
+  
 
-  /////////////////////////////////////////////////////////////////
-  //STEP 2. Narrow down menus by cuisines                        //
-  /////////////////////////////////////////////////////////////////
-
+  // Narrow down menus to one thru each choice requirements
   await sequelize.query(  
     `-- 4. Allergens Filter
-    SELECT *
+    SELECT menus.menuID, menus.restaurantID, menus.price
     FROM menus
     INNER JOIN menuChoicesLinks
     ON menus.menuID = menuChoicesLinks.menuID AND menus.menuID IN (
@@ -130,7 +133,7 @@ exports.pickMenu = async function (req, res, next) {
     )
     INNER JOIN choices
     ON menuChoicesLinks.choiceID = choices.choiceID AND choices.category = "Allergens" WHERE menuChoicesLinks.choiceID IN ( SELECT choiceID FROM customerChoicesLinks WHERE customerChoicesLinks.customerID = ${customerID} ))
-    AND menus.price < ${budget}
+    AND menus.price < ${budget} AND menus.isActive = true
     ORDER BY RAND() LIMIT 1`, { type: QueryTypes.SELECT })
     .then(data => { res.send(data)})
     .catch(err => { res.status(500).send({ message: err.message }) });
@@ -138,26 +141,42 @@ exports.pickMenu = async function (req, res, next) {
 
 
 
-// // Estimate a delivery time
-// exports.estimateDeliveryTime = async function (req, res, next) {
-//   // Find customer ID with token
-//   const decodedJwt = await jwt.decode(req.token, { complete: true });
-//   const customerID = decodedJwt.payload.customer.customerID;
+// Estimate a delivery time
+exports.estimateDeliveryTime = async function (req, res, next) {
+  // Find customer ID with token
+  const decodedJwt = await jwt.decode(req.token, { complete: true });
+  const customerID = decodedJwt.payload.customer.customerID;
 
-  
-//   .then(data => { res.send(data) })
-//   .catch(err => { res.status(500).send({ message: err.message }) })
-// }
+  // Get customer-address-link using customerID
+  const cAddressLink = await customerAddressLink.findOne({ where: {customerID: customerID} })
+  .catch(err => { res.status(500).send({ message: err.message } )})
+  // Get customer's addressID using customer-address-link
+  const customerAddress = await addresses.findOne({ where: {addressID: cAddressLink.addressID} })
+  .catch(err => { res.status(500).send({ message: err.message } )})
+
+  // Get restaurant-address-link using restaurantID
+  const rAddressLink = await restaurantAddressLink.findOne({ where: {restaurantID: req.body.restaurantID} })
+  .catch(err => { res.status(500).send({ message: err.message } )})
+  // Get restaurant's addressID using restaurant-address-link
+  const restaurantAddress = await addresses.findOne({ where: {addressID: rAddressLink.addressID} })
+  .catch(err => { res.status(500).send({ message: err.message } )})
+
+  reqp(`https://maps.googleapis.com/maps/api/directions/json?origin=${restaurantAddress.postcode}&destination=${customerAddress.postcode}&key=AIzaSyDIpUKnFnPwDnVk0bCUDOBK_q1mQNuiaE0`)
+  .then(data => { res.send(JSON.parse(data).routes[0].legs[0].duration.text) })
+  .catch(err => { res.status(500).send({ message: err.message }) })
+}
 
 
 
 
 // Find orders with customer ID and orderStatusID
 exports.findOrdersCustomers = async function (req, res, next) {
+  // This method needs: customerID, orderStatusID 
   // Find customer ID with token
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const customerID = decodedJwt.payload.customer.customerID;
 
+  // status = "Confirming Order with the restaurant", "Being prepared", "Being delivered", "Delivered", "Reviewed"
   const orderStatusID = req.body.orderStatusID
 
   sequelize.query(`SELECT *
@@ -173,10 +192,12 @@ exports.findOrdersCustomers = async function (req, res, next) {
 
 // Find orders with restaurant ID and orderStatusID
 exports.findOrdersRestaurant = async function (req, res, next) {
+  // This method needs: restaurantID, orderStatusID
   // Find restaurant ID with token
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const restaurantID = decodedJwt.payload.restaurant.restaurantID;
 
+  // status = "Confirming Order with the restaurant", "Being prepared", "Being delivered", "Delivered", "Reviewed"
   const orderStatusID = req.body.orderStatusID
 
   sequelize.query(`SELECT *
@@ -197,15 +218,19 @@ exports.findOrdersRestaurant = async function (req, res, next) {
 
 // Update an order status
 exports.updateOrder = async function (req, res, next) {
+  // This method needs: orderID
+
   const orderID = req.body.orderID;
 
   // Find order using orderID
   const order = await orders.findByPk(orderID)
   .catch(err => { res.status(500).send({ message: err.message } )})
 
+  // Check if the req.body contains options, if not use the same record in the db
   const orderStatusID = req.body.orderStatusID ? req.body.orderStatusID : order.orderStatusID
   
-  await order.update({
+  
+  order.update({
     orderStatusID: orderStatusID
   })
   .then(data => { res.send(data) })
