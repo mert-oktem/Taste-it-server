@@ -131,6 +131,12 @@ exports.pickMenu = async function (req, res, next) {
       INNER JOIN choices
       ON menuChoicesLinks.choiceID = choices.choiceID AND choices.category = "Diet Types"
       AND choices.choiceID IN ( SELECT choiceID FROM customerChoicesLinks WHERE customerChoicesLinks.customerID = ${customerID} )
+    ) AND menus.menuID NOT IN (
+      -- isOrderAgain Filter
+      SELECT menuID
+      FROM orderMenuLinks
+      LEFT JOIN orders
+      ON orders.orderID = orderMenuLinks.orderID AND orders.isOrderAgain = False AND customerID = ${customerID}
     )
     INNER JOIN choices
     ON menuChoicesLinks.choiceID = choices.choiceID AND choices.category = "Allergens" WHERE menuChoicesLinks.choiceID IN ( SELECT choiceID FROM customerChoicesLinks WHERE customerChoicesLinks.customerID = ${customerID} ))
