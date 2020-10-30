@@ -24,6 +24,7 @@ const menuChoices = require("../models/menuChoicesLinkModel")
 const orders = require("../models/ordersModel")
 const orderMenuLinks = require("../models/orderMenuLinkModel")
 
+const apiKey = ''
 
 ////////////////////
 // POST Methods ////
@@ -161,7 +162,7 @@ exports.estimateDeliveryTime = async function (req, res, next) {
   const restaurantAddress = await addresses.findOne({ where: {addressID: rAddressLink.addressID} })
   .catch(err => { res.status(500).send({ message: err.message } )})
 
-  reqp(`https://maps.googleapis.com/maps/api/directions/json?origin=${restaurantAddress.postcode}&destination=${customerAddress.postcode}&key=AIzaSyDIpUKnFnPwDnVk0bCUDOBK_q1mQNuiaE0`)
+  reqp(`https://maps.googleapis.com/maps/api/directions/json?origin=${restaurantAddress.postcode}&destination=${customerAddress.postcode}&key=${apiKey}`)
   .then(data => { res.send(JSON.parse(data).routes[0].legs[0].duration.text) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
