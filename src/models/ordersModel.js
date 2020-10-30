@@ -22,7 +22,7 @@ module.exports = sequelize.define("orders", {
     },
     estimatedDeliveryTime: {
       type: Sequelize.INTEGER,
-      allowNull: false,
+      allowNull: true,
       comment: null,
       field: "estimatedDeliveryTime"
     },

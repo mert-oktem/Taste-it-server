@@ -3,24 +3,23 @@ module.exports = app => {
     const auth = require("../middleware/auth.js")
     var router = require("express").Router();
   
-    // Create a new order
-    router.post("/", auth.verifyToken, orders.createOrder);
-  
+    // Confirm an order
+    router.post("/", auth.verifyToken, orders.confirmOrder);
+    
+    // Pick a menu based on the customer's choices
+    router.get("/", auth.verifyToken, orders.pickMenu);
+
+    // // Get a Delivery Time
+    // router.get("/", auth.verifyToken, orders.estimateDeliveryTime);
 
     // Retrieve a customer's active order
-    router.get("/activeOrders/customer", auth.verifyToken, orders.findActiveOrdersCustomers);
+    router.get("/customer", auth.verifyToken, orders.findOrdersCustomers);
 
-    // // Retrieve orders for a restaurant
-    // router.get("/activeOrders/restaurant", auth.verifyToken, orders.findActiveOrdersRestaurant);
+    // Retrieve orders for a restaurant
+    router.get("/restaurant", auth.verifyToken, orders.findOrdersRestaurant);
 
-    // // Retrieve a customer's previous orders
-    // router.get("/pastOrders/customer", auth.verifyToken, orders.findOrderHistoryCustomers);
-  
-    // // Retrieve previous orders for a restaurant
-    // router.get("/orderhistory/restaurant", auth.verifyToken, orders.findOrderHistoryRestaurant);
-
-    // // Update an order with order ID
-    // router.put("/:orderID", orders.updateOrder);
+    // Update an order with order ID
+    router.put("/", auth.verifyToken, orders.updateOrder);
   
     app.use('/api/orders', router);
 };

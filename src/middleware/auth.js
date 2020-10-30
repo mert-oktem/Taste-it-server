@@ -19,7 +19,7 @@ exports.verifyToken = async function (req, res, next) {
     });    
 }
 
-// Give Token
+//  Give Token
 exports.customerLogin = async function (req, res, next) {
     // Get customer using username
     const customer = await customers.findOne( { where: { email: req.body.email } } )
