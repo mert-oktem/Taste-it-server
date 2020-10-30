@@ -1,12 +1,13 @@
 module.exports = app => {
     const menus = require("../controllers/menuController.js");
-    const imageUploader = require('../middleware/imageUploader.js')
+    const imageUploader = require('../middleware/imageUploader.js');
+    const auth = require("../middleware/auth.js");
 
   
     var router = require("express").Router();
   
     // Create a new menu
-    router.post("/", imageUploader.single('image'), menus.createMenu);
+    router.post("/", auth.verifyToken, imageUploader.single('image'), menus.createMenu);
 
     // Add a new choice for a menu
     router.post("/choice", menus.addMenuChoice);

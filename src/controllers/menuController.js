@@ -20,11 +20,15 @@ exports.createMenu = async function (req, res, next) {
     // This method needs: restaurantID, menuName, menuDesc, price, pictureURI
     // Add joi function to validate request.
 
+    // Find restaurant ID with token
+    const decodedJwt = await jwt.decode(req.token, { complete: true });
+    const restaurantID = decodedJwt.payload.restaurant.restaurantID
+
     const pictureURI = req.file ? req.file.path : null
     
     // Create menu
     const menu = {
-    restaurantID: req.body.restaurantID,
+    restaurantID: restaurantID,
     menuName: req.body.menuName,
     menuDescription: req.body.menuDescription,
     price: req.body.price,
