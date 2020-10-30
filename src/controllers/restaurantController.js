@@ -177,18 +177,23 @@ exports.updateRestaurantAddress = async function (req, res, next) {
   // If you don't send any of the options above it keeps the old record for that column!
   // Find restaurant ID with token
   const decodedJwt = await jwt.decode(req.token, { complete: true });
-  const restaurantID = decodedJwt.payload.restaurant.restaurantID
+  const restaurantID = decodedJwt.payload.restaurant.restaurantID;
 
   // Get restaurant-address-link using restaurantID
-  const link = await restaurantAddressLink.findByPk(restaurantID)
+  const link = await restaurantAddressLink.findOne({ where: {restaurantID: restaurantID} })
   .catch(err => { res.status(500).send({ message: err.message } )})
   // Get restaurant's addressID using restaurant-address-link
   const restaurantAddress = await addresses.findOne({ where: {addressID: link.addressID} })
   .catch(err => { res.status(500).send({ message: err.message } )})
 
+  const newProvince = await provinces.findOne({ where: {provinceDescription : req.body.provinceName} })
+  const newCity = await cities.findOne({ where: {cityDescription : req.body.cityName} })
+
   // Check if the req.body contains options, if not use the same record in the db
-  const provinceID = req.body.provinceID ? await provinces.findByPk(req.body.provinceDescription).provinceID : restaurantAddress.provinceID
-  const cityID = req.body.cityID ? await cities.findByPk(req.body.cityDescription).cityID : restaurantAddress.cityID
+  const provinceID = req.body.provinceName ? newProvince.dataValues.provinceID : restaurantAddress.provinceID
+  const cityID = req.body.cityName ? newCity.dataValues.cityID : restaurantAddress.cityID
+
+
   const address = req.body.address ? req.body.address : restaurantAddress.address
   const postcode = req.body.postcode ? req.body.postcode : restaurantAddress.postcode
 

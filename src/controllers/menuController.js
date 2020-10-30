@@ -125,17 +125,15 @@ exports.findMenuChoices = async function (req, res, next) {
 exports.findAllMenus = async function (req, res, next) {
     // This method needs: token
     // Add joi function to validate request!
+
     const decodedJwt = await jwt.decode(req.token, { complete: true });
     const restaurantID = decodedJwt.payload.restaurant.restaurantID;
-    console.log(restaurantID)
-    await sequelize.query(  
+    
+    await sequelize.query( 
         `SELECT *
         FROM menus
-        LEFT JOIN menuChoicesLinks
-        ON menus.menuID = menuChoicesLinks.menuID
-        LEFT JOIN choices
-        ON menuChoicesLinks.choiceID = choices.choiceID
-        WHERE menus.restaurantID = ${restaurantID}`, { type: QueryTypes.SELECT })
+        WHERE menus.restaurantID = ${restaurantID}
+        GROUP BY menuID`, { type: QueryTypes.SELECT })
         .then(data => { res.send(data) })
         .catch(err => { res.status(500).send({ message: err.message }) })
   }

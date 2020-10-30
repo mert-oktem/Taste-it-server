@@ -13,7 +13,7 @@ module.exports = app => {
     router.post("/choice", auth.verifyToken, menus.addMenuChoice);
 
     // Retrieve a menu active
-    router.get("/:menuID", auth.verifyToken, menus.findMenu);
+    router.get("/singleMenu/:menuID", auth.verifyToken, menus.findMenu);
 
     // Retrieve a menu's image
     router.get("/image/:menuID", auth.verifyToken, menus.findMenuImage);
@@ -22,7 +22,7 @@ module.exports = app => {
     router.get("/choices/:menuID", auth.verifyToken, menus.findMenuChoices);
 
     // Retrieve a restaurant's all menus
-    router.get("/allMenus", auth.verifyToken, menus.findAllMenus);
+    router.get("/all", auth.verifyToken, menus.findAllMenus);
   
     // Update a menu with id
     router.put("/:menuID", auth.verifyToken, imageUploader.single('image'), menus.updateMenu);
