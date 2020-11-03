@@ -224,11 +224,14 @@ exports.updateCustomerAddress = async function (req, res, next) {
   const custAddress = await addresses.findOne({ where: {addressID: link.addressID} })
   .catch(err => { res.status(500).send({ message: err.message } )})
 
+  const newProvince = await provinces.findOne({ where: {provinceDescription : req.body.provinceName} })
+  const newCity = await cities.findOne({ where: {cityDescription : req.body.cityName} })
+
   // Check if the req.body contains options, if not use the same record in the db
-  //////////// Error //////////////////
-  const provinceID = req.body.provinceName ? await provinces.findOne(req.body.provinceName).provinceID : custAddress.provinceID
-  const cityID = req.body.cityName ? await cities.findOne(req.body.cityName).cityID : custAddress.cityID
-  ////////////////////////////////////////
+  const provinceID = req.body.provinceName ? newProvince.dataValues.provinceID : custAddress.provinceID
+  const cityID = req.body.cityName ? newCity.dataValues.cityID : custAddress.cityID
+  
+
   const address = req.body.address ? req.body.address : custAddress.address
   const postcode = req.body.postcode ? req.body.postcode : custAddress.postcode
   const instructions = req.body.instructions ? req.body.instructions : custAddress.instructions

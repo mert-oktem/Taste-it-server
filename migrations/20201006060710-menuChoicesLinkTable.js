@@ -30,6 +30,13 @@ module.exports = {
           key: 'menuID'
        }
       },
+      isActive: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        defaultValue: true,
+        comment: null,
+        field: "isActive"
+      },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE
     })

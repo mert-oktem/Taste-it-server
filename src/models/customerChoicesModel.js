@@ -22,7 +22,7 @@ module.exports = sequelize.define("customerChoicesLinks", {
       },
       isActive: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         defaultValue: true,
         comment: null,
         field: "isActive"

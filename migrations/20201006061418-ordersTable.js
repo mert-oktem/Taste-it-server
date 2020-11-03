@@ -32,7 +32,7 @@ module.exports = {
       },
       estimatedDeliveryTime: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         comment: null,
         field: "estimatedDeliveryTime",
       },
@@ -58,6 +58,7 @@ module.exports = {
       isOrderAgain: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
+        defaultValue: false,
         comment: null,
         field: "isOrderAgain"
       },

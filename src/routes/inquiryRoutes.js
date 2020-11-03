@@ -6,11 +6,9 @@ module.exports = app => {
   // Create a new inquiry
   router.post("/", auth.verifyToken, inquiries.createInquiry);
 
-  // // Retrieve a inquiry
-  // router.get("/:id", inquiries.findInquiry);
+  // Retrieve a inquiry
 
-  // // Update a inquiry with id
-  // router.put("/:id", inquiries.updateInquiry);
+  // Update a inquiry with id
 
   app.use('/api/inquiries', router);
 };
