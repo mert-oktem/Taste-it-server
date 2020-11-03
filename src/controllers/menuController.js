@@ -20,8 +20,6 @@ const menuChoiceLinks = require("../models/menuChoicesLinkModel")
 exports.createMenu = async function (req, res, next) {
     // This method needs: token, menuName, menuDesc, price, pictureURI
     // Add joi function to validate request.
-
-    // Find restaurant ID with token
     const decodedJwt = await jwt.decode(req.token, { complete: true });
     const restaurantID = decodedJwt.payload.restaurant.restaurantID
 
@@ -34,7 +32,7 @@ exports.createMenu = async function (req, res, next) {
     menuDescription: req.body.menuDescription,
     price: req.body.price,
     pictureURI: pictureURI,
-    active: true
+    isActive: true
     }
 
     // Save menu in the database
@@ -57,7 +55,8 @@ exports.addMenuChoice = async function (req, res, next) {
     // Create link
     const menuChoiceLink = {
         menuID: req.body.menuID,
-        choiceID: choice.choiceID
+        choiceID: choice.choiceID,
+        isActive: true
     }
 
     // Save link in the database
@@ -116,7 +115,7 @@ exports.findMenuChoices = async function (req, res, next) {
       FROM choices
       LEFT JOIN menuChoicesLinks
       ON menuChoicesLinks.choiceID = choices.choiceID
-      WHERE menuID = ${id}`, { type: QueryTypes.SELECT })
+      WHERE menuID = ${id} and menuChoicesLinks.isActive = true`, { type: QueryTypes.SELECT })
       .then(data => {res.send(data) })
       .catch(err => { res.status(500).send({ message: err.message }) })
 }
@@ -125,15 +124,18 @@ exports.findMenuChoices = async function (req, res, next) {
 exports.findAllMenus = async function (req, res, next) {
     // This method needs: token
     // Add joi function to validate request!
-
     const decodedJwt = await jwt.decode(req.token, { complete: true });
-    const restaurantID = decodedJwt.payload.restaurant.restaurantID;
-    
-    await sequelize.query( 
+    const restaurantID = decodedJwt.payload.restaurant.restaurantID
+    console.log(restaurantID)
+    await sequelize.query(  
         `SELECT *
         FROM menus
-        WHERE menus.restaurantID = ${restaurantID}
-        GROUP BY menuID`, { type: QueryTypes.SELECT })
+        LEFT JOIN menuChoicesLinks
+        ON menus.menuID = menuChoicesLinks.menuID
+        LEFT JOIN choices
+        ON menuChoicesLinks.choiceID = choices.choiceID
+        WHERE restaurantID = ${restaurantID} AND menuChoicesLinks.isActive = true
+        AND menus.isActive = true`, { type: QueryTypes.SELECT })
         .then(data => { res.send(data) })
         .catch(err => { res.status(500).send({ message: err.message }) })
   }
