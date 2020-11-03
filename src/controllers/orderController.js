@@ -23,6 +23,7 @@ const menus = require("../models/menusModel")
 const menuChoices = require("../models/menuChoicesLinkModel")
 const orders = require("../models/ordersModel")
 const orderMenuLinks = require("../models/orderMenuLinkModel")
+const orderStatuses = require("../models/orderStatusesModel")
 
 const apiKey = ''
 
@@ -169,22 +170,19 @@ exports.estimateDeliveryTime = async function (req, res, next) {
   .catch(err => { res.status(500).send({ message: err.message } )})
 
   reqp(`https://maps.googleapis.com/maps/api/directions/json?origin=${restaurantAddress.postcode}&destination=${customerAddress.postcode}&key=${apiKey}`)
-  .then(data => { res.send(JSON.parse(data).routes[0].legs[0].duration.text) })
+  .then(data => { 
+    // Add estimated delivery time to order
+    res.send(JSON.parse(data).routes[0].legs[0].duration.text) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
-
-
-
 // Find orders with customer ID and orderStatusID
 exports.findOrdersCustomers = async function (req, res, next) {
-  // This method needs: customerID, orderStatusID 
+  // This method needs: token 
+
   // Find customer ID with token
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const customerID = decodedJwt.payload.customer.customerID;
-
-  // status = "Confirming Order with the restaurant", "Being prepared", "Being delivered", "Delivered", "Reviewed"
-  const orderStatusID = req.body.orderStatusID
 
   sequelize.query(`SELECT *
   FROM orders
@@ -192,20 +190,20 @@ exports.findOrdersCustomers = async function (req, res, next) {
   ON orders.orderID = orderMenuLinks.orderID
   LEFT JOIN menus
   ON orderMenuLinks.menuID = menus.menuID
-  WHERE customerID = ${customerID} AND orders.orderStatusID = ${orderStatusID}`, { type: QueryTypes.SELECT })
+  LEFT JOIN orderStatuses
+  ON orders.orderStatusID = orderStatuses.orderStatusID
+  WHERE customerID = ${customerID}`, { type: QueryTypes.SELECT })
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
 // Find orders with restaurant ID and orderStatusID
 exports.findOrdersRestaurant = async function (req, res, next) {
-  // This method needs: restaurantID, orderStatusID
+  // This method needs: token
+
   // Find restaurant ID with token
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const restaurantID = decodedJwt.payload.restaurant.restaurantID;
-
-  // status = "Confirming Order with the restaurant", "Being prepared", "Being delivered", "Delivered", "Reviewed"
-  const orderStatusID = req.body.orderStatusID
 
   sequelize.query(`SELECT *
   FROM orders
@@ -213,7 +211,9 @@ exports.findOrdersRestaurant = async function (req, res, next) {
   ON orders.orderID = orderMenuLinks.orderID
   LEFT JOIN menus
   ON orderMenuLinks.menuID = menus.menuID
-  WHERE restaurantID = ${restaurantID} AND orders.orderStatusID = ${orderStatusID}`, { type: QueryTypes.SELECT })
+  LEFT JOIN orderStatuses
+  ON orders.orderStatusID = orderStatuses.orderStatusID
+  WHERE restaurantID = ${restaurantID}`, { type: QueryTypes.SELECT })
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
@@ -225,7 +225,7 @@ exports.findOrdersRestaurant = async function (req, res, next) {
 
 // Update an order status
 exports.updateOrder = async function (req, res, next) {
-  // This method needs: orderID
+  // This method needs: token, orderID, orderStatus
 
   const orderID = req.body.orderID;
 
@@ -234,10 +234,22 @@ exports.updateOrder = async function (req, res, next) {
   .catch(err => { res.status(500).send({ message: err.message } )})
 
   // Check if the req.body contains options, if not use the same record in the db
-  const orderStatusID = req.body.orderStatusID ? req.body.orderStatusID : order.orderStatusID
-  
+  let orderStatus;
+  if (req.body.orderStatusDescription) {
+    orderStatus = await orderStatuses.findOne({ where: {orderStatusDescription : req.body.orderStatusDescription} })
+  }
+
+  const estimateDeliveryTime = req.body.estimatedDeliveryTime ? req.body.estimatedDeliveryTime : order.estimatedDeliveryTime
+  const review= req.body.review ? req.body.review : order.review
+  const rate = req.body.rate ? req.body.rate : order.rate
+  const isOrderAgain = req.body.isOrderAgain ? req.body.isOrderAgain : order.isOrderAgain
+  const orderStatusID = req.body.orderStatusDescription ? orderStatus.orderStatusID : order.orderStatusID
   
   order.update({
+    estimatedDeliveryTime: estimateDeliveryTime,
+    review: review,
+    rate: rate,
+    isOrderAgain: isOrderAgain,
     orderStatusID: orderStatusID
   })
   .then(data => { res.send(data) })

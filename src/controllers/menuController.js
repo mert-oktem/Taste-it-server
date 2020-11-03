@@ -48,9 +48,6 @@ exports.addMenuChoice = async function (req, res, next) {
 
     // Get choiceID using choiceDescription
     const choice = await choices.findOne({where: {choiceDescription: req.body.choiceDescription}})
-    if (choice === null) {
-        console.log('Not found!');
-    }
     
     // Create link
     const menuChoiceLink = {
@@ -126,15 +123,11 @@ exports.findAllMenus = async function (req, res, next) {
     // Add joi function to validate request!
     const decodedJwt = await jwt.decode(req.token, { complete: true });
     const restaurantID = decodedJwt.payload.restaurant.restaurantID
-    console.log(restaurantID)
+
     await sequelize.query(  
         `SELECT *
         FROM menus
-        LEFT JOIN menuChoicesLinks
-        ON menus.menuID = menuChoicesLinks.menuID
-        LEFT JOIN choices
-        ON menuChoicesLinks.choiceID = choices.choiceID
-        WHERE restaurantID = ${restaurantID} AND menuChoicesLinks.isActive = true
+        WHERE restaurantID = ${restaurantID}
         AND menus.isActive = true`, { type: QueryTypes.SELECT })
         .then(data => { res.send(data) })
         .catch(err => { res.status(500).send({ message: err.message }) })
@@ -148,6 +141,9 @@ exports.findAllMenus = async function (req, res, next) {
 exports.updateMenu = async function (req, res, next) {
     // This method needs: menuID
     // Add joi function to validate request!
+
+    // Check if the token owner is the menu owner
+
     const id = req.params.menuID;
 
     const menu = await menus.findByPk(id)
