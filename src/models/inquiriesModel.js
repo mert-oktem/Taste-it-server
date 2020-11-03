@@ -6,7 +6,7 @@ module.exports = sequelize.define("inquiries", {
       primaryKey: true,
       autoIncrement: true,
       comment: null,
-      field: "inquiries"
+      field: "inquiryID"
     },
     name: {
       type: Sequelize.STRING,

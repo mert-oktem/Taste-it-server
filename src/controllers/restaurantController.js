@@ -33,11 +33,8 @@ exports.createRestaurant = async function (req, res, next) {
     
     // Create a Restaurant
     const restaurant = {
-    restaurantName: req.body.restaurantName,
-    restaurantDescription: req.body.restaurantDescription,
     email: req.body.email,
     password: hash,
-    phoneNumber: req.body.phoneNumber,
     active: true
     }
 
@@ -156,7 +153,7 @@ exports.updateRestaurant = async function (req, res, next) {
   .catch(err => { res.status(500).send({ message: err.message } )})
 
   // Check if the req.body contains options, if not use the same record in the db
-  const restaurantName = req.body.restaurantName ? req.body.restaurantName : res.restaurantName
+  const restaurantName = req.body.restaurantName ? req.body.restaurantName : restaurant.restaurantName
   const restaurantDescription = req.body.restaurantDescription ? req.body.restaurantDescription : restaurant.restaurantDescription
   const password= req.body.password ? await bcrypt.hash(req.body.password, saltRounds) : restaurant.password
   const phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : restaurant.phoneNumber
@@ -177,18 +174,23 @@ exports.updateRestaurantAddress = async function (req, res, next) {
   // If you don't send any of the options above it keeps the old record for that column!
   // Find restaurant ID with token
   const decodedJwt = await jwt.decode(req.token, { complete: true });
-  const restaurantID = decodedJwt.payload.restaurant.restaurantID
+  const restaurantID = decodedJwt.payload.restaurant.restaurantID;
 
   // Get restaurant-address-link using restaurantID
-  const link = await restaurantAddressLink.findByPk(restaurantID)
+  const link = await restaurantAddressLink.findOne({ where: {restaurantID: restaurantID} })
   .catch(err => { res.status(500).send({ message: err.message } )})
   // Get restaurant's addressID using restaurant-address-link
   const restaurantAddress = await addresses.findOne({ where: {addressID: link.addressID} })
   .catch(err => { res.status(500).send({ message: err.message } )})
 
+  const newProvince = await provinces.findOne({ where: {provinceDescription : req.body.provinceName} })
+  const newCity = await cities.findOne({ where: {cityDescription : req.body.cityName} })
+
   // Check if the req.body contains options, if not use the same record in the db
-  const provinceID = req.body.provinceID ? await provinces.findByPk(req.body.provinceDescription).provinceID : restaurantAddress.provinceID
-  const cityID = req.body.cityID ? await cities.findByPk(req.body.cityDescription).cityID : restaurantAddress.cityID
+  const provinceID = req.body.provinceName ? newProvince.dataValues.provinceID : restaurantAddress.provinceID
+  const cityID = req.body.cityName ? newCity.dataValues.cityID : restaurantAddress.cityID
+
+
   const address = req.body.address ? req.body.address : restaurantAddress.address
   const postcode = req.body.postcode ? req.body.postcode : restaurantAddress.postcode
 

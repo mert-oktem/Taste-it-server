@@ -19,5 +19,12 @@ module.exports = sequelize.define("menuChoicesLinks", {
         allowNull: false,
         comment: null,
         field: "menuID"
+      },
+      isActive: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+        comment: null,
+        field: "isActive"
       }
 });
