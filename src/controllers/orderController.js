@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const request = require('request');
 const reqp  = require('request-promise-native');
+const cors = require("cors");
 
 // JWT
 const jwt = require('jsonwebtoken');
@@ -197,23 +198,28 @@ exports.findOrdersCustomers = async function (req, res, next) {
   .catch(err => { res.status(500).send({ message: err.message }) })
 }
 
-// Find orders with restaurant ID and orderStatusID
+// Find orders with restaurant ID 
 exports.findOrdersRestaurant = async function (req, res, next) {
   // This method needs: restaurantID, orderStatusID
   // Find restaurant ID with token
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const restaurantID = decodedJwt.payload.restaurant.restaurantID;
-
-  // status = "Confirming Order with the restaurant", "Being prepared", "Being delivered", "Delivered", "Reviewed"
-  const orderStatusID = req.body.orderStatusID
-
+  
   sequelize.query(`SELECT *
   FROM orders
   LEFT JOIN orderMenuLinks
   ON orders.orderID = orderMenuLinks.orderID
   LEFT JOIN menus
   ON orderMenuLinks.menuID = menus.menuID
-  WHERE restaurantID = ${restaurantID} AND orders.orderStatusID = ${orderStatusID}`, { type: QueryTypes.SELECT })
+  LEFT JOIN customers
+  ON orders.customerID = customers.customerID
+  LEFT JOIN customerAddressLinks
+  ON customers.customerID = customerAddressLinks.customerID
+  LEFT JOIN addresses
+  ON addresses.addressID = customerAddressLinks.addressID
+  LEFT JOIN cities
+  ON cities.cityID = addresses.cityID
+  WHERE restaurantID = ${restaurantID}`, { type: QueryTypes.SELECT })
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message }) })
 }

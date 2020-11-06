@@ -16,7 +16,7 @@ module.exports = app => {
     router.get("/singleMenu/:menuID", auth.verifyToken, menus.findMenu);
 
     // Retrieve a menu's image
-    router.get("/image/:menuID", auth.verifyToken, menus.findMenuImage);
+    router.get("/image/:menuID", menus.findMenuImage);
 
     // Retrieve a menu's choices
     router.get("/choices/:menuID", auth.verifyToken, menus.findMenuChoices);
