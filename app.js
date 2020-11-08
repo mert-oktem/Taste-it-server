@@ -1,12 +1,16 @@
 /******************** Core Modules **********************/
 const http = require('http');
+const cookieSession = require('cookie-session')
 
 /******************** NPM Modules ***********************/
 const express = require('express');
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
+const passport = require('passport')
 
 const cors = require('cors');
 const { stat } = require('fs');
+
+require('./src/middleware/passportSetup')
 
 /******************** End of Modules ********************/
 
@@ -25,6 +29,13 @@ app.use(cors());
 // Request Parsing
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true })); 
+
+app.use(cookieSession({
+    name: 'tasteit-session',
+    keys: ['key1', 'key2']
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use(express.json());
 
