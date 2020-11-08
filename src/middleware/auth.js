@@ -99,8 +99,7 @@ exports.restaurantLogin = async function (req, res, next) {
     if (passwordResult) {
         jwt.sign( {restaurant}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
             res.json( { token } ) 
-        })
-        .catch(err => { res.status(500).send({ message: err.message }) })
+        }).catch(err => { res.status(500).send({ message: err.message }) })
     }
     else {
         res.send("Password incorrect!")

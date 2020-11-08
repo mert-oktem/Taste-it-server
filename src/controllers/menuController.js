@@ -86,7 +86,6 @@ exports.findMenuImage = async function (req, res, next) {
   // This method needs: menuID
   // Add joi function to validate request!
   const id = req.params.menuID
-
   await sequelize.query(
     `SELECT m.pictureURI
     FROM menus AS m
