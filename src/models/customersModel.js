@@ -39,6 +39,13 @@ module.exports = sequelize.define("customers", {
       comment: null,
       field: "phoneNumber"
     },
+    userType: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: 'local',
+      comment: null,
+      field: "userType"        
+    },
     active: {
       type: Sequelize.BOOLEAN,
       allowNull: false,

@@ -1,6 +1,7 @@
 module.exports = app => {
     const customer = require("../controllers/customerController.js");
     const auth = require("../middleware/auth.js");
+    const passport = require('passport')
     var router = require("express").Router();
 
     ////////////////////
@@ -22,6 +23,20 @@ module.exports = app => {
 
     // Login a customer
     router.post("/login", auth.customerLogin);
+
+    // Login a customer
+    router.get("/login/google", passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+    // Google SSO
+    router.get( '/login/google/callback',
+    passport.authenticate( 'google', {
+        successRedirect: './success',
+        failureRedirect: './failure'
+    }));
+
+    router.get("/login/google/success", auth.customerGoogleSuccess);
+
+    router.get("/login/google/failure", auth.customerGoogleFailure);
   
     // Retrieve a customer's details
     router.get("/", auth.verifyToken, customer.findCustomer);

@@ -30,7 +30,7 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
         comment: null,
         field: "password"
       },
@@ -40,6 +40,13 @@ module.exports = {
         defaultValue: 0,
         comment: null,
         field: "phoneNumber"
+      },
+      userType: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: 'local',
+        comment: null,
+        field: "userType"        
       },
       active: {
         type: Sequelize.BOOLEAN,

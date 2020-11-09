@@ -16,8 +16,8 @@ module.exports = app => {
     router.get("/customer", auth.verifyToken, orders.findOrdersCustomers);
 
     // Retrieve orders for a restaurant
-    router.get("/restaurant", auth.verifyToken, orders.findOrdersRestaurant);
-
+    router.get("/restaurant", auth.verifyToken,  orders.findOrdersRestaurant);
+    // auth.verifyToken,
     // Update an order with order ID
     router.put("/", auth.verifyToken, orders.updateOrder);
   
