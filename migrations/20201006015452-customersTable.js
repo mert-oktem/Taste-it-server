@@ -35,7 +35,7 @@ module.exports = {
         field: "password"
       },
       phoneNumber: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: true,
         defaultValue: 0,
         comment: null,

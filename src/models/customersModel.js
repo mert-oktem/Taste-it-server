@@ -28,7 +28,7 @@ module.exports = sequelize.define("customers", {
     },
     password: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
       comment: null,
       field: "password"
     },

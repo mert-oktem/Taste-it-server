@@ -1,7 +1,8 @@
 module.exports = app => {
-  const restaurant = require("../controllers/restaurantController.js");
+  const restaurant = require("../controllers/restaurantController.js")
   const auth = require("../middleware/auth.js")
-  var router = require("express").Router();
+  const passport = require('passport')
+  var router = require("express").Router()
 
   ////////////////////
   // POST Methods ////
@@ -9,7 +10,6 @@ module.exports = app => {
 
   // Create a new Restaurant
   router.post("/", restaurant.createRestaurant);
-
 
   // Create a new address for Restaurant
   router.post("/address", auth.verifyToken, restaurant.createAddress);
@@ -21,6 +21,20 @@ module.exports = app => {
 
   // Login a restaurant
   router.post("/login", auth.restaurantLogin);
+
+  // Login a customer with google SSO
+  router.get("/login/google", passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+  // Google SSO
+  router.get( '/login/google/callback',
+  passport.authenticate( 'google', {
+      successRedirect: './success',
+      failureRedirect: './failure'
+  }));
+
+  router.get("/login/google/success", auth.customerGoogleSuccess);
+
+  router.get("/login/google/failure", auth.customerGoogleFailure);
 
   // Retrieve a restaurant's details
   router.get("/", auth.verifyToken, restaurant.findRestaurant);
