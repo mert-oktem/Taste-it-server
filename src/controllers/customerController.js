@@ -260,7 +260,7 @@ exports.deactivateCustomerChoice = async function (req, res, next) {
     LEFT JOIN choices
     ON choices.choiceID = customerChoicesLinks.choiceID
     SET customerChoicesLinks.isActive = false
-    WHERE customerChoicesLinks.customerID = ${customerID} AND customerChoicesLinks.isActive = true AND choices.category = "${req.body.category}"`, { type: QueryTypes.PUT })
+    WHERE customerChoicesLinks.customerID = ${customerID} AND customerChoicesLinks.isActive = true`, { type: QueryTypes.PUT })
     .then(data => { res.send(data) })
     .catch(err => { res.status(500).send({ message: err.message }) 
   })
