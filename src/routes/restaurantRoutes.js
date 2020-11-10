@@ -32,9 +32,9 @@ module.exports = app => {
       failureRedirect: './failure'
   }));
 
-  router.get("/login/google/success", auth.customerGoogleSuccess);
+  router.get("/login/google/success", auth.restaurantGoogleSuccess);
 
-  router.get("/login/google/failure", auth.customerGoogleFailure);
+  router.get("/login/google/failure", auth.restaurantGoogleFailure);
 
   // Retrieve a restaurant's details
   router.get("/", auth.verifyToken, restaurant.findRestaurant);
