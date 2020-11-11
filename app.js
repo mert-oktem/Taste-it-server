@@ -40,7 +40,7 @@ app.use(passport.session())
 app.use(express.json());
 
 // Bootstrap for creating DB tables and relations.
-//require("./src/utils/bootstrap")(); 
+// require("./src/utils/bootstrap")(); 
 
 
 const port = process.env.port || 5000;
@@ -58,7 +58,6 @@ require("./src/routes/inquiryRoutes")(app);
 require("./src/routes/newsletterRegisteredUserRoutes")(app);
 require("./src/routes/choiceRoutes")(app);
 require("./src/routes/helperRoutes")(app);
-
 
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 

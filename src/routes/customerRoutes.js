@@ -24,7 +24,7 @@ module.exports = app => {
     // Login a customer
     router.post("/login", auth.customerLogin);
 
-    // Login a customer
+    // Login a customer with google SSO
     router.get("/login/google", passport.authenticate('google', { scope: ['profile', 'email'] }));
 
     // Google SSO

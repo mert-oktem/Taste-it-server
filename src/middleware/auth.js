@@ -55,10 +55,10 @@ exports.customerGoogleSuccess = async function (req, res, next) {
     if (customer == null) {
         // Create a Customer
         const customer = {
-            firstName: req.body.given_name,
-            lastName: req.body.family_name,
-            email: req.body.email,
-            phoneNumber: req.body.phoneNumber,
+            firstName: null,
+            lastName: null,
+            email: req.user.email,
+            phoneNumber: null,
             userType: 'google',
             active: true,
             }
@@ -87,7 +87,7 @@ exports.restaurantLogin = async function (req, res, next) {
     const restaurant = await restaurants.findOne( { where: { email: req.body.email } } )
     .catch(err => { res.status(500).send({ message: err.message }) })
 
-    if (restaurant == null) {return res.status(500).send ({ message: "Cannot find restaurant"})}
+    // if (restaurant == null) {return res.status(500).send ({ message: "Cannot find restaurant"})}
 
 
     // Get restaurant password hash comparison
@@ -104,4 +104,34 @@ exports.restaurantLogin = async function (req, res, next) {
     else {
         res.send("Password incorrect!")
     }
+}
+
+exports.restaurantGoogleSuccess = async function (req, res, next) {
+    const restaurant = await restaurant.findOne({ where: {email : req.user.email} })
+
+    if (restaurant == null) {
+        // Create a Customer
+        const restaurant = {
+            email: req.user.email,
+            userType: 'google',
+            active: true,
+            }
+        
+            // Save Customer in the database
+            restaurants.create(restaurant)
+            .then(restaurant => { jwt.sign( {restaurant}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
+            res.json( { token } ) 
+            }) } )
+            .catch(err => { res.status(500).send({ message: err.message }) })
+    }
+    else {
+        jwt.sign( {restaurant}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
+            res.json( { token } ) 
+        })
+        .catch(err => { res.status(500).send({ message: err.message }) })
+    }
+}
+
+exports.restaurantGoogleFailure = async function (req, res, next) {
+    res.send('Login failed')
 }

@@ -10,13 +10,13 @@ module.exports = sequelize.define("customers", {
     },
     firstName: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
       comment: null,
       field: "firstName"
     },
     lastName: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
       comment: null,
       field: "lastName"
     },
@@ -28,7 +28,7 @@ module.exports = sequelize.define("customers", {
     },
     password: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
       comment: null,
       field: "password"
     },

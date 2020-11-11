@@ -41,6 +41,13 @@ module.exports = {
         comment: null,
         field: "phoneNumber"
       },
+      userType: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: 'local',
+        comment: null,
+        field: "userType"        
+      },
       isActive: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
