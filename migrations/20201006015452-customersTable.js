@@ -12,13 +12,13 @@ module.exports = {
       },
       firstName: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
         comment: null,
         field: "firstName"
       },
       lastName: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
         comment: null,
         field: "lastName"
       },
@@ -35,7 +35,7 @@ module.exports = {
         field: "password"
       },
       phoneNumber: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: true,
         defaultValue: 0,
         comment: null,

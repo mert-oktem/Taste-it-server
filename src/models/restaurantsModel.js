@@ -28,7 +28,7 @@ module.exports = sequelize.define("restaurants", {
     },
     password: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
       comment: null,
       field: "password"
     },
@@ -38,6 +38,13 @@ module.exports = sequelize.define("restaurants", {
       defaultValue: 0,
       comment: null,
       field: "phoneNumber"
+    },
+    userType: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: 'local',
+      comment: null,
+      field: "userType"        
     },
     isActive: {
       type: Sequelize.BOOLEAN,
