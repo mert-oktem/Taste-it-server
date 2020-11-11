@@ -87,7 +87,7 @@ exports.restaurantLogin = async function (req, res, next) {
     const restaurant = await restaurants.findOne( { where: { email: req.body.email } } )
     .catch(err => { res.status(500).send({ message: err.message }) })
 
-    if (restaurant == null) {return res.status(500).send ({ message: "Cannot find restaurant"})}
+    // if (restaurant == null) {return res.status(500).send ({ message: "Cannot find restaurant"})}
 
 
     // Get restaurant password hash comparison
