@@ -193,6 +193,12 @@ exports.findOrdersCustomers = async function (req, res, next) {
   ON orderMenuLinks.menuID = menus.menuID
   LEFT JOIN orderStatuses
   ON orders.orderStatusID = orderStatuses.orderStatusID
+  LEFT JOIN restaurants
+  ON menus.restaurantID = restaurants.restaurantID
+  LEFT JOIN restaurantAddressLinks
+  ON restaurantAddressLinks.restaurantID = restaurants.restaurantID
+  LEFT JOIN addresses
+  ON addresses.addressID = restaurantAddressLinks.addressID
   WHERE customerID = ${customerID}`, { type: QueryTypes.SELECT })
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message }) })
