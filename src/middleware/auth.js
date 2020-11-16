@@ -1,8 +1,11 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const passport = require('passport')
+
 
 const customers = require("../models/customersModel")
-const restaurants = require("../models/restaurantsModel")
+const restaurants = require("../models/restaurantsModel");
+const { func } = require('joi');
 
 
 // FORMAT OF TOKEN
@@ -45,6 +48,40 @@ exports.customerLogin = async function (req, res, next) {
     }
 }
 
+
+exports.customerGoogleSuccess = async function (req, res, next) {
+    const customer = await customers.findOne({ where: {email : req.user.email} })
+
+    if (customer == null) {
+        // Create a Customer
+        const customer = {
+            firstName: null,
+            lastName: null,
+            email: req.user.email,
+            phoneNumber: null,
+            userType: 'google',
+            active: true,
+            }
+        
+            // Save Customer in the database
+            customers.create(customer)
+            .then(customer => { jwt.sign( {customer}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
+            res.json( { token } ) 
+            }) } )
+            .catch(err => { res.status(500).send({ message: err.message }) })
+    }
+    else {
+        jwt.sign( {customer}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
+            res.json( { token } ) 
+        })
+        .catch(err => { res.status(500).send({ message: err.message }) })
+    }
+}
+
+exports.customerGoogleFailure = async function (req, res, next) {
+    res.send('Login failed')
+}
+
 exports.restaurantLogin = async function (req, res, next) {
     // Get restaurant using username
     const restaurant = await restaurants.findOne( { where: { email: req.body.email } } )
@@ -67,4 +104,34 @@ exports.restaurantLogin = async function (req, res, next) {
     else {
         res.send("Password incorrect!")
     }
+}
+
+exports.restaurantGoogleSuccess = async function (req, res, next) {
+    const restaurant = await restaurant.findOne({ where: {email : req.user.email} })
+
+    if (restaurant == null) {
+        // Create a Customer
+        const restaurant = {
+            email: req.user.email,
+            userType: 'google',
+            active: true,
+            }
+        
+            // Save Customer in the database
+            restaurants.create(restaurant)
+            .then(restaurant => { jwt.sign( {restaurant}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
+            res.json( { token } ) 
+            }) } )
+            .catch(err => { res.status(500).send({ message: err.message }) })
+    }
+    else {
+        jwt.sign( {restaurant}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
+            res.json( { token } ) 
+        })
+        .catch(err => { res.status(500).send({ message: err.message }) })
+    }
+}
+
+exports.restaurantGoogleFailure = async function (req, res, next) {
+    res.send('Login failed')
 }

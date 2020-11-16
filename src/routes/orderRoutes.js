@@ -7,10 +7,10 @@ module.exports = app => {
     router.post("/", auth.verifyToken, orders.confirmOrder);
     
     // Pick a menu based on the customer's choices
-    router.get("/", auth.verifyToken, orders.pickMenu);
+    router.post("/pickMenu", auth.verifyToken, orders.pickMenu);
 
     // Get a Delivery Time
-    router.get("/deliveryTime", auth.verifyToken, orders.estimateDeliveryTime);
+    router.post("/deliveryTime", auth.verifyToken, orders.estimateDeliveryTime);
 
     // Retrieve a customer's active order
     router.get("/customer", auth.verifyToken, orders.findOrdersCustomers);

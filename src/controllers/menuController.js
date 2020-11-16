@@ -20,8 +20,6 @@ const menuChoiceLinks = require("../models/menuChoicesLinkModel")
 exports.createMenu = async function (req, res, next) {
     // This method needs: token, menuName, menuDesc, price, pictureURI
     // Add joi function to validate request.
-
-    // Find restaurant ID with token
     const decodedJwt = await jwt.decode(req.token, { complete: true });
     const restaurantID = decodedJwt.payload.restaurant.restaurantID
 
@@ -34,7 +32,7 @@ exports.createMenu = async function (req, res, next) {
     menuDescription: req.body.menuDescription,
     price: req.body.price,
     pictureURI: pictureURI,
-    active: true
+    isActive: true
     }
 
     // Save menu in the database
@@ -50,14 +48,12 @@ exports.addMenuChoice = async function (req, res, next) {
 
     // Get choiceID using choiceDescription
     const choice = await choices.findOne({where: {choiceDescription: req.body.choiceDescription}})
-    if (choice === null) {
-        console.log('Not found!');
-    }
     
     // Create link
     const menuChoiceLink = {
         menuID: req.body.menuID,
-        choiceID: choice.choiceID
+        choiceID: choice.choiceID,
+        isActive: true
     }
 
     // Save link in the database
@@ -115,7 +111,7 @@ exports.findMenuChoices = async function (req, res, next) {
       FROM choices
       LEFT JOIN menuChoicesLinks
       ON menuChoicesLinks.choiceID = choices.choiceID
-      WHERE menuID = ${id} AND menuChoicesLinks.isActive = true`, { type: QueryTypes.SELECT })
+      WHERE menuID = ${id} and menuChoicesLinks.isActive = true`, { type: QueryTypes.SELECT })
       .then(data => {res.send(data) })
       .catch(err => { res.status(500).send({ message: err.message }) })
 }
@@ -124,15 +120,14 @@ exports.findMenuChoices = async function (req, res, next) {
 exports.findAllMenus = async function (req, res, next) {
     // This method needs: token
     // Add joi function to validate request!
-
     const decodedJwt = await jwt.decode(req.token, { complete: true });
-    const restaurantID = decodedJwt.payload.restaurant.restaurantID;
-    
-    await sequelize.query( 
+    const restaurantID = decodedJwt.payload.restaurant.restaurantID
+
+    await sequelize.query(  
         `SELECT *
         FROM menus
-        WHERE menus.restaurantID = ${restaurantID} AND isActive = true
-        GROUP BY menuID`, { type: QueryTypes.SELECT })
+        WHERE restaurantID = ${restaurantID}
+        AND menus.isActive = true`, { type: QueryTypes.SELECT })
         .then(data => { res.send(data) })
         .catch(err => { res.status(500).send({ message: err.message }) })
   }
@@ -145,6 +140,9 @@ exports.findAllMenus = async function (req, res, next) {
 exports.updateMenu = async function (req, res, next) {
     // This method needs: menuID
     // Add joi function to validate request!
+
+    // Check if the token owner is the menu owner
+
     const id = req.params.menuID;
 
     const menu = await menus.findByPk(id)
@@ -185,27 +183,6 @@ exports.deActivateChoices = async function (req, res, next) {
         .then(data => { res.send(data) })
         .catch(err => { res.status(500).send({ message: err.message }) 
       })
-}
-
-// Deactive menu's choices by the id
-exports.deactivateMenuChoice = async function (req, res, next) {
-  // This method needs: token, choiceCategory
-  // Find customer ID with token
-  const decodedJwt = await jwt.decode(req.token, { complete: true });
-  const restaurantID = decodedJwt.payload.restaurant.restaurantID;
-  const menuID = req.body.menuID;
-
-  await sequelize.query(  
-    `UPDATE menuChoicesLinks
-    LEFT JOIN choices
-    ON choices.choiceID = menuChoicesLinks.choiceID
-    LEFT JOIN menus
-    ON menuChoicesLinks.menuID = menus.menuID
-    SET menuChoicesLinks.isActive = false
-    WHERE menus.restaurantID = ${restaurantID} AND menuChoicesLinks.isActive = true AND menuChoicesLinks.menuID = ${menuID}`, { type: QueryTypes.PUT })
-    .then(data => { res.send(data) })
-    .catch(err => { res.status(500).send({ message: err.message }) 
-  })
 }
 
 

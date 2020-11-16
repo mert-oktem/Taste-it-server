@@ -1,12 +1,16 @@
 /******************** Core Modules **********************/
 const http = require('http');
+const cookieSession = require('cookie-session')
 
 /******************** NPM Modules ***********************/
 const express = require('express');
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
+const passport = require('passport')
 
 const cors = require('cors');
 const { stat } = require('fs');
+
+require('./src/middleware/passportSetup')
 
 /******************** End of Modules ********************/
 
@@ -26,9 +30,16 @@ app.use(cors());
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true })); 
 
+app.use(cookieSession({
+    name: 'tasteit-session',
+    keys: ['key1', 'key2']
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(express.json());
 
-// // Bootstrap for creating DB tables and relations.
+// Bootstrap for creating DB tables and relations.
 // require("./src/utils/bootstrap")(); 
 
 
@@ -47,7 +58,6 @@ require("./src/routes/inquiryRoutes")(app);
 require("./src/routes/newsletterRegisteredUserRoutes")(app);
 require("./src/routes/choiceRoutes")(app);
 require("./src/routes/helperRoutes")(app);
-
 
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 

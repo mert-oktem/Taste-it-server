@@ -21,10 +21,10 @@ module.exports = sequelize.define("menuChoicesLinks", {
         field: "menuID"
       },
       isActive: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
         defaultValue: true,
         comment: null,
         field: "isActive"
-      },
+      }
 });
