@@ -3,7 +3,7 @@
     "username": "root",
     "password": "Tasteit123%",
     "database": "tasteItDB",
-    "host": "54.243.236.248",
+    "host": "3.86.81.185",
     "dialect": "mysql"
   },
   "test": {
