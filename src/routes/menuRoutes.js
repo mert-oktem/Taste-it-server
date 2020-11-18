@@ -10,7 +10,7 @@ module.exports = app => {
     router.post("/", auth.verifyToken, imageUploader.single('image'), menus.createMenu);
 
     // Add a new choice for a menu
-    router.post("/choices", auth.verifyToken, menus.addMenuChoice);
+    router.post("/choice", auth.verifyToken, menus.addMenuChoice);
 
     // Retrieve a menu active
     router.get("/singleMenu/:menuID", auth.verifyToken, menus.findMenu);
@@ -27,11 +27,8 @@ module.exports = app => {
     // Update a menu with id
     router.put("/:menuID", auth.verifyToken, imageUploader.single('image'), menus.updateMenu);
   
-    // // Update choices with id
-    // router.put("/deactivechoices/:menuID", menus.deActivateChoices);
-
-    // Update a menu's choices with id
-    router.put("/choices/deactivateChoices", auth.verifyToken, menus.deactivateMenuChoice);
+    // Update choices with id
+    router.put("/deactivechoices/:menuID", menus.deActivateChoices);
 
     app.use('/api/menus', router);
 };
