@@ -212,7 +212,7 @@ exports.findOrdersRestaurant = async function (req, res, next) {
   const decodedJwt = await jwt.decode(req.token, { complete: true });
   const restaurantID = decodedJwt.payload.restaurant.restaurantID;
   
-  sequelize.query(`SELECT *
+  sequelize.query(`SELECT orders.orderID, menus.menuName, orders.forHowManyPeople, orders.orderStatusID, customers.firstName, customers.lastName, addresses.address, addresses.postcode, customers.phoneNumber, addresses.instructions, orders.createdAt, orders.review, orders.rate
   FROM orders
   LEFT JOIN orderMenuLinks
   ON orders.orderID = orderMenuLinks.orderID
