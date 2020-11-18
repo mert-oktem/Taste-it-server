@@ -367,140 +367,140 @@ module.exports = async (db) => {
             menuName: "Butter Chicken",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 16.00,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/butter-chicken.jpg"
         },
         {
             restaurantID: 1,
             menuName: "Paneer Spinach Curry",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 16.00,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/paneer-spinach-curry.jpg"
         },
         {
             restaurantID: 1,
             menuName: "Chicken Tikka Masala",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 17.50,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/chicken-tikka-masa.jpg"
         },
         {
             restaurantID: 1,
             menuName: "Chicken Dum Biryani",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 17.50,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/chicken-dumb-biryani.jpg"
         },
         {
             restaurantID: 1,
             menuName: "Lamb Tikka",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 18,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/lamb-tikka.jpg"
         },
         {
             restaurantID: 2,
             menuName: "Lemongrass Chicken",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 11.75,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/lemongrass-chicken.jpg"
         },
         {
             restaurantID: 2,
             menuName: "Meat & Shrimp Spring Rolls",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 6.75,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/meat-shrimp-spring-rolls.jpg"
         },
         {
             restaurantID: 2,
-            menuName: "Shredded Crabmeat Shrimp Noodle Soup",
+            menuName: "Shredded Crabmeat Noodle Soup",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 10.75,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/shredded-crabmeat-noodle-soup.jpg"
         },
         {
             restaurantID: 2,
             menuName: "Vegetable Spring Rolls",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 6.75,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/vegetable-spring-rolls.jpg"
         },
         {
             restaurantID: 2,
             menuName: "Vietnamese Dumplings",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 7.50,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/vietnamese-dumplings.jpg"
         },
         {
             restaurantID: 3,
             menuName: "Rosu Katsu",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 18.50,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/rosu-katsu.jpg"
         },
         {
             restaurantID: 3,
             menuName: "Gyudon",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 19,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/gyudon.jpg"
         },
         {
             restaurantID: 3,
             menuName: "Chicken Karrage",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 14,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/chicken-karrage.jpg"
         },
         {
             restaurantID: 3,
             menuName: "Takoyaki",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 13.50,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/takoyaki.jpg"
         },
         {
             restaurantID: 3,
             menuName: "Ebi Chiri",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 13.50,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/ebi-chiri.jpg"
         },
         {
             restaurantID: 4,
-            menuName: "Veal Medallions with Morel Mushroom Sauce",
+            menuName: "Veal Medallions",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 42.00,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/veal-medallions.jpg"
         },
         {
             restaurantID: 4,
-            menuName: "Grilled Beef Tenderloin with Béarnaise",
+            menuName: "Grilled Beef Tenderloin",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 48.00,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/grilled-beef-tenderloin.jpg"
         },
         {
             restaurantID: 4,
-            menuName: "Pan-Fried Dover Sole with Beurre Noisette & Capers",
+            menuName: "Pan-Fried Dover Sole",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 48.00,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/pan-fried-dover-sole.jpg"
         },
         {
             restaurantID: 4,
-            menuName: "Seared Scallops with Black Linguine & Basil Beurre Blanc",
+            menuName: "Seared Scallops",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 26.00,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/pan-seared-scallops.jpg"
         },
         {
             restaurantID: 4,
-            menuName: "Black Truffle Omelette served with Butter Letter and Pommes Frites",
+            menuName: "Strawberry Chocolate Bread",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 24.00,
-            pictureURI: "1234"
+            pictureURI: "uploadedImages/menuImages/strawberry-chocolate-bread.jpg"
         },
     ]).catch(errHandler)
 
