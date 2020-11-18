@@ -101,43 +101,42 @@ module.exports = async (db) => {
         {
             category: "Spiciness",
             choiceDescription: "Very High",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/very-high.svg"
         },
         {
             category: "Spiciness",
             choiceDescription: "High",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/high.svg"
         },
         {
             category: "Spiciness",
             choiceDescription: "Moderate",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/moderate.svg"
         },
         {
             category: "Spiciness",
             choiceDescription: "Not Spicy",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/not-spicy.svg"
         },
-        // 5
         {
             category: "Cuisines",
             choiceDescription: "Indian",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/indian.svg"
         },
         {
             category: "Cuisines",
             choiceDescription: "Vietnamese",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/vietnamese.svg"
         },
         {
             category: "Cuisines",
             choiceDescription: "Japanese",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/japanese.svg"
         },
         {
             category: "Cuisines",
             choiceDescription: "French",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/french.svg"
         },
         // {
         //     category: "Cuisines",
@@ -179,7 +178,7 @@ module.exports = async (db) => {
         //     choiceDescription: "Ukrainian",
         //     pictureURI: "https://www.google.com"
         // },
-        // 9
+        //
         {
             category: "Diet Types",
             choiceDescription: "Anything",
@@ -188,37 +187,37 @@ module.exports = async (db) => {
         {
             category: "Diet Types",
             choiceDescription: "Vegetarian",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/vegetarian.svg"
         },
         {
             category: "Diet Types",
             choiceDescription: "Gluten-Free",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/gluten-free.svg"
         },
         // {
         //     category: "Diet Types",
         //     choiceDescription: "Halal",
-        //     pictureURI: "https://www.google.com"
+        //     pictureURI: "uploadedImages/choices/halal.svg"
         // },
         // {
         //     category: "Diet Types",
         //     choiceDescription: "Kosher",
-        //     pictureURI: "https://www.google.com"
+        //     pictureURI: "uploadedImages/choices/kosher.svg"
         // },
         // {
         //     category: "Diet Types",
         //     choiceDescription: "Diabetic",
-        //     pictureURI: "https://www.google.com"
+        //     pictureURI: "uploadedImages/choices/diabetic.svg"
         // },
         // {
         //     category: "Diet Types",
         //     choiceDescription: "Vegan",
-        //     pictureURI: "https://www.google.com"
+        //     pictureURI: "uploadedImages/choices/vegan.svg"
         // },
         // {
         //     category: "Diet Types",
         //     choiceDescription: "Organic",
-        //     pictureURI: "https://www.google.com"
+        //     pictureURI: "uploadedImages/choices/organic.svg"
         // },
         // 12
         {
@@ -234,37 +233,37 @@ module.exports = async (db) => {
         {
             category: "Allergens",
             choiceDescription: "Milk",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/milk.svg"
         },
         {
             category: "Allergens",
             choiceDescription: "Crustacean shellfish",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/crustacean-shellfish.svg"
         },
         {
             category: "Allergens",
             choiceDescription: "Tree nuts",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/peanuts.svg"
         },
         {
             category: "Allergens",
             choiceDescription: "Fish",
-            pictureURI: "https://www.google.com"
+            pictureURI: "uploadedImages/choices/fish.svg"
         },
         // {
         //     category: "Allergens",
         //     choiceDescription: "Eggs",
-        //     pictureURI: "https://www.google.com"
+        //     pictureURI: "uploadedImages/choices/eggs.svg"
         // },
         // {
         //     category: "Allergens",
         //     choiceDescription: "Wheat",
-        //     pictureURI: "https://www.google.com"
+        //     pictureURI: "uploadedImages/choices/wheat.svg"
         // },
         // {   
         //     category: "Allergens",
         //     choiceDescription: "Peanuts",
-        //     pictureURI: "https://www.google.com"
+        //     pictureURI: "uploadedImages/choices/peanuts.svg"
         // },
         // {
         //     category: "Allergens",
