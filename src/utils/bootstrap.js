@@ -101,175 +101,154 @@ module.exports = async (db) => {
         {
             category: "Spiciness",
             choiceDescription: "Very High",
-            pictureURI: "uploadedImages/choices/very-high.svg"
+            pictureURI: "https://i.ibb.co/JHrbsps/very-high.png"
         },
         {
             category: "Spiciness",
             choiceDescription: "High",
-            pictureURI: "uploadedImages/choices/high.svg"
+            pictureURI: "https://i.ibb.co/jG56ncq/high.png"
         },
         {
             category: "Spiciness",
             choiceDescription: "Moderate",
-            pictureURI: "uploadedImages/choices/moderate.svg"
+            pictureURI: "https://i.ibb.co/Y2k55tj/moderate.png"
         },
         {
             category: "Spiciness",
             choiceDescription: "Not Spicy",
-            pictureURI: "uploadedImages/choices/not-spicy.svg"
+            pictureURI: "https://i.ibb.co/wph2BB8/not-spicy.png"
         },
         {
             category: "Cuisines",
             choiceDescription: "Indian",
-            pictureURI: "uploadedImages/choices/indian.svg"
+            pictureURI: "https://i.ibb.co/R91348L/Indian.png"
         },
         {
             category: "Cuisines",
             choiceDescription: "Vietnamese",
-            pictureURI: "uploadedImages/choices/vietnamese.svg"
+            pictureURI: "https://i.ibb.co/nrDy9Wc/vietnamese.png"
         },
         {
             category: "Cuisines",
             choiceDescription: "Japanese",
-            pictureURI: "uploadedImages/choices/japanese.svg"
+            pictureURI: "https://i.ibb.co/PxGXKvd/Japanese.png"
         },
         {
             category: "Cuisines",
             choiceDescription: "French",
-            pictureURI: "uploadedImages/choices/french.svg"
+            pictureURI: "https://i.ibb.co/LRXR2DL/french.png"
         },
-        // {
-        //     category: "Cuisines",
-        //     choiceDescription: "Chinese",
-        //     pictureURI: "https://www.google.com"
-        // },
-        // {
-        //     category: "Cuisines",
-        //     choiceDescription: "Greek",
-        //     pictureURI: "https://www.google.com"
-        // },
-        // {
-        //     category: "Cuisines",
-        //     choiceDescription: "Mediterranean",
-        //     pictureURI: "https://www.google.com"
-        // },
-        // {
-        //     category: "Cuisines",
-        //     choiceDescription: "Italian",
-        //     pictureURI: "https://www.google.com"
-        // },
-        // {
-        //     category: "Cuisines",
-        //     choiceDescription: "Persian",
-        //     pictureURI: "https://www.google.com"
-        // },
-        // {
-        //     category: "Cuisines",
-        //     choiceDescription: "Russian",
-        //     pictureURI: "https://www.google.com"
-        // },
-        // {
-        //     category: "Cuisines",
-        //     choiceDescription: "Thai",
-        //     pictureURI: "https://www.google.com"
-        // },
-        // {
-        //     category: "Cuisines",
-        //     choiceDescription: "Ukrainian",
-        //     pictureURI: "https://www.google.com"
-        // },
-        //
+        {
+            category: "Cuisines",
+            choiceDescription: "Chinese",
+            pictureURI: "https://i.ibb.co/DLJCdx9/chinese.png"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Mexican",
+            pictureURI: "https://i.ibb.co/J274P4Y/Mexican.png"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Korean",
+            pictureURI: "https://i.ibb.co/pKQwt5q/Korean.png"
+        },
+        {
+            category: "Cuisines",
+            choiceDescription: "Thai",
+            pictureURI: "https://i.ibb.co/bK6CPYG/thai.png"
+        },
         {
             category: "Diet Types",
             choiceDescription: "Anything",
-            pictureURI: "https://www.google.com"
+            pictureURI: "https://i.ibb.co/hDBYYzk/good-heart.png"
         },
         {
             category: "Diet Types",
             choiceDescription: "Vegetarian",
-            pictureURI: "uploadedImages/choices/vegetarian.svg"
+            pictureURI: "https://i.ibb.co/1LHkS9V/vegetarian.png"
         },
         {
             category: "Diet Types",
             choiceDescription: "Gluten-Free",
-            pictureURI: "uploadedImages/choices/gluten-free.svg"
+            pictureURI: "https://i.ibb.co/vkNvNyB/gluten-free.png"
         },
-        // {
-        //     category: "Diet Types",
-        //     choiceDescription: "Halal",
-        //     pictureURI: "uploadedImages/choices/halal.svg"
-        // },
-        // {
-        //     category: "Diet Types",
-        //     choiceDescription: "Kosher",
-        //     pictureURI: "uploadedImages/choices/kosher.svg"
-        // },
-        // {
-        //     category: "Diet Types",
-        //     choiceDescription: "Diabetic",
-        //     pictureURI: "uploadedImages/choices/diabetic.svg"
-        // },
-        // {
-        //     category: "Diet Types",
-        //     choiceDescription: "Vegan",
-        //     pictureURI: "uploadedImages/choices/vegan.svg"
-        // },
-        // {
-        //     category: "Diet Types",
-        //     choiceDescription: "Organic",
-        //     pictureURI: "uploadedImages/choices/organic.svg"
-        // },
+        {
+            category: "Diet Types",
+            choiceDescription: "Halal",
+            pictureURI: "https://i.ibb.co/S0wKSTm/halal.png"
+        },
+        {
+            category: "Diet Types",
+            choiceDescription: "Kosher",
+            pictureURI: "https://i.ibb.co/LkfB5Zc/kosher.png"
+        },
+        {
+            category: "Diet Types",
+            choiceDescription: "Diabetic",
+            pictureURI: "https://i.ibb.co/wzYnwgN/diabetic.png"
+        },
+        {
+            category: "Diet Types",
+            choiceDescription: "Vegan",
+            pictureURI: "https://i.ibb.co/SJQNVZq/vegan.png"
+        },
+        {
+            category: "Diet Types",
+            choiceDescription: "Organic",
+            pictureURI: "https://i.ibb.co/ph3FHq7/organic.png"
+        },
         // 12
         {
             category: "Allergens",
             choiceDescription: "No Allergy",
-            pictureURI: "https://www.google.com"
+            pictureURI: "https://i.ibb.co/hDBYYzk/good-heart.png"
         },
         {
             category: "Allergens",
             choiceDescription: "No Allergens",
-            pictureURI: "https://www.google.com"
+            pictureURI: "https://i.ibb.co/hDBYYzk/good-heart.png"
         },
         {
             category: "Allergens",
             choiceDescription: "Milk",
-            pictureURI: "uploadedImages/choices/milk.svg"
+            pictureURI: "https://i.ibb.co/3c2zNHw/milk.png"
         },
         {
             category: "Allergens",
             choiceDescription: "Crustacean shellfish",
-            pictureURI: "uploadedImages/choices/crustacean-shellfish.svg"
+            pictureURI: "https://i.ibb.co/d4jvWFm/crustacean-shellfish.png"
         },
         {
             category: "Allergens",
             choiceDescription: "Tree nuts",
-            pictureURI: "uploadedImages/choices/peanuts.svg"
+            pictureURI: "https://i.ibb.co/VDH0bMt/tree-nuts.png"
         },
         {
             category: "Allergens",
             choiceDescription: "Fish",
-            pictureURI: "uploadedImages/choices/fish.svg"
+            pictureURI: "https://i.ibb.co/5rMtbNN/fish.png"
         },
-        // {
-        //     category: "Allergens",
-        //     choiceDescription: "Eggs",
-        //     pictureURI: "uploadedImages/choices/eggs.svg"
-        // },
-        // {
-        //     category: "Allergens",
-        //     choiceDescription: "Wheat",
-        //     pictureURI: "uploadedImages/choices/wheat.svg"
-        // },
-        // {   
-        //     category: "Allergens",
-        //     choiceDescription: "Peanuts",
-        //     pictureURI: "uploadedImages/choices/peanuts.svg"
-        // },
-        // {
-        //     category: "Allergens",
-        //     choiceDescription: "Soybeans",
-        //     pictureURI: "https://www.google.com"
-        // },
+        {
+            category: "Allergens",
+            choiceDescription: "Eggs",
+            pictureURI: "https://i.ibb.co/sHC1Hbk/eggs.png"
+        },
+        {
+            category: "Allergens",
+            choiceDescription: "Wheat",
+            pictureURI: "https://i.ibb.co/JB2sfgL/wheat.png"
+        },
+        {   
+            category: "Allergens",
+            choiceDescription: "Peanuts",
+            pictureURI: "https://i.ibb.co/Dk5TzqD/peanuts.png"
+        },
+        {
+            category: "Allergens",
+            choiceDescription: "Soybeans",
+            pictureURI: "https://i.ibb.co/X3qmqnv/soybeans.png"
+        },
         {
             category: "Budget",
             choiceDescription: "$6-$10",
