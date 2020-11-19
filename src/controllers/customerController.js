@@ -40,7 +40,7 @@ exports.createCustomer = async function (req, res, next) {
     email: req.body.email,
     password: hash,
     phoneNumber: req.body.phoneNumber,
-    active: true
+    active: true,
     }
 
     // Save Customer in the database

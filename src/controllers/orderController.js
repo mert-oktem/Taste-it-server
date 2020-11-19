@@ -26,7 +26,7 @@ const orders = require("../models/ordersModel")
 const orderMenuLinks = require("../models/orderMenuLinkModel")
 const orderStatuses = require("../models/orderStatusesModel")
 
-const apiKey = ''
+const apiKey = 'AIzaSyDIpUKnFnPwDnVk0bCUDOBK_q1mQNuiaE0'
 
 ////////////////////
 // POST Methods ////
