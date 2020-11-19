@@ -1,5 +1,5 @@
 module.exports = {
-    HOST: "3.86.81.185",
+    HOST: "54.243.236.248",
     USER: "root",
     PASSWORD: "Tasteit123%",
     DB: "tasteItDB",
