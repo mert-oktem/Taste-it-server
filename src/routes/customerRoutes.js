@@ -11,6 +11,9 @@ module.exports = app => {
     // Create a new Customer
     router.post("/", customer.createCustomer);
 
+    // Create a new with Google
+    router.post("/create/google", auth.loginWithGoogle);
+
     // Create a new address for Customer
     router.post("/address", auth.verifyToken, customer.createAddress);
 

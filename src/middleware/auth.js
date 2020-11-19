@@ -135,3 +135,32 @@ exports.restaurantGoogleSuccess = async function (req, res, next) {
 exports.restaurantGoogleFailure = async function (req, res, next) {
     res.send('Login failed')
 }
+
+exports.loginWithGoogle = async function (req, res, next) {
+    const customer = await customers.findOne({ where: {email : req.body.email} })
+
+    if (customer == null) {
+        // Create a Customer
+        const customer = {
+            firstName: null,
+            lastName: null,
+            email: req.body.email,
+            phoneNumber: null,
+            userType: 'google',
+            active: true,
+            }
+        
+            // Save Customer in the database
+            customers.create(customer)
+            .then(customer => { jwt.sign( {customer}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
+            res.json( { token } ) 
+            }) } )
+            .catch(err => { res.status(500).send({ message: err.message }) })
+    }
+    else {
+        jwt.sign( {customer}, 'secretkey', {expiresIn: '24h'}, (err, token) => {
+            res.json( { token } ) 
+        })
+        .catch(err => { res.status(500).send({ message: err.message }) })
+    }
+}
