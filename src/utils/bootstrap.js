@@ -366,7 +366,7 @@ module.exports = async (db) => {
             menuName: "Chicken Dum Biryani",
             menuDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             price: 17.50,
-            pictureURI: "uploadedImages/menuImages/chicken-dumb-biryani.jpg"
+            pictureURI: "uploadedImages/menuImages/chicken-dum-biryani.jpg"
         },
         {
             restaurantID: 1,
