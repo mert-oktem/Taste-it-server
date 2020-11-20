@@ -185,4 +185,23 @@ exports.deActivateChoices = async function (req, res, next) {
       })
 }
 
+// Deactive menu's choices by the id
+exports.deactivateMenuChoice = async function (req, res, next) {
+  // This method needs: token, choiceCategory
+  // Find customer ID with token
+  const decodedJwt = await jwt.decode(req.token, { complete: true });
+  const restaurantID = decodedJwt.payload.restaurant.restaurantID;
+  const menuID = req.body.menuID;
 
+  await sequelize.query(  
+    `UPDATE menuChoicesLinks
+    LEFT JOIN choices
+    ON choices.choiceID = menuChoicesLinks.choiceID
+    LEFT JOIN menus
+    ON menuChoicesLinks.menuID = menus.menuID
+    SET menuChoicesLinks.isActive = false
+    WHERE menus.restaurantID = ${restaurantID} AND menuChoicesLinks.isActive = true AND menuChoicesLinks.menuID = ${menuID}`, { type: QueryTypes.PUT })
+    .then(data => { res.send(data) })
+    .catch(err => { res.status(500).send({ message: err.message }) 
+  })
+}

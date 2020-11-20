@@ -256,7 +256,7 @@ exports.updateOrder = async function (req, res, next) {
   const review= req.body.review ? req.body.review : order.review
   const rate = req.body.rate ? req.body.rate : order.rate
   const isOrderAgain = req.body.isOrderAgain ? req.body.isOrderAgain : order.isOrderAgain
-  const orderStatusID = req.body.orderStatusDescription ? orderStatus.orderStatusID : order.orderStatusID
+  const orderStatusID = req.body.orderStatusID ? req.body.orderStatusID : order.orderStatusID
   
   order.update({
     estimatedDeliveryTime: estimateDeliveryTime,
