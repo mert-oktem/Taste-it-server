@@ -12,5 +12,5 @@ module.exports = app => {
   // Update a choice
 
 
-  app.use('/api/choices', router);
+  app.use('choices', router);
 };
