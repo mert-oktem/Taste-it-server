@@ -33,6 +33,6 @@ module.exports = app => {
     // Update a menu's choices with id
     router.put("/choices/deactivateChoices", auth.verifyToken, menus.deactivateMenuChoice);
 
-    app.use('/api/menus', router);
+    app.use('/menus', router);
 };
 

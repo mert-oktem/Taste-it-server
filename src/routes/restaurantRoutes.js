@@ -52,5 +52,5 @@ module.exports = app => {
   // Update a restaurant's address with id
   router.put("/address/", auth.verifyToken, restaurant.updateRestaurantAddress);
 
-  app.use('/api/restaurants', router);
+  app.use('/restaurants', router);
 };

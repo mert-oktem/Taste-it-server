@@ -10,5 +10,5 @@ module.exports = app => {
 
   // Update a inquiry with id
 
-  app.use('/api/inquiries', router);
+  app.use('/inquiries', router);
 };
