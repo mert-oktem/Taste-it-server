@@ -21,5 +21,5 @@ module.exports = app => {
     // Update an order with order ID
     router.put("/", auth.verifyToken, orders.updateOrder);
   
-    app.use('/api/orders', router);
+    app.use('/orders', router);
 };

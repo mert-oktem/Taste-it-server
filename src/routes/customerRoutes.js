@@ -63,5 +63,5 @@ module.exports = app => {
     // Update a customer's choices with id
     router.get("/deactivechoices/", auth.verifyToken, customer.deactivateCustomerChoice);
   
-    app.use('/api/customers', router);
+    app.use('/customers', router);
 };

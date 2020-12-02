@@ -29,5 +29,5 @@ module.exports = app => {
   // Retrieve a list of orderStatus options
   router.get("/orderStatus", helpers.findOrderStatus);
 
-  app.use('/api/helpers', router);
+  app.use('/helpers', router);
 };

@@ -25,5 +25,5 @@ module.exports = app => {
   // // Update a newsletter registered users with id
   // router.put("/", newsletterRegisteredUsers.updateNewsletterRegisteredUsers);
 
-  app.use('/api/newsletterRegisteredUsers', router);
+  app.use('/newsletterRegisteredUsers', router);
 };
