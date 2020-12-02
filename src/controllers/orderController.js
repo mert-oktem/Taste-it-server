@@ -44,6 +44,7 @@ exports.confirmOrder = async function (req, res, next) {
     customerID: customerID,
     forHowManyPeople: req.body.forHowManyPeople,
     orderStatusID: 1,
+    createdAt: Date.now()
   }
   orders.create(newOrder)
   // Link the order with the selected menu
@@ -263,7 +264,8 @@ exports.updateOrder = async function (req, res, next) {
     review: review,
     rate: rate,
     isOrderAgain: isOrderAgain,
-    orderStatusID: orderStatusID
+    orderStatusID: orderStatusID,
+    updatedAt: Date.now()
   })
   .then(data => { res.send(data) })
   .catch(err => { res.status(500).send({ message: err.message } )})
